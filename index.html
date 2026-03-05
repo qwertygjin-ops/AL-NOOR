@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>AL-NOOR | Hajj & Umrah Excellence</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
+        /* ----- RESET & VARIABLES ----- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--white); 
+            color: var(--accent); 
+            overflow-x: hidden; 
+            width: 100%; 
+            min-width: 100px; /* withstand extreme small width */
+            word-wrap: break-word;
+        }
+        h1, h2, .logo { font-family: 'Cinzel', serif; }
+
         :root {
             --primary: #064e3b; /* Emerald */
             --secondary: #d4af37; /* Gold */
@@ -18,28 +32,38 @@
             --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
             --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-
         [data-theme="dark"] {
             --white: #0f172a;
             --accent: #f8fafc;
             --glass: rgba(15, 23, 42, 0.7);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Poppins', sans-serif; background: var(--white); color: var(--accent); overflow-x: hidden; }
-        h1, h2, .logo { font-family: 'Cinzel', serif; }
+        /* ----- TYPOGRAPHY ADAPT (extreme small) ----- */
+        @media (max-width: 200px) {
+            h1 { font-size: 1.4rem !important; }
+            h2 { font-size: 1.3rem !important; }
+            .logo { font-size: 1.2rem !important; }
+            body { font-size: 0.8rem; }
+        }
 
-        /* --- Navbar --- */
+        /* ----- NAVBAR (fully collapsible) ----- */
         nav {
-            position: fixed; width: 100%; top: 0; z-index: 1000; padding: 20px 5%;
+            position: fixed; width: 100%; top: 0; z-index: 1000; padding: 12px 3%;
             display: flex; justify-content: space-between; align-items: center;
             transition: 0.5s; backdrop-filter: blur(0px);
+            flex-wrap: wrap; gap: 5px;
         }
-        nav.scrolled { background: var(--primary); padding: 10px 5%; backdrop-filter: blur(10px); box-shadow: var(--shadow); }
-        .logo { color: var(--secondary); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
-        .nav-links { display: flex; list-style: none; gap: 30px; }
-        .nav-links a { color: var(--white); text-decoration: none; font-weight: 500; position: relative; }
+        nav.scrolled { background: var(--primary); padding: 8px 3%; backdrop-filter: blur(10px); }
+        .logo { color: var(--secondary); font-size: clamp(1.2rem, 5vw, 1.8rem); font-weight: bold; text-decoration: none; }
+        .nav-links { 
+            display: flex; list-style: none; gap: clamp(10px, 2vw, 30px); 
+            flex-wrap: wrap; 
+        }
+        .nav-links a { 
+            color: var(--white); text-decoration: none; font-weight: 500; 
+            font-size: clamp(0.7rem, 3vw, 1rem); 
+            white-space: nowrap;
+        }
         .nav-links a::after {
             content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
             background: var(--secondary); transition: 0.3s;
@@ -47,231 +71,173 @@
         .nav-links a:hover::after { width: 100%; }
         .menu-btn { display: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
 
-        /* --- Hero Section & Morphing Background --- */
+        /* nav group */
+        .nav-actions {
+            display: flex; align-items: center; gap: clamp(5px, 2vw, 15px); 
+            flex-wrap: wrap; justify-content: flex-end;
+        }
+
+        /* ----- BUTTONS / TOGGLES tiny friendly ----- */
+        .lang-toggle {
+            background: transparent; border: 2px solid var(--secondary); color: var(--white);
+            padding: 5px 8px; border-radius: 20px; cursor: pointer; font-weight: bold;
+            transition: var(--transition); font-size: clamp(0.7rem, 3vw, 0.9rem);
+            white-space: nowrap;
+        }
+        .lang-toggle:hover { background: var(--secondary); color: var(--accent); }
+
+        .theme-toggle { cursor: pointer; color: var(--secondary); font-size: clamp(1rem, 4vw, 1.3rem); }
+
+        /* ----- HERO (tiny safe) with divine fade animation ----- */
         .hero {
-            height: 100vh; display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; position: relative; overflow: hidden;
             background: linear-gradient(45deg, #064e3b, #0f172a);
+            width: 100%;
         }
         .hero-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070') center/cover;
-            opacity: 0.4; mix-blend-mode: overlay;
+            opacity: 0.3; mix-blend-mode: overlay;
         }
         .morph-shape {
-            position: absolute; width: 500px; height: 500px; background: var(--secondary);
-            filter: blur(80px); opacity: 0.3; z-index: 1; border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-            animation: morphing 15s infinite alternate ease-in-out;
+            position: absolute; width: min(300px, 70vw); height: min(300px, 70vw); 
+            background: var(--secondary); filter: blur(60px); opacity: 0.3; z-index: 1; 
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: morphing 15s infinite alternate;
         }
         @keyframes morphing {
             0% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: translate(0,0) rotate(0deg); }
-            100% { border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%; transform: translate(50px, 100px) rotate(180deg); }
+            100% { border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%; transform: translate(5%, 10%) rotate(180deg); }
         }
-        .hero-content { z-index: 10; padding: 0 20px; animation: fadeInUp 1s ease; }
-        .hero h1 { font-size: 4rem; margin-bottom: 20px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
-        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; margin-inline: auto; }
+        .hero-content { z-index: 10; padding: 15px; max-width: 100%; }
 
-        /* --- 3D Buttons --- */
-        .btn-3d {
-            padding: 15px 40px; font-size: 1.1rem; background: var(--secondary);
-            color: var(--accent); border: none; border-radius: 50px; cursor: pointer;
-            box-shadow: 0 6px 0 #b08d2b; transition: 0.2s; text-decoration: none; font-weight: bold;
-            display: inline-block;
+        /* ----- DIVINE FADE-IN ANIMATION FOR HERO TEXT (added) ----- */
+        .hero-content > * {
+            opacity: 0;
+            animation: divineFadeInUp 1.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
-        .btn-3d:hover { transform: translateY(2px); box-shadow: 0 4px 0 #b08d2b; background: #e5c05b; }
-        .btn-3d:active { transform: translateY(6px); box-shadow: 0 0 0 #b08d2b; }
+        .hero-content > h1:first-child { animation-delay: 0.2s; }      /* "WELCOME TO" */
+        .hero-content > h1:nth-child(2) { animation-delay: 0.6s; }     /* typing logo */
+        .hero-content > p { animation-delay: 1.0s; }                   /* description */
+        .hero-content > .btn-3d { animation-delay: 1.4s; }             /* button */
 
-        /* Language toggle button */
-        .lang-toggle {
-            background: transparent;
-            border: 2px solid var(--secondary);
-            color: var(--white);
-            padding: 8px 16px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: var(--transition);
-            font-size: 0.9rem;
-            margin-right: 15px;
-        }
-        .lang-toggle:hover {
-            background: var(--secondary);
-            color: var(--accent);
-        }
-
-        /* --- Packages Section (Cards) --- */
-        .section-padding { padding: 80px 10%; }
-        .section-title { text-align: center; margin-bottom: 50px; font-size: 2.5rem; }
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        
-        .card {
-            background: var(--glass); backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border); border-radius: 20px;
-            padding: 40px; text-align: center; transition: var(--transition);
-            position: relative; overflow: hidden;
-        }
-        .card:hover { transform: translateY(-15px) scale(1.02); border-color: var(--secondary); box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
-        .card h3 { color: var(--secondary); margin-bottom: 15px; }
-        .price { font-size: 2.5rem; font-weight: bold; margin: 20px 0; display: block; }
-        .card ul { list-style: none; margin: 20px 0; text-align: left; line-height: 2; }
-        .card ul li i { color: var(--secondary); margin-right: 10px; }
-
-        /* --- Gallery Section Styles --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
-        }
-        
-        .gallery-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            cursor: pointer;
-            height: 280px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-            transition: var(--transition);
-        }
-        
-        .gallery-item:hover {
-            transform: scale(1.03);
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.3);
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .gallery-item:hover img {
-            transform: scale(1.1);
-        }
-        
-        .gallery-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-weight: bold;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-        }
-        
-        .gallery-item:hover .gallery-caption {
-            transform: translateY(0);
-        }
-        
-        /* Lightbox Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            padding-top: 50px;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
-            backdrop-filter: blur(10px);
-        }
-        
-        .modal-content {
-            margin: auto;
-            display: block;
-            max-width: 80%;
-            max-height: 80%;
-            border-radius: 10px;
-            border: 3px solid var(--secondary);
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 35px;
-            color: var(--secondary);
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
-        .close-modal:hover {
-            color: #fff;
-        }
-        
-        .modal-caption {
-            margin: auto;
-            display: block;
-            width: 80%;
-            text-align: center;
-            color: #fff;
-            padding: 20px 0;
-            font-size: 1.2rem;
-        }
-
-        /* --- Floating WhatsApp --- */
-        .whatsapp-float {
-            position: fixed; bottom: 30px; right: 30px; background: #25d366;
-            width: 60px; height: 60px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; font-size: 30px;
-            color: white; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); z-index: 1000;
-            animation: pulse 2s infinite; text-decoration: none;
-        }
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-
-        /* --- Responsive Styles --- */
-        @media (max-width: 768px) {
-            .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); padding: 20px; }
-            .nav-links.active { display: flex; }
-            .menu-btn { display: block; }
-            .hero h1 { font-size: 2.5rem; }
-            .section-padding { padding: 60px 5%; }
-            .lang-toggle { margin-right: 5px; padding: 5px 10px; }
-            .gallery-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-            .modal-content { max-width: 95%; }
-        }
-
-        /* Utility */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s all ease; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        .theme-toggle { cursor: pointer; color: var(--secondary); margin-left: 20px; }
-
-        #typing-logo::after {
-            content: '|';
-            animation: blink 0.7s infinite;
-            margin-left: 5px;
-            color: var(--secondary);
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* Custom keyframes for the hero content entrance */
-        @keyframes divineEntrance {
-            0% { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+        @keyframes divineFadeInUp {
+            0% { opacity: 0; transform: translateY(18px); filter: blur(2px); }
             100% { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        .hero-content h1:first-child {
-            animation: divineEntrance 1.5s ease out forwards;
+        .hero h1 { font-size: clamp(1.8rem, 8vw, 4rem); margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .hero p { font-size: clamp(0.9rem, 4vw, 1.2rem); margin-bottom: 20px; max-width: 600px; margin-inline: auto; padding: 0 5px; }
+
+        /* 3d button adaptive */
+        .btn-3d {
+            padding: 12px clamp(15px, 5vw, 40px); font-size: clamp(0.8rem, 4vw, 1.1rem); 
+            background: var(--secondary); color: var(--accent); border: none; border-radius: 50px; 
+            cursor: pointer; box-shadow: 0 6px 0 #b08d2b; transition: 0.2s; 
+            text-decoration: none; font-weight: bold; display: inline-block;
+            white-space: nowrap;
+        }
+        .btn-3d:hover { transform: translateY(2px); box-shadow: 0 4px 0 #b08d2b; }
+        .btn-3d:active { transform: translateY(6px); box-shadow: 0 0 0 #b08d2b; }
+
+        /* sections */
+        .section-padding { padding: clamp(40px, 8vh, 80px) 3%; }
+        .section-title { text-align: center; margin-bottom: 30px; font-size: clamp(1.6rem, 6vw, 2.5rem); }
+
+        /* grid -> always 1 column at extreme narrow, but auto-fit with min 180px */
+        .grid-container {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); 
+            gap: 20px; 
         }
 
-        .hero-content p, .hero-content .btn-3d {
-            opacity: 0;
-            animation: divineEntrance 1.5s ease-out 1s forwards;
+        /* cards */
+        .card {
+            background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); 
+            border-radius: 20px; padding: 25px 15px; text-align: center; transition: var(--transition);
+            overflow: hidden; width: 100%;
+        }
+        .card:hover { transform: translateY(-8px) scale(1.01); border-color: var(--secondary); }
+        .card h3 { color: var(--secondary); margin-bottom: 12px; font-size: clamp(1.1rem, 5vw, 1.5rem); }
+        .price { font-size: clamp(1.8rem, 7vw, 2.5rem); margin: 15px 0; display: block; }
+        .card ul { list-style: none; margin: 15px 0; text-align: left; line-height: 1.8; padding-left: 5px; }
+        .card ul li i { color: var(--secondary); margin-right: 8px; width: 20px; }
+        .card ul li { font-size: clamp(0.8rem, 3.5vw, 1rem); }
+
+        /* gallery grid */
+        .gallery-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); 
+            gap: 15px; margin-top: 20px;
+        }
+        .gallery-item {
+            position: relative; border-radius: 15px; overflow: hidden; cursor: pointer;
+            height: 200px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: var(--transition);
+        }
+        .gallery-item:hover { transform: scale(1.02); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .gallery-caption {
+            position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white; padding: 15px 5px; text-align: center; font-weight: bold; 
+            transform: translateY(100%); transition: 0.3s; font-size: clamp(0.7rem, 3vw, 1rem);
+        }
+        .gallery-item:hover .gallery-caption { transform: translateY(0); }
+
+        /* modal */
+        .modal {
+            display: none; position: fixed; z-index: 2000; padding: 20px 5px; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            margin: auto; display: block; max-width: 95%; max-height: 80%; border-radius: 10px;
+            border: 3px solid var(--secondary); object-fit: contain;
+        }
+        .close-modal {
+            position: absolute; top: 5px; right: 20px; color: var(--secondary); font-size: 35px; cursor: pointer;
+        }
+        .modal-caption { color: #fff; text-align: center; padding: 15px 5px; font-size: 1rem; }
+
+        /* contact form */
+        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: clamp(0.8rem, 3.5vw, 1rem); }
+
+        /* footer */
+        footer { padding: 30px 3%; text-align: center; font-size: clamp(0.7rem, 3vw, 0.9rem); }
+        footer i { font-size: clamp(1.2rem, 5vw, 2rem); margin: 0 5px; }
+
+        /* whatsapp & scroll-top */
+        .whatsapp-float, .scroll-top {
+            position: fixed; right: 15px; bottom: 20px; background: #25d366; width: 45px; height: 45px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            font-size: 24px; color: white; z-index: 1000; text-decoration: none;
+        }
+        .scroll-top { left: 15px; right: auto; background: var(--secondary); width: 40px; height: 40px; font-size: 20px; }
+
+        /* utility */
+        .reveal { opacity: 0; transform: translateY(20px); transition: 1s ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        #typing-logo::after { content: '|'; animation: blink 0.7s infinite; margin-left: 3px; }
+
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* extreme narrow override (100px width support) */
+        @media (max-width: 150px) {
+            .nav-links { flex-direction: column; width: 100%; align-items: center; }
+            .nav-actions { justify-content: center; }
+            .logo { font-size: 1rem; }
+            .btn-3d { white-space: normal; word-break: break-word; }
+            .gallery-item { height: 150px; }
+        }
+
+        /* mobile menu */
+        @media (max-width: 600px) {
+            .nav-links { 
+                display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
+                width: 100%; background: var(--primary); padding: 15px; gap: 12px;
+            }
+            .nav-links.active { display: flex; }
+            .menu-btn { display: block; }
         }
     </style>
 </head>
@@ -286,9 +252,8 @@
             <li><a href="#gallery" data-en="Gallery" data-gu="ગેલેરી">Gallery</a></li>
             <li><a href="#contact" data-en="Contact" data-gu="સંપર્ક">Contact</a></li>
         </ul>
-        <div style="display: flex; align-items: center; gap: 15px;">
+        <div class="nav-actions">
             <button id="langToggle" class="lang-toggle">ગુજરાતી</button>
-            
             <i class="fas fa-moon theme-toggle" id="theme-btn"></i>
             <i class="fas fa-bars menu-btn" onclick="toggleMenu()"></i>
         </div>
@@ -299,8 +264,8 @@
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <h1 data-en="WELCOME TO" data-gu="સ્વાગત છે">WELCOME TO</h1>
-            <h1 id="typing-logo" class="gold-glow" style="min-height: 1.2em;"></h1> 
-            <p data-en="Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010." data-gu="2010 થી વિશ્વાસ, આરામ અને માર્ગદર્શન સાથે આધ્યાત્મિક રીતે સમૃદ્ધ હજ અને ઉમરાહ સેવાઓ પ્રદાન કરે છે.">Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010.</p>
+            <h1 id="typing-logo" style="min-height:1.2em;"></h1> 
+            <p data-en="Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010." data-gu="2010 થી વિશ્વાસ, આરામ અને માર્ગદર્શન સાથે આધ્યાત્મિક રીતે સમૃદ્ધ હજ અને ઉમરાહ સેવાઓ.">Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010.</p>
             <a href="#packages" class="btn-3d" data-en="Explore Packages" data-gu="પેકેજો જુઓ">Explore Packages</a>
         </div>
     </header>
@@ -308,18 +273,18 @@
     <section class="section-padding reveal" id="about">
         <h2 class="section-title" data-en="Why Choose AL-NOOR?" data-gu="શા માટે AL-NOOR પસંદ કરો?">Why Choose AL-NOOR?</h2>
         <div class="grid-container">
-            <div class="card" style="background: white; color: #333;">
-                <i class="fas fa-mosque fa-3x" style="color: var(--primary); margin-bottom:20px;"></i>
+            <div class="card" style="background: var(--white); color: #333;">
+                <i class="fas fa-mosque fa-3x" style="color: var(--primary); margin-bottom:15px;"></i>
                 <h3 data-en="Spiritual Guidance" data-gu="આધ્યાત્મિક માર્ગદર્શન">Spiritual Guidance</h3>
                 <p data-en="Guided by scholars to ensure your rituals are performed according to the Sunnah." data-gu="વિદ્વાનો દ્વારા માર્ગદર્શન આપવામાં આવે છે જેથી તમારી વિધિઓ સુન્નત અનુસાર કરવામાં આવે.">Guided by scholars to ensure your rituals are performed according to the Sunnah.</p>
             </div>
-            <div class="card" style="background: white; color: #333;">
-                <i class="fas fa-certificate fa-3x" style="color: var(--primary); margin-bottom:20px;"></i>
+            <div class="card" style="background: var(--white); color: #333;">
+                <i class="fas fa-certificate fa-3x" style="color: var(--primary); margin-bottom:15px;"></i>
                 <h3 data-en="Certified Agent" data-gu="પ્રમાણિત એજન્ટ">Certified Agent</h3>
                 <p><strong data-en="Aarif bhai Haji Noor Mohammad Bhai" data-gu="આરિફ ભાઈ હાજી નૂર મોહમ્મદ ભાઈ">Aarif bhai Haji Noor Mohammad Bhai</strong><br><span data-en="Certified Hajj Agent" data-gu="પ્રમાણિત હજ એજન્ટ">Certified Hajj Agent</span><br><span data-en="10+ Years of Experience" data-gu="10+ વર્ષનો અનુભવ">10+ Years of Experience</span></p>
             </div>
-            <div class="card" style="background: white; color: #333;">
-                <i class="fas fa-handshake fa-3x" style="color: var(--primary); margin-bottom:20px;"></i>
+            <div class="card" style="background: var(--white); color: #333;">
+                <i class="fas fa-handshake fa-3x" style="color: var(--primary); margin-bottom:15px;"></i>
                 <h3 data-en="Reliable Support" data-gu="વિશ્વસનીય સમર્થન">Reliable Support</h3>
                 <p data-en="24/7 on-ground assistance in Mecca and Madina for all our pilgrims." data-gu="અમારા તમામ યાત્રીઓ માટે મક્કા અને મદીનામાં 24/7 ઓન-ગ્રાઉન્ડ સહાય.">24/7 on-ground assistance in Mecca and Madina for all our pilgrims.</p>
             </div>
@@ -333,8 +298,8 @@
                 <h3 data-en="Economy" data-gu="અર્થતંત્ર">Economy</h3>
                 <span class="price">$1,200</span>
                 <ul>
-                    <li><i class="fas fa-calendar"></i> <span data-en="15 Days Duration" data-gu="15 દિવસનો સમયગાળો">15 Days Duration</span></li>
-                    <li><i class="fas fa-hotel"></i> <span data-en="3 Star Hotels" data-gu="3 સ્ટાર હોટેલો">3 Star Hotels</span></li>
+                    <li><i class="fas fa-calendar"></i> <span data-en="15 Days Duration" data-gu="15 દિવસ">15 Days Duration</span></li>
+                    <li><i class="fas fa-hotel"></i> <span data-en="3 Star Hotels" data-gu="3 સ્ટાર હોટેલ">3 Star Hotels</span></li>
                     <li><i class="fas fa-bus"></i> <span data-en="Transport Included" data-gu="પરિવહન શામેલ">Transport Included</span></li>
                     <li><i class="fas fa-map-marked-alt"></i> <span data-en="Local Ziyarah" data-gu="સ્થાનિક ઝિયારત">Local Ziyarah</span></li>
                 </ul>
@@ -344,8 +309,8 @@
                 <h3 data-en="Semi-Deluxe" data-gu="સેમી-ડિલક્સ">Semi-Deluxe</h3>
                 <span class="price">$2,500</span>
                 <ul>
-                    <li><i class="fas fa-calendar"></i> <span data-en="21 Days Duration" data-gu="21 દિવસનો સમયગાળો">21 Days Duration</span></li>
-                    <li><i class="fas fa-hotel"></i> <span data-en="4 Star Hotels" data-gu="4 સ્ટાર હોટેલો">4 Star Hotels</span></li>
+                    <li><i class="fas fa-calendar"></i> <span data-en="21 Days Duration" data-gu="21 દિવસ">21 Days Duration</span></li>
+                    <li><i class="fas fa-hotel"></i> <span data-en="4 Star Hotels" data-gu="4 સ્ટાર હોટેલ">4 Star Hotels</span></li>
                     <li><i class="fas fa-bus"></i> <span data-en="Luxury Transport" data-gu="લક્ઝરી પરિવહન">Luxury Transport</span></li>
                     <li><i class="fas fa-map-marked-alt"></i> <span data-en="Extended Ziyarah" data-gu="વિસ્તૃત ઝિયારત">Extended Ziyarah</span></li>
                 </ul>
@@ -355,8 +320,8 @@
                 <h3 data-en="Deluxe" data-gu="ડિલક્સ">Deluxe</h3>
                 <span class="price">$4,500</span>
                 <ul>
-                    <li><i class="fas fa-calendar"></i> <span data-en="28 Days Duration" data-gu="28 દિવસનો સમયગાળો">28 Days Duration</span></li>
-                    <li><i class="fas fa-hotel"></i> <span data-en="5 Star (Front Row)" data-gu="5 સ્ટાર (આગળની હરોળ)">5 Star (Front Row)</span></li>
+                    <li><i class="fas fa-calendar"></i> <span data-en="28 Days Duration" data-gu="28 દિવસ">28 Days Duration</span></li>
+                    <li><i class="fas fa-hotel"></i> <span data-en="5 Star (Front Row)" data-gu="5 સ્ટાર આગળની હરોળ">5 Star (Front Row)</span></li>
                     <li><i class="fas fa-car"></i> <span data-en="Private VIP Transport" data-gu="ખાનગી VIP પરિવહન">Private VIP Transport</span></li>
                     <li><i class="fas fa-map-marked-alt"></i> <span data-en="Full Guided Tour" data-gu="સંપૂર્ણ માર્ગદર્શિત પ્રવાસ">Full Guided Tour</span></li>
                 </ul>
@@ -365,15 +330,11 @@
         </div>
     </section>
 
-    <!-- New Gallery Section -->
     <section class="section-padding reveal" id="gallery">
         <h2 class="section-title" data-en="Holy Places Gallery" data-gu="પવિત્ર સ્થળોની ગેલેરી">Holy Places Gallery</h2>
-        <div class="gallery-grid" id="galleryGrid">
-            <!-- Gallery items will be populated by JavaScript -->
-        </div>
+        <div class="gallery-grid" id="galleryGrid"></div>
     </section>
 
-    <!-- Lightbox Modal -->
     <div id="imageModal" class="modal">
         <span class="close-modal">&times;</span>
         <img class="modal-content" id="modalImage">
@@ -387,214 +348,113 @@
                 <h3 data-en="Get in Touch" data-gu="સંપર્કમાં રહો">Get in Touch</h3>
                 <p><i class="fas fa-phone"></i> +966 50 XXX XXXX</p>
                 <p><i class="fas fa-envelope"></i> info@alnoor-travel.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> <span data-en="King Fahd Rd, Mecca, Saudi Arabia" data-gu="કિંગ ફહદ રોડ, મક્કા, સાઉદી અરેબિયા">King Fahd Rd, Mecca, Saudi Arabia</span></p>
+                <p><i class="fas fa-map-marker-alt"></i> <span data-en="King Fahd Rd, Mecca, Saudi Arabia" data-gu="કિંગ ફહદ રોડ, મક્કા">King Fahd Rd, Mecca, Saudi Arabia</span></p>
             </div>
             <form class="card" style="background: #f4f4f4; text-align: left;">
-                <input type="text" placeholder="Name" data-en="Name" data-gu="નામ" style="width:100%; padding:10px; margin-bottom:10px;">
-                <input type="email" placeholder="Email" data-en="Email" data-gu="ઈમેલ" style="width:100%; padding:10px; margin-bottom:10px;">
-                <textarea placeholder="Message" data-en="Message" data-gu="સંદેશ" style="width:100%; padding:10px; margin-bottom:10px;"></textarea>
+                <input type="text" placeholder="Name" data-en="Name" data-gu="નામ">
+                <input type="email" placeholder="Email" data-en="Email" data-gu="ઈમેલ">
+                <textarea placeholder="Message" data-en="Message" data-gu="સંદેશ"></textarea>
                 <button type="submit" class="btn-3d" data-en="Send Message" data-gu="સંદેશ મોકલો">Send Message</button>
             </form>
         </div>
     </section>
 
-    <footer style="background: var(--primary); color: white; padding: 40px 5%; text-align: center;">
+    <footer style="background: var(--primary); color: white;">
         <p data-en='"The pilgrims performing Hajj and Umrah are a delegation to Allah."' data-gu='"હજ અને ઉમરાહ કરનાર યાત્રીઓ અલ્લાહના પ્રતિનિધિ છે."'>"The pilgrims performing Hajj and Umrah are a delegation to Allah."</p>
-        <div style="margin: 20px 0;">
-            <i class="fab fa-facebook fa-2x" style="margin: 0 10px;"></i>
-            <i class="fab fa-instagram fa-2x" style="margin: 0 10px;"></i>
-            <i class="fab fa-twitter fa-2x" style="margin: 0 10px;"></i>
+        <div style="margin: 15px 0;">
+            <i class="fab fa-facebook fa-2x"></i>
+            <i class="fab fa-instagram fa-2x"></i>
+            <i class="fab fa-twitter fa-2x"></i>
         </div>
-        <p data-en="&copy; 2026 AL-NOOR Tours & Travel. All rights reserved." data-gu="&copy; 2026 AL-NOOR ટૂર્સ એન્ડ ટ્રાવેલ. બધા હકો અમારી પાસે સુરક્ષિત છે.">&copy; 2026 AL-NOOR Tours & Travel. All rights reserved.</p>
+        <p data-en="&copy; 2026 AL-NOOR Tours & Travel. All rights reserved." data-gu="&copy; 2026 AL-NOOR ટૂર્સ એન્ડ ટ્રાવેલ.">&copy; 2026 AL-NOOR Tours & Travel. All rights reserved.</p>
     </footer>
 
-    <a href="https://wa.me/966500000000" class="whatsapp-float" target="_blank">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-
-    <button onclick="window.scrollTo(0,0)" style="position:fixed; bottom:30px; left:30px; border:none; background:var(--secondary); color:white; padding:10px; border-radius:5px; cursor:pointer;">
-        <i class="fas fa-arrow-up"></i>
-    </button>
+    <a href="https://wa.me/966500000000" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+    <button class="scroll-top" onclick="window.scrollTo(0,0)"><i class="fas fa-arrow-up"></i></button>
 
     <script>
-        // --- Navbar Scroll Logic ---
+        // navbar scroll
         window.addEventListener('scroll', () => {
-            const nav = document.getElementById('navbar');
-            if (window.scrollY > 50) nav.classList.add('scrolled');
-            else nav.classList.remove('scrolled');
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
         });
 
-        // --- Mobile Menu ---
-        function toggleMenu() {
-            document.querySelector('.nav-links').classList.toggle('active');
-        }
+        function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
 
-        // --- Scroll Reveal ---
+        // reveal
         function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            reveals.forEach(el => {
-                var windowHeight = window.innerHeight;
-                var elementTop = el.getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) el.classList.add("active");
+            document.querySelectorAll(".reveal").forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("active");
             });
         }
-        window.addEventListener("scroll", reveal);
+        window.addEventListener("scroll", reveal); reveal();
 
-        // --- Theme Toggle ---
+        // theme toggle
         const themeBtn = document.getElementById('theme-btn');
         themeBtn.addEventListener('click', () => {
-            const body = document.body;
-            if(body.getAttribute('data-theme') === 'dark') {
-                body.removeAttribute('data-theme');
+            if(document.body.getAttribute('data-theme') === 'dark') {
+                document.body.removeAttribute('data-theme');
                 themeBtn.classList.replace('fa-sun', 'fa-moon');
             } else {
-                body.setAttribute('data-theme', 'dark');
+                document.body.setAttribute('data-theme', 'dark');
                 themeBtn.classList.replace('fa-moon', 'fa-sun');
             }
         });
 
-        // Typing effect
+        // typing effect (extreme safe)
         const text = "AL-NOOR TOURS AND TRAVELS";
         const typingElement = document.getElementById('typing-logo');
-        let index = 0;
-        let isDeleting = false;
-
+        let index = 0, isDeleting = false;
         function typeEffect() {
-            const currentText = text.substring(0, index);
-            typingElement.textContent = currentText;
-
-            if (!isDeleting && index < text.length) {
-                index++;
-                setTimeout(typeEffect, 100);
-            } else if (isDeleting && index > 0) {
-                index--;
-                setTimeout(typeEffect, 50);
-            } else {
-                isDeleting = !isDeleting;
-                const pause = isDeleting ? 2000 : 500;
-                setTimeout(typeEffect, pause);
-            }
+            typingElement.textContent = text.substring(0, index);
+            if (!isDeleting && index < text.length) { index++; setTimeout(typeEffect, 100); }
+            else if (isDeleting && index > 0) { index--; setTimeout(typeEffect, 50); }
+            else { isDeleting = !isDeleting; setTimeout(typeEffect, isDeleting ? 2000 : 500); }
         }
-
         window.addEventListener('load', typeEffect);
 
-        // --- Language Toggle Functionality ---
+        // language
         let currentLang = 'en';
-
         const langToggle = document.getElementById('langToggle');
-        
         function updateLanguage(lang) {
-            const translatableElements = document.querySelectorAll('[data-en][data-gu]');
-            
-            translatableElements.forEach(element => {
-                if (lang === 'gu') {
-                    element.textContent = element.getAttribute('data-gu');
-                } else {
-                    element.textContent = element.getAttribute('data-en');
-                }
-            });
-
-            const inputsWithPlaceholder = document.querySelectorAll('input[data-en][data-gu], textarea[data-en][data-gu]');
-            inputsWithPlaceholder.forEach(element => {
-                if (lang === 'gu') {
-                    element.placeholder = element.getAttribute('data-gu');
-                } else {
-                    element.placeholder = element.getAttribute('data-en');
-                }
-            });
-
-            const buttonTexts = document.querySelectorAll('.btn-3d[data-en][data-gu]');
-            buttonTexts.forEach(button => {
-                if (lang === 'gu') {
-                    button.textContent = button.getAttribute('data-gu');
-                } else {
-                    button.textContent = button.getAttribute('data-en');
-                }
-            });
-
+            document.querySelectorAll('[data-en][data-gu]').forEach(el => { el.textContent = el.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); });
+            document.querySelectorAll('input[data-en][data-gu], textarea[data-en][data-gu]').forEach(el => { el.placeholder = el.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); });
+            document.querySelectorAll('.btn-3d[data-en][data-gu]').forEach(btn => { btn.textContent = btn.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); });
             langToggle.textContent = lang === 'en' ? 'ગુજરાતી' : 'English';
         }
-
-        langToggle.addEventListener('click', () => {
-            currentLang = currentLang === 'en' ? 'gu' : 'en';
-            updateLanguage(currentLang);
-        });
-
+        langToggle.addEventListener('click', () => { currentLang = currentLang === 'en' ? 'gu' : 'en'; updateLanguage(currentLang); });
         updateLanguage('en');
 
-        // --- Gallery Functionality ---
+        // gallery data
         const galleryImages = [
-            {
-                url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070',
-                caption: 'Masjid al-Haram - Makkah',
-                captionGu: 'મસ્જિદ અલ-હરમ - મક્કા'
-            },
-            {
-                url: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=2070',
-                caption: 'Masjid an-Nabawi - Madinah',
-                captionGu: 'મસ્જિદ અન-નબવી - મદીના'
-            },
-            {
-                url: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=2070',
-                caption: 'Kaaba - The Holy Sanctuary',
-                captionGu: 'કાબા - પવિત્ર દરગાહ'
-            },
-            {
-                url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070',
-                caption: 'Tawaf Around Kaaba',
-                captionGu: 'કાબાની આસપાસ તવાફ'
-            },
-            {
-                url: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=2070',
-                caption: 'Green Dome - Madinah',
-                captionGu: 'લીલો ગુંબજ - મદીના'
-            },
-            {
-                url: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=2070',
-                caption: 'Prayer at Masjid al-Haram',
-                captionGu: 'મસ્જિદ અલ-હરમમાં નમાજ'
-            }
+            { url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070', caption: 'Masjid al-Haram - Makkah', captionGu: 'મસ્જિદ અલ-હરમ - મક્કા' },
+            { url: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=2070', caption: 'Masjid an-Nabawi - Madinah', captionGu: 'મસ્જિદ અન-નબવી - મદીના' },
+            { url: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=2070', caption: 'Kaaba - The Holy Sanctuary', captionGu: 'કાબા - પવિત્ર દરગાહ' },
+            { url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070', caption: 'Tawaf Around Kaaba', captionGu: 'કાબાની આસપાસ તવાફ' },
+            { url: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=2070', caption: 'Green Dome - Madinah', captionGu: 'લીલો ગુંબજ - મદીના' },
+            { url: 'https://images.unsplash.com/photo-1542816417-0983c9c9ad53?q=80&w=2070', caption: 'Prayer at Masjid al-Haram', captionGu: 'મસ્જિદ અલ-હરમમાં નમાજ' }
         ];
 
         function loadGallery() {
-            const galleryGrid = document.getElementById('galleryGrid');
-            galleryGrid.innerHTML = galleryImages.map((img, index) => `
-                <div class="gallery-item" onclick="openModal(${index})">
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = galleryImages.map((img, i) => `
+                <div class="gallery-item" onclick="openModal(${i})">
                     <img src="${img.url}" alt="${img.caption}" loading="lazy">
                     <div class="gallery-caption" data-en="${img.caption}" data-gu="${img.captionGu}">${img.caption}</div>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
-        // Modal functions
-        function openModal(index) {
+        window.openModal = (index) => {
             const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
-            const modalCaption = document.getElementById('modalCaption');
-            const currentLang = document.getElementById('langToggle').textContent === 'English' ? 'gu' : 'en';
-            
+            document.getElementById('modalImage').src = galleryImages[index].url;
+            document.getElementById('modalCaption').textContent = 
+                (document.getElementById('langToggle').textContent === 'English' ? galleryImages[index].captionGu : galleryImages[index].caption);
             modal.style.display = 'block';
-            modalImg.src = galleryImages[index].url;
-            modalCaption.textContent = currentLang === 'en' ? galleryImages[index].caption : galleryImages[index].captionGu;
-        }
+        };
 
-        // Close modal when clicking on X
-        document.querySelector('.close-modal').addEventListener('click', () => {
-            document.getElementById('imageModal').style.display = 'none';
-        });
+        document.querySelector('.close-modal').addEventListener('click', () => document.getElementById('imageModal').style.display = 'none');
+        window.addEventListener('click', (e) => { if(e.target === document.getElementById('imageModal')) document.getElementById('imageModal').style.display = 'none'; });
 
-        // Close modal when clicking outside the image
-        window.addEventListener('click', (e) => {
-            const modal = document.getElementById('imageModal');
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
-        // Load gallery on page load
-        window.addEventListener('load', () => {
-            loadGallery();
-        });
+        window.addEventListener('load', loadGallery);
     </script>
 </body>
 </html>
