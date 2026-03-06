@@ -203,7 +203,7 @@
 
         /* footer */
         footer { padding: 30px 3%; text-align: center; font-size: clamp(0.7rem, 3vw, 0.9rem); }
-        footer i { font-size: clamp(1.2rem, 5vw, 2rem); margin: 0 5px; }
+        footer i { font-size: clamp(1.2rem, 5vw, 2rem); margin: 0 5px;}
 
         /* whatsapp & scroll-top */
         .whatsapp-float, .scroll-top {
@@ -239,6 +239,57 @@
             .nav-links.active { display: flex; }
             .menu-btn { display: block; }
         }
+
+        .faq-item { border-bottom: 1px solid var(--secondary); margin-bottom: 10px; }
+        .faq-question { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 20px; cursor: pointer; font-weight: 600; color: var(--primary);
+        }
+        .faq-answer { 
+            max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; 
+            padding: 0 20px; color: #666; font-size: 0.95rem;
+        }
+        .faq-item.active .faq-answer { max-height: 150px; padding-bottom: 20px; }
+        .faq-item.active i { transform: rotate(45deg); color: var(--secondary); }
+
+        /* --- Parallax Specific Styles --- */
+.hero {
+    position: relative;
+    overflow: hidden;
+    background: #064e3b; /* Fallback color */
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 120%; /* Extra height allows room for downward movement */
+    background: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070') center/cover no-repeat;
+    z-index: 0;
+    will-change: transform; /* Optimizes performance for the browser */
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Darkens the image for text readability */
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10; /* Ensures text stays above the moving background */
+}
+
+.morph-shape {
+    z-index: 2; /* Sits between image and text */
+}
+
+        
     </style>
 </head>
 <body>
@@ -260,15 +311,16 @@
     </nav>
 
     <header class="hero" id="home">
-        <div class="morph-shape"></div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 data-en="WELCOME TO" data-gu="સ્વાગત છે">WELCOME TO</h1>
-            <h1 id="typing-logo" style="min-height:1.2em;"></h1> 
-            <p data-en="Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010." data-gu="2010 થી વિશ્વાસ, આરામ અને માર્ગદર્શન સાથે આધ્યાત્મિક રીતે સમૃદ્ધ હજ અને ઉમરાહ સેવાઓ.">Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010.</p>
-            <a href="#packages" class="btn-3d" data-en="Explore Packages" data-gu="પેકેજો જુઓ">Explore Packages</a>
-        </div>
-    </header>
+    <div class="hero-bg" id="parallax-bg"></div>
+    
+    <div class="morph-shape"></div>
+    <div class="hero-overlay"></div> <div class="hero-content">
+        <h1 data-en="WELCOME TO" data-gu="સ્વાગત છે">WELCOME TO</h1>
+        <h1 id="typing-logo" style="min-height:1.2em;"></h1> 
+        <p data-en="Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010." data-gu="2010 થી વિશ્વાસ, આરામ અને માર્ગદર્શન સાથે આધ્યાત્મિક રીતે સમૃદ્ધ હજ અને ઉમરાહ સેવાઓ.">Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010.</p>
+        <a href="#packages" class="btn-3d" data-en="Explore Packages" data-gu="પેકેજો જુઓ">Explore Packages</a>
+    </div>
+</header>
 
     <section class="section-padding reveal" id="about">
         <h2 class="section-title" data-en="Why Choose AL-NOOR?" data-gu="શા માટે AL-NOOR પસંદ કરો?">Why Choose AL-NOOR?</h2>
@@ -341,6 +393,36 @@
         <div class="modal-caption" id="modalCaption"></div>
     </div>
 
+    <section class="section-padding reveal" id="faq">
+    <h2 class="section-title" data-en="Frequently Asked Questions" data-gu="વારંવાર પૂછાતા પ્રશ્નો">Frequently Asked Questions</h2>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span data-en="What documents are required for Umrah?" data-gu="ઉમરાહ માટે કયા દસ્તાવેજો જરૂરી છે?">What documents are required for Umrah?</span>
+                <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-answer">
+                <p data-en="You will need a valid passport (6 months), vaccination certificates, and passport-sized photos." 
+                   data-gu="તમારે માન્ય પાસપોર્ટ (6 મહિના), રસીકરણ પ્રમાણપત્રો અને પાસપોર્ટ સાઇઝના ફોટાની જરૂર પડશે.">
+                   You will need a valid passport (6 months), vaccination certificates, and passport-sized photos.
+                </p>
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <span data-en="Is laundry service included in the packages?" data-gu="શું પેકેજોમાં લોન્ડ્રી સેવા શામેલ છે?">Is laundry service included in the packages?</span>
+                <i class="fas fa-plus"></i>
+            </div>
+            <div class="faq-answer">
+                <p data-en="Yes, our Deluxe and Semi-Deluxe packages include complimentary laundry services." 
+                   data-gu="હા, અમારા ડિલક્સ અને સેમી-ડિલક્સ પેકેજોમાં મફત લોન્ડ્રી સેવાઓનો સમાવેશ થાય છે.">
+                   Yes, our Deluxe and Semi-Deluxe packages include complimentary laundry services.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
     <section class="section-padding reveal" id="contact">
         <h2 class="section-title" data-en="Contact Us" data-gu="સંપર્ક કરો">Contact Us</h2>
         <div class="grid-container">
@@ -362,9 +444,8 @@
     <footer style="background: var(--primary); color: white;">
         <p data-en='"The pilgrims performing Hajj and Umrah are a delegation to Allah."' data-gu='"હજ અને ઉમરાહ કરનાર યાત્રીઓ અલ્લાહના પ્રતિનિધિ છે."'>"The pilgrims performing Hajj and Umrah are a delegation to Allah."</p>
         <div style="margin: 15px 0;">
-            <i class="fab fa-facebook fa-2x"></i>
-            <i class="fab fa-instagram fa-2x"></i>
-            <i class="fab fa-twitter fa-2x"></i>
+            <a href="https://www.facebook.com/"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="https://www.instagram.com/"><i class="fab fa-instagram fa-2x"></i></a>
         </div>
         <p data-en="&copy; 2026 AL-NOOR Tours & Travel. All rights reserved." data-gu="&copy; 2026 AL-NOOR ટૂર્સ એન્ડ ટ્રાવેલ.">&copy; 2026 AL-NOOR Tours & Travel. All rights reserved.</p>
     </footer>
@@ -455,6 +536,25 @@
         window.addEventListener('click', (e) => { if(e.target === document.getElementById('imageModal')) document.getElementById('imageModal').style.display = 'none'; });
 
         window.addEventListener('load', loadGallery);
+
+        // FAQ Toggle Function
+function toggleFAQ(element) {
+    const item = element.parentElement;
+    item.classList.toggle('active');
+}
+
+// Parallax Scroll Effect
+window.addEventListener('scroll', () => {
+    const scrollValue = window.scrollY;
+    const parallaxBg = document.getElementById('parallax-bg');
+    
+    // Only animate if the hero is visible (performance check)
+    if (scrollValue < window.innerHeight) {
+        // Move the background down slightly as user scrolls down
+        // Adjust 0.3 to change the intensity (higher = faster)
+        parallaxBg.style.transform = `translateY(${scrollValue * 0.3}px)`;
+    }
+});
     </script>
 </body>
 </html>
