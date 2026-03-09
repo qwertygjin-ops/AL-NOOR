@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>AL-NOOR TOURS & TRAVELS | Contact</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Reset & Base */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    h1, .logo { font-family: 'Cinzel', serif; }
+
+    :root {
+        --primary: #064e3b;
+        --secondary: #d4af37;
+        --accent: #0f172a;
+        --white: #ffffff;
+    }
+
+    body {
+      min-height: 100vh;
+      width: 100%;
+      background: #faf7f2;
+      background: linear-gradient(135deg, #fdfbf7 0%, #faf7f2 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 80px; /* Space for fixed navbar */
+      position: relative;
+      overflow-x: hidden;
+      color: #2e2a24;
+    }
+
+    /* ----- NAVBAR FROM INDEX ----- */
+    nav {
+        position: fixed; width: 100%; top: 0; z-index: 1000; padding: 12px 3%;
+        display: flex; justify-content: space-between; align-items: center;
+        background: var(--primary); backdrop-filter: blur(10px);
+    }
+    .logo { color: var(--secondary); font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+    .nav-links { display: flex; list-style: none; gap: 20px; }
+    .nav-links a { color: var(--white); text-decoration: none; font-size: 0.9rem; }
+    .nav-actions { display: flex; align-items: center; gap: 15px; }
+    .menu-btn { display: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
+
+    @media (max-width: 768px) {
+        .nav-links { display: none; }
+        .menu-btn { display: block; }
+    }
+
+    /* Floating Morph Backgrounds */
+    .blob {
+      position: absolute;
+      background: rgba(74, 93, 180, 0.05);
+      backdrop-filter: blur(40px);
+      border-radius: 62% 38% 42% 58% / 37% 53% 47% 63%;
+      animation: floatMorph 14s infinite alternate ease-in-out;
+      z-index: 0;
+    }
+    .blob-1 { width: 250px; height: 250px; top: 10%; left: -50px; }
+    .blob-2 { width: 300px; height: 300px; bottom: 5%; right: -50px; }
+
+    @keyframes floatMorph {
+      0% { transform: translate(0, 0) rotate(0deg); }
+      100% { transform: translate(20px, 40px) rotate(10deg); }
+    }
+
+    /* Main Card - Compact Size */
+    .contact-card {
+      position: relative;
+      z-index: 10;
+      width: 95%;
+      max-width: 450px; /* Reduced width */
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 1.5rem; /* Reduced padding */
+      border: 1px solid rgba(71, 150, 196, 0.15);
+      box-shadow: 0 15px 35px -15px rgba(74, 102, 180, 0.15);
+    }
+
+    .brand { text-align: center; margin-bottom: 1rem; }
+    .brand-icon { color: #4a5db4; font-size: 1.8rem; margin-bottom: 0.2rem; }
+    .brand-text h1 { font-size: 1.4rem; letter-spacing: 1px; color: #292524; }
+    .brand-text p { font-size: 0.75rem; color: #78716c; letter-spacing: 1px; }
+
+    .gold-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(74, 93, 180, 0.3) 20%, rgba(74, 93, 180, 0.3) 80%, transparent);
+      width: 100%;
+      margin: 1rem 0;
+    }
+
+    /* Compact Form */
+    .request-form { display: flex; flex-direction: column; gap: 0.8rem; }
+    .input-group label { font-size: 0.75rem; font-weight: 500; color: #57534e; margin-bottom: 0.2rem; display: block; text-transform: uppercase; }
+    .input-field {
+      width: 100%;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid rgba(71, 150, 196, 0.2);
+      border-radius: 6px;
+      background: #faf7f2;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .submit-btn {
+      margin-top: 0.5rem;
+      background: #4a5db4;
+      border: 1px solid #4a5db4;
+      color: #ffffff;
+      padding: 0.8rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-transform: uppercase;
+      border-radius: 4px;
+      transition: 0.3s;
+    }
+
+    .contact-info {
+      margin-top: 1.2rem;
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.7rem;
+      color: #78716c;
+    }
+
+    #langToggle {
+      background: transparent; border: 1px solid var(--secondary); color: var(--white);
+      padding: 4px 10px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="index.html" class="logo">AL-NOOR</a>
+        <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#packages">Packages</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button id="langToggle">ગુજરાતી</button>
+            <i class="fas fa-bars menu-btn"></i>
+        </div>
+    </nav>
+
+  <div class="floating-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <div class="contact-card">
+    <div class="brand">
+      <div class="brand-icon"><i class="ri-goblet-line"></i></div>
+      <div class="brand-text">
+        <h1 id="brandTitle">AL-NOOR</h1>
+        <p id="brandTagline">TOURS & TRAVELS</p>
+      </div>
+    </div>
+
+    <div class="gold-divider"></div>
+
+    <form class="request-form" id="contactForm">
+      <div class="input-group">
+        <label id="nameLabel">Full Name</label>
+        <input type="text" id="name" class="input-field" placeholder="e.g. Rahul / Mohammed" required>
+      </div>
+
+      <div class="input-group">
+        <label id="mobileLabel">WhatsApp Number</label>
+        <input type="tel" id="mobile" class="input-field" placeholder="+91 98765 43210" required>
+      </div>
+
+      <div class="input-group">
+        <label id="cityLabel">Current City</label>
+        <input type="text" id="city" class="input-field" placeholder="Mumbai, Surat, etc." required>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">Request Callback</button>
+    </form>
+
+    <div class="contact-info">
+      <div><i class="ri-phone-line"></i> <span id="phoneText">+91 987 654 3210</span></div>
+      <div><i class="ri-mail-open-line"></i> <span id="emailText">info@alnoor.travel</span></div>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        btn: 'ગુજરાતી', title: 'AL-NOOR', tag: 'TOURS & TRAVELS',
+        name: 'Full Name', mobile: 'WhatsApp Number', city: 'Current City',
+        submit: 'Request Callback'
+      },
+      gu: {
+        btn: 'English', title: 'અલ-નૂર', tag: 'ટૂર્સ એન્ડ ટ્રાવેલ્સ',
+        name: 'તમારું નામ', mobile: 'મોબાઇલ નંબર', city: 'તમારું શહેર',
+        submit: 'અરજી મોકલો'
+      }
+    };
+
+    let currentLang = 'en';
+    const langToggle = document.getElementById('langToggle');
+
+    langToggle.addEventListener('click', () => {
+      currentLang = currentLang === 'en' ? 'gu' : 'en';
+      const t = translations[currentLang];
+      langToggle.innerText = t.btn;
+      document.getElementById('brandTitle').innerText = t.title;
+      document.getElementById('brandTagline').innerText = t.tag;
+      document.getElementById('nameLabel').innerText = t.name;
+      document.getElementById('mobileLabel').innerText = t.mobile;
+      document.getElementById('cityLabel').innerText = t.city;
+      document.getElementById('submitBtn').innerText = t.submit;
+    });
+  </script>
+</body>
+</html>
