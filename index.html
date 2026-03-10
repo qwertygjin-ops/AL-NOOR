@@ -49,13 +49,6 @@
             --gold-divider-mid: #c49747;
             --transition: all 0.3s ease;
         }
-        [data-theme="dark"] {  /* keep dark mode toggle but adapt to theme */
-            --soft-cream: #1e1b1b;
-            --deep-warm: #f0e9e0;
-            --pure-white: #2a2722;
-            --stone-light: #a8a29e;
-            --sage-bg-light: rgba(74, 102, 180, 0.15);
-        }
 
         /* ----- TYPOGRAPHY ADAPT ----- */
         @media (max-width: 200px) {
@@ -107,8 +100,9 @@
         .menu-btn { display: none; color: var(--deep-warm); font-size: 1.5rem; cursor: pointer; }
 
         .nav-actions {
-            display: flex; align-items: center; gap: clamp(5px, 2vw, 15px); 
-            flex-wrap: wrap; justify-content: flex-end;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
 
         /* ----- BUTTONS / TOGGLES (golden minimalist) ----- */
@@ -119,8 +113,6 @@
             white-space: nowrap;
         }
         .lang-toggle:hover { background: var(--primary-sage); color: white; }
-
-        .theme-toggle { cursor: pointer; color: var(--primary-sage); font-size: clamp(1rem, 4vw, 1.3rem); }
 
         /* ----- HERO (background unchanged as requested) ----- */
         .hero {
@@ -547,7 +539,6 @@
         </ul>
         <div class="nav-actions">
             <button id="langToggle" class="lang-toggle">ગુજરાતી</button>
-            <i class="fas fa-moon theme-toggle" id="theme-btn"></i>
             <i class="fas fa-bars menu-btn" onclick="toggleMenu()"></i>
         </div>
     </nav>
@@ -748,17 +739,6 @@
             });
         }
         window.addEventListener("scroll", reveal); reveal();
-
-        const themeBtn = document.getElementById('theme-btn');
-        themeBtn.addEventListener('click', () => {
-            if(document.body.getAttribute('data-theme') === 'dark') {
-                document.body.removeAttribute('data-theme');
-                themeBtn.classList.replace('fa-sun', 'fa-moon');
-            } else {
-                document.body.setAttribute('data-theme', 'dark');
-                themeBtn.classList.replace('fa-moon', 'fa-sun');
-            }
-        });
 
         const text = "AL-NOOR TOURS AND TRAVELS";
         const typingElement = document.getElementById('typing-logo');
