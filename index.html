@@ -1,45 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>AL-NOOR | Hajj & Umrah Excellence</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Fonts & Icons (expanded libraries) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Multiple icon libraries per spec -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.263.1/font/lucide.css">
+    <!-- Animation libraries (AOS, Animate, GSAP, Typed) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
-        /* ----- RESET & VARIABLES ----- */
+        /* ----- RESET & VARIABLES (NEW THEME: golden minimalist) ----- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { 
-            font-family: 'Poppins', sans-serif; 
-            background: var(--white); 
-            color: var(--accent); 
+            font-family: 'Inter', sans-serif; 
+            background: #faf7f2;  /* soft cream background */
+            color: #2e2a24;        /* deep warm text */
             overflow-x: hidden; 
             width: 100%; 
-            min-width: 100px; /* withstand extreme small width */
+            min-width: 100px;
             word-wrap: break-word;
+            font-weight: 400;
         }
-        h1, h2, .logo { font-family: 'Cinzel', serif; }
+        h1, h2, h3, .logo { font-family: 'Inter', sans-serif; font-weight: 300; color: #2e2a24; }
+        /* accent headings use medium weight & sage */
+        .section-title, .card h3, .logo span { color: #4a5db4; font-weight: 500; }
 
         :root {
-            --primary: #064e3b; /* Emerald */
-            --secondary: #d4af37; /* Gold */
-            --accent: #0f172a; /* Midnight Blue */
-            --white: #ffffff;
-            --glass: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.2);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --primary-sage: #4a5db4;        /* primary accent (sage gold) */
+            --soft-cream: #faf7f2;
+            --deep-warm: #2e2a24;
+            --pure-white: #ffffff;
+            --stone-light: #78716c;
+            --stone-medium: #57534e;
+            --stone-dark: #292524;
+            --amber-light: #fcd34d;
+            --sage-bg-light: rgba(71, 104, 196, 0.05);
+            --sage-border: rgba(71, 150, 196, 0.2);
+            --sage-shadow: rgba(74, 102, 180, 0.3);
+            --gold-divider-start: transparent;
+            --gold-divider-mid: #c49747;
+            --transition: all 0.3s ease;
         }
-        [data-theme="dark"] {
-            --white: #0f172a;
-            --accent: #f8fafc;
-            --glass: rgba(15, 23, 42, 0.7);
+        [data-theme="dark"] {  /* keep dark mode toggle but adapt to theme */
+            --soft-cream: #1e1b1b;
+            --deep-warm: #f0e9e0;
+            --pure-white: #2a2722;
+            --stone-light: #a8a29e;
+            --sage-bg-light: rgba(74, 102, 180, 0.15);
         }
 
-        /* ----- TYPOGRAPHY ADAPT (extreme small) ----- */
+        /* ----- TYPOGRAPHY ADAPT ----- */
         @media (max-width: 200px) {
             h1 { font-size: 1.4rem !important; }
             h2 { font-size: 1.3rem !important; }
@@ -47,53 +65,68 @@
             body { font-size: 0.8rem; }
         }
 
-        /* ----- NAVBAR (fully collapsible) ----- */
+        /* ----- NAVBAR (updated) ----- */
         nav {
             position: fixed; width: 100%; top: 0; z-index: 1000; padding: 12px 3%;
             display: flex; justify-content: space-between; align-items: center;
             transition: 0.5s; backdrop-filter: blur(0px);
             flex-wrap: wrap; gap: 5px;
+            background: transparent;
         }
-        nav.scrolled { background: var(--primary); padding: 8px 3%; backdrop-filter: blur(10px); }
-        .logo { color: var(--secondary); font-size: clamp(1.2rem, 5vw, 1.8rem); font-weight: bold; text-decoration: none; }
+        nav.scrolled { 
+            background: var(--pure-white); 
+            padding: 8px 3%; 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px var(--sage-shadow);
+        }
+        .logo { 
+            color: var(--deep-warm); 
+            font-size: clamp(1.2rem, 5vw, 1.8rem); 
+            font-weight: 300; 
+            text-decoration: none;
+        }
+        .logo span { color: var(--primary-sage); font-weight: 500; }
         .nav-links { 
             display: flex; list-style: none; gap: clamp(10px, 2vw, 30px); 
             flex-wrap: wrap; 
         }
         .nav-links a { 
-            color: var(--white); text-decoration: none; font-weight: 500; 
+            color: var(--deep-warm); 
+            text-decoration: none; 
+            font-weight: 400; 
             font-size: clamp(0.7rem, 3vw, 1rem); 
             white-space: nowrap;
+            position: relative;
         }
         .nav-links a::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
-            background: var(--secondary); transition: 0.3s;
+            content: ''; position: absolute; width: 0; height: 1px; bottom: -5px; left: 0;
+            background: var(--primary-sage); transition: 0.3s;
         }
         .nav-links a:hover::after { width: 100%; }
-        .menu-btn { display: none; color: var(--white); font-size: 1.5rem; cursor: pointer; }
+        .nav-links a:hover { color: var(--primary-sage); }
+        .menu-btn { display: none; color: var(--deep-warm); font-size: 1.5rem; cursor: pointer; }
 
-        /* nav group */
         .nav-actions {
             display: flex; align-items: center; gap: clamp(5px, 2vw, 15px); 
             flex-wrap: wrap; justify-content: flex-end;
         }
 
-        /* ----- BUTTONS / TOGGLES tiny friendly ----- */
+        /* ----- BUTTONS / TOGGLES (golden minimalist) ----- */
         .lang-toggle {
-            background: transparent; border: 2px solid var(--secondary); color: var(--white);
-            padding: 5px 8px; border-radius: 20px; cursor: pointer; font-weight: bold;
+            background: transparent; border: 1px solid var(--primary-sage); color: var(--primary-sage);
+            padding: 5px 12px; border-radius: 30px; cursor: pointer; font-weight: 500;
             transition: var(--transition); font-size: clamp(0.7rem, 3vw, 0.9rem);
             white-space: nowrap;
         }
-        .lang-toggle:hover { background: var(--secondary); color: var(--accent); }
+        .lang-toggle:hover { background: var(--primary-sage); color: white; }
 
-        .theme-toggle { cursor: pointer; color: var(--secondary); font-size: clamp(1rem, 4vw, 1.3rem); }
+        .theme-toggle { cursor: pointer; color: var(--primary-sage); font-size: clamp(1rem, 4vw, 1.3rem); }
 
-        /* ----- HERO (tiny safe) with divine fade animation ----- */
+        /* ----- HERO (background unchanged as requested) ----- */
         .hero {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
             text-align: center; color: white; position: relative; overflow: hidden;
-            background: linear-gradient(45deg, #064e3b, #0f172a);
+            background: linear-gradient(45deg, #064e3b, #0f172a);  /* unchanged */
             width: 100%;
         }
         .hero-overlay {
@@ -103,7 +136,7 @@
         }
         .morph-shape {
             position: absolute; width: min(300px, 70vw); height: min(300px, 70vw); 
-            background: var(--secondary); filter: blur(60px); opacity: 0.3; z-index: 1; 
+            background: var(--primary-sage); filter: blur(60px); opacity: 0.3; z-index: 1; 
             border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
             animation: morphing 15s infinite alternate;
         }
@@ -113,15 +146,14 @@
         }
         .hero-content { z-index: 10; padding: 15px; max-width: 100%; }
 
-        /* ----- DIVINE FADE-IN ANIMATION FOR HERO TEXT (added) ----- */
         .hero-content > * {
             opacity: 0;
             animation: divineFadeInUp 1.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
-        .hero-content > h1:first-child { animation-delay: 0.2s; }      /* "WELCOME TO" */
-        .hero-content > h1:nth-child(2) { animation-delay: 0.6s; }     /* typing logo */
-        .hero-content > p { animation-delay: 1.0s; }                   /* description */
-        .hero-content > .btn-3d { animation-delay: 1.4s; }             /* button */
+        .hero-content > h1:first-child { animation-delay: 0.2s; }
+        .hero-content > h1:nth-child(2) { animation-delay: 0.6s; }
+        .hero-content > p { animation-delay: 1.0s; }
+        .hero-content > .btn-3d { animation-delay: 1.4s; }
 
         @keyframes divineFadeInUp {
             0% { opacity: 0; transform: translateY(18px); filter: blur(2px); }
@@ -129,44 +161,172 @@
         }
 
         .hero h1 { font-size: clamp(1.8rem, 8vw, 4rem); margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
-        .hero p { font-size: clamp(0.9rem, 4vw, 1.2rem); margin-bottom: 20px; max-width: 600px; margin-inline: auto; padding: 0 5px; }
+        .hero p { font-size: clamp(0.9rem, 4vw, 1.2rem); margin-bottom: 20px; max-width: 600px; margin-inline: auto; padding: 0 5px; color: white; }
 
-        /* 3d button adaptive */
+        /* Button style updated to theme */
         .btn-3d {
-            padding: 12px clamp(15px, 5vw, 40px); font-size: clamp(0.8rem, 4vw, 1.1rem); 
-            background: var(--secondary); color: var(--accent); border: none; border-radius: 50px; 
-            cursor: pointer; box-shadow: 0 6px 0 #b08d2b; transition: 0.2s; 
-            text-decoration: none; font-weight: bold; display: inline-block;
+            padding: 12px clamp(15px, 5vw, 40px); 
+            font-size: clamp(0.8rem, 4vw, 1.1rem); 
+            background: transparent; 
+            color: var(--primary-sage); 
+            border: 1px solid var(--primary-sage); 
+            border-radius: 50px; 
+            cursor: pointer; 
+            box-shadow: 0 4px 10px var(--sage-shadow); 
+            transition: 0.2s; 
+            text-decoration: none; 
+            font-weight: 500; 
+            display: inline-block;
             white-space: nowrap;
         }
-        .btn-3d:hover { transform: translateY(2px); box-shadow: 0 4px 0 #b08d2b; }
-        .btn-3d:active { transform: translateY(6px); box-shadow: 0 0 0 #b08d2b; }
+        .btn-3d:hover { 
+            background: var(--primary-sage); 
+            color: white; 
+            box-shadow: 0 8px 20px var(--sage-shadow); 
+            transform: translateY(-2px); 
+        }
+        .btn-3d:active { transform: translateY(2px); box-shadow: 0 2px 5px var(--sage-shadow); }
 
-        /* sections */
         .section-padding { padding: clamp(40px, 8vh, 80px) 3%; }
-        .section-title { text-align: center; margin-bottom: 30px; font-size: clamp(1.6rem, 6vw, 2.5rem); }
+        .section-title { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            font-size: clamp(1.6rem, 6vw, 2.5rem); 
+            color: var(--stone-dark); 
+            font-weight: 300;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-divider-mid) 20%, var(--gold-divider-mid) 80%, transparent);
+            margin: 12px auto 0;
+        }
 
-        /* grid -> always 1 column at extreme narrow, but auto-fit with min 180px */
         .grid-container {
             display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); 
-            gap: 20px; 
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); 
+            gap: 2rem; 
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        /* cards */
+        /* Card theme: white with soft border/shadow */
         .card {
-            background: var(--glass); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); 
-            border-radius: 20px; padding: 25px 15px; text-align: center; transition: var(--transition);
-            overflow: hidden; width: 100%;
+            background: var(--pure-white); 
+            border: 1px solid var(--sage-border); 
+            border-radius: 20px; 
+            padding: 1.5rem; 
+            text-align: center; 
+            transition: var(--transition);
+            overflow: hidden; 
+            width: 100%;
+            box-shadow: 0 10px 30px -15px var(--sage-shadow);
+            color: var(--deep-warm);
         }
-        .card:hover { transform: translateY(-8px) scale(1.01); border-color: var(--secondary); }
-        .card h3 { color: var(--secondary); margin-bottom: 12px; font-size: clamp(1.1rem, 5vw, 1.5rem); }
-        .price { font-size: clamp(1.8rem, 7vw, 2.5rem); margin: 15px 0; display: block; }
-        .card ul { list-style: none; margin: 15px 0; text-align: left; line-height: 1.8; padding-left: 5px; }
-        .card ul li i { color: var(--secondary); margin-right: 8px; width: 20px; }
-        .card ul li { font-size: clamp(0.8rem, 3.5vw, 1rem); }
+        .card:hover { 
+            transform: translateY(-6px) scale(1.01); 
+            border-color: var(--primary-sage); 
+            box-shadow: 0 25px 40px -20px rgba(180, 140, 74, 0.4);
+        }
+        .card h3 { 
+            color: var(--stone-dark); 
+            font-weight: 500; 
+            margin-bottom: 8px; 
+            font-size: clamp(1.3rem, 5vw, 1.8rem); 
+        }
+        
+        /* Package card specific styling for new Umrah design */
+        .package-subtitle {
+            font-size: 0.9rem;
+            color: var(--stone-light);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+        
+        .package-tagline {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: var(--deep-warm);
+            margin: 0.5rem 0;
+        }
+        
+        .price-range {
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            margin: 10px 0;
+            display: block;
+            color: var(--primary-sage);
+            font-weight: 500;
+        }
+        
+        .package-badge {
+            background: var(--sage-bg-light);
+            border: 1px solid var(--sage-border);
+            border-radius: 30px;
+            padding: 0.3rem 1rem;
+            display: inline-block;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--primary-sage);
+            font-weight: 500;
+        }
+        
+        .distance-info {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            color: var(--stone-medium);
+            border-bottom: 1px solid var(--sage-border);
+            border-top: 1px solid var(--sage-border);
+            padding: 0.8rem 0;
+        }
+        
+        .distance-info i {
+            color: var(--primary-sage);
+            margin-right: 5px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: var(--stone-light);
+        }
+        
+        .feature-item i {
+            color: var(--primary-sage);
+            width: 20px;
+        }
+        
+        .guide-info {
+            font-size: 0.9rem;
+            color: var(--stone-medium);
+            margin: 0.5rem 0 1rem;
+            font-style: italic;
+        }
+        
+        .badge-theme {
+            background: rgba(71, 136, 196, 0.1);
+            border: 1px solid rgba(71, 79, 196, 0.2);
+            color: var(--primary-sage);
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            display: inline-block;
+        }
 
-        /* gallery grid */
         .gallery-grid {
             display: grid; 
             grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr)); 
@@ -174,55 +334,66 @@
         }
         .gallery-item {
             position: relative; border-radius: 15px; overflow: hidden; cursor: pointer;
-            height: 200px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: var(--transition);
+            height: 200px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); transition: var(--transition);
+            border: 1px solid var(--sage-border);
         }
-        .gallery-item:hover { transform: scale(1.02); }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .gallery-item:hover { transform: scale(1.02); box-shadow: 0 20px 30px var(--sage-shadow); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s ease; }
+        .gallery-item:hover img { transform: scale(1.05); }
         .gallery-caption {
-            position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.8));
-            color: white; padding: 15px 5px; text-align: center; font-weight: bold; 
+            position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7));
+            color: white; padding: 15px 5px; text-align: center; font-weight: 500; 
             transform: translateY(100%); transition: 0.3s; font-size: clamp(0.7rem, 3vw, 1rem);
         }
         .gallery-item:hover .gallery-caption { transform: translateY(0); }
 
-        /* modal */
         .modal {
             display: none; position: fixed; z-index: 2000; padding: 20px 5px; left: 0; top: 0;
             width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); backdrop-filter: blur(8px);
         }
         .modal-content {
             margin: auto; display: block; max-width: 95%; max-height: 80%; border-radius: 10px;
-            border: 3px solid var(--secondary); object-fit: contain;
+            border: 3px solid var(--primary-sage); object-fit: contain;
         }
         .close-modal {
-            position: absolute; top: 5px; right: 20px; color: var(--secondary); font-size: 35px; cursor: pointer;
+            position: absolute; top: 5px; right: 20px; color: var(--primary-sage); font-size: 35px; cursor: pointer;
         }
         .modal-caption { color: #fff; text-align: center; padding: 15px 5px; font-size: 1rem; }
 
-        /* contact form */
-        input, textarea { width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: clamp(0.8rem, 3.5vw, 1rem); }
+        /* form inputs updated */
+        input, textarea { 
+            width: 100%; padding: 12px; margin-bottom: 15px; border-radius: 8px; 
+            border: 1px solid var(--sage-border); 
+            font-size: clamp(0.8rem, 3.5vw, 1rem);
+            background: var(--pure-white);
+            color: var(--deep-warm);
+        }
+        input:focus, textarea:focus { outline: 1px solid var(--primary-sage); }
 
-        /* footer */
-        footer { padding: 30px 3%; text-align: center; font-size: clamp(0.7rem, 3vw, 0.9rem); }
-        footer i { font-size: clamp(1.2rem, 5vw, 2rem); margin: 0 5px;}
+        footer { 
+            padding: 30px 3%; text-align: center; 
+            font-size: clamp(0.7rem, 3vw, 0.9rem);
+            background: var(--pure-white); 
+            color: var(--stone-light);
+            border-top: 1px solid var(--sage-border);
+        }
+        footer i { font-size: clamp(1.2rem, 5vw, 2rem); margin: 0 5px; color: var(--primary-sage); }
 
-        /* whatsapp & scroll-top */
         .whatsapp-float, .scroll-top {
-            position: fixed; right: 15px; bottom: 20px; background: #25d366; width: 45px; height: 45px;
+            position: fixed; right: 15px; bottom: 20px; background: var(--primary-sage); width: 45px; height: 45px;
             border-radius: 50%; display: flex; align-items: center; justify-content: center; 
             font-size: 24px; color: white; z-index: 1000; text-decoration: none;
+            box-shadow: 0 4px 12px var(--sage-shadow);
         }
-        .scroll-top { left: 15px; right: auto; background: var(--secondary); width: 40px; height: 40px; font-size: 20px; }
+        .scroll-top { left: 15px; right: auto; background: var(--primary-sage); width: 40px; height: 40px; font-size: 20px; }
 
-        /* utility */
-        .reveal { opacity: 0; transform: translateY(20px); transition: 1s ease; }
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         #typing-logo::after { content: '|'; animation: blink 0.7s infinite; margin-left: 3px; }
 
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-        /* extreme narrow override (100px width support) */
         @media (max-width: 150px) {
             .nav-links { flex-direction: column; width: 100%; align-items: center; }
             .nav-actions { justify-content: center; }
@@ -231,72 +402,142 @@
             .gallery-item { height: 150px; }
         }
 
-        /* mobile menu */
         @media (max-width: 600px) {
             .nav-links { 
                 display: none; flex-direction: column; position: absolute; top: 100%; left: 0; 
-                width: 100%; background: var(--primary); padding: 15px; gap: 12px;
+                width: 100%; background: var(--pure-white); padding: 15px; gap: 12px;
+                border-bottom: 1px solid var(--sage-border);
             }
             .nav-links.active { display: flex; }
             .menu-btn { display: block; }
         }
 
-        .faq-item { border-bottom: 1px solid var(--secondary); margin-bottom: 10px; }
+        .faq-item { 
+            border-bottom: 1px solid var(--sage-border); 
+            margin-bottom: 10px; 
+            background: var(--pure-white);
+            border-radius: 12px;
+            padding: 0 10px;
+        }
         .faq-question { 
             display: flex; justify-content: space-between; align-items: center; 
-            padding: 20px; cursor: pointer; font-weight: 600; color: var(--primary);
+            padding: 20px 10px; cursor: pointer; font-weight: 500; 
+            color: var(--stone-dark);
         }
         .faq-answer { 
             max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; 
-            padding: 0 20px; color: #666; font-size: 0.95rem;
+            padding: 0 10px; color: var(--stone-light); font-size: 0.95rem;
         }
         .faq-item.active .faq-answer { max-height: 150px; padding-bottom: 20px; }
-        .faq-item.active i { transform: rotate(45deg); color: var(--secondary); }
+        .faq-item.active i { transform: rotate(45deg); color: var(--primary-sage); }
 
-        /* --- Parallax Specific Styles --- */
-.hero {
-    position: relative;
-    overflow: hidden;
-    background: #064e3b; /* Fallback color */
-}
+        /* Keep hero background unchanged */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background: #064e3b;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070') center/cover no-repeat;
+            z-index: 0;
+            will-change: transform;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        .hero-content { position: relative; z-index: 10; }
+        .morph-shape { z-index: 2; }
 
-.hero-bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 120%; /* Extra height allows room for downward movement */
-    background: url('https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070') center/cover no-repeat;
-    z-index: 0;
-    will-change: transform; /* Optimizes performance for the browser */
-}
-
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* Darkens the image for text readability */
-    z-index: 1;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 10; /* Ensures text stays above the moving background */
-}
-
-.morph-shape {
-    z-index: 2; /* Sits between image and text */
-}
-
+        /* Gold divider class */
+        .gold-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-divider-mid) 20%, var(--gold-divider-mid) 80%, transparent);
+            width: 100%;
+            margin: 1rem 0;
+        }
         
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--pure-white);
+            border-radius: 20px;
+            border: 1px solid var(--sage-border);
+        }
+        
+        .cta-section p {
+            color: var(--stone-light);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-outline {
+            padding: 12px 30px;
+            border: 1px solid var(--primary-sage);
+            background: transparent;
+            color: var(--primary-sage);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-sage);
+            color: white;
+        }
+        
+        .btn-solid {
+            padding: 12px 30px;
+            border: 1px solid var(--primary-sage);
+            background: var(--primary-sage);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .btn-solid:hover {
+            background: transparent;
+            color: var(--primary-sage);
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            color: var(--primary-sage);
+            font-size: 1rem;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
     </style>
+    <!-- Additional animation scripts (AOS, GSAP) loaded but not used heavily to keep minimal -->
 </head>
 <body>
 
     <nav id="navbar">
-        <a href="#" class="logo">AL-NOOR</a>
+        <a href="#" class="logo"><span>AL</span>-NOOR</a>
         <ul class="nav-links">
             <li><a href="#home" data-en="Home" data-gu="હોમ">Home</a></li>
             <li><a href="#about" data-en="About" data-gu="અમારા વિશે">About</a></li>
@@ -312,73 +553,113 @@
     </nav>
 
     <header class="hero" id="home">
-    <div class="hero-bg" id="parallax-bg"></div>
-    
-    <div class="morph-shape"></div>
-    <div class="hero-overlay"></div> <div class="hero-content">
-        <h1 data-en="WELCOME TO" data-gu="સ્વાગત છે">WELCOME TO</h1>
-        <h1 id="typing-logo" style="min-height:1.2em;"></h1> 
-        <p data-en="Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010." data-gu="2010 થી વિશ્વાસ, આરામ અને માર્ગદર્શન સાથે આધ્યાત્મિક રીતે સમૃદ્ધ હજ અને ઉમરાહ સેવાઓ.">Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010.</p>
-        <a href="#packages" class="btn-3d" data-en="Explore Packages" data-gu="પેકેજો જુઓ">Explore Packages</a>
-    </div>
-</header>
+        <div class="hero-bg" id="parallax-bg"></div>
+        <div class="morph-shape"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 data-en="WELCOME TO" data-gu="સ્વાગત છે">WELCOME TO</h1>
+            <h1 id="typing-logo" style="min-height:1.2em;"></h1> 
+            <p data-en="Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010." data-gu="2010 થી વિશ્વાસ, આરામ અને માર્ગદર્શન સાથે આધ્યાત્મિક રીતે સમૃદ્ધ હજ અને ઉમરાહ સેવાઓ.">Providing spiritually enriching Hajj and Umrah services with trust, comfort, and guidance since 2010.</p>
+            <a href="#packages" class="btn-3d" data-en="Explore Packages" data-gu="પેકેજો જુઓ">Explore Packages</a>
+        </div>
+    </header>
 
     <section class="section-padding reveal" id="about">
         <h2 class="section-title" data-en="Why Choose AL-NOOR?" data-gu="શા માટે AL-NOOR પસંદ કરો?">Why Choose AL-NOOR?</h2>
         <div class="grid-container">
-            <div class="card" style="background: var(--white); color: #333;">
-                <i class="fas fa-mosque fa-3x" style="color: var(--primary); margin-bottom:15px;"></i>
+            <div class="card">
+                <i class="fas fa-mosque fa-3x" style="color: var(--primary-sage); margin-bottom:15px;"></i>
                 <h3 data-en="Spiritual Guidance" data-gu="આધ્યાત્મિક માર્ગદર્શન">Spiritual Guidance</h3>
-                <p data-en="Guided by scholars to ensure your rituals are performed according to the Sunnah." data-gu="વિદ્વાનો દ્વારા માર્ગદર્શન આપવામાં આવે છે જેથી તમારી વિધિઓ સુન્નત અનુસાર કરવામાં આવે.">Guided by scholars to ensure your rituals are performed according to the Sunnah.</p>
+                <p style="color: var(--stone-light);" data-en="Guided by scholars to ensure your rituals are performed according to the Sunnah." data-gu="વિદ્વાનો દ્વારા માર્ગદર્શન આપવામાં આવે છે જેથી તમારી વિધિઓ સુન્નત અનુસાર કરવામાં આવે.">Guided by scholars to ensure your rituals are performed according to the Sunnah.</p>
             </div>
-            <div class="card" style="background: var(--white); color: #333;">
-                <i class="fas fa-certificate fa-3x" style="color: var(--primary); margin-bottom:15px;"></i>
+            <div class="card">
+                <i class="fas fa-certificate fa-3x" style="color: var(--primary-sage); margin-bottom:15px;"></i>
                 <h3 data-en="Certified Agent" data-gu="પ્રમાણિત એજન્ટ">Certified Agent</h3>
-                <p><strong data-en="Aarif bhai Haji Noor Mohammad Bhai" data-gu="આરિફ ભાઈ હાજી નૂર મોહમ્મદ ભાઈ">Aarif bhai Haji Noor Mohammad Bhai</strong><br><span data-en="Certified Hajj Agent" data-gu="પ્રમાણિત હજ એજન્ટ">Certified Hajj Agent</span><br><span data-en="10+ Years of Experience" data-gu="10+ વર્ષનો અનુભવ">10+ Years of Experience</span></p>
+                <p><strong style="color: var(--stone-dark);">Aarif bhai Haji Noor Mohammad Bhai</strong><br><span class="badge-theme" data-en="Certified Hajj Agent" data-gu="પ્રમાણિત હજ એજન્ટ">Certified Hajj Agent</span><br><span style="color: var(--stone-light);" data-en="10+ Years of Experience" data-gu="10+ વર્ષનો અનુભવ">10+ Years of Experience</span></p>
             </div>
-            <div class="card" style="background: var(--white); color: #333;">
-                <i class="fas fa-handshake fa-3x" style="color: var(--primary); margin-bottom:15px;"></i>
+            <div class="card">
+                <i class="fas fa-handshake fa-3x" style="color: var(--primary-sage); margin-bottom:15px;"></i>
                 <h3 data-en="Reliable Support" data-gu="વિશ્વસનીય સમર્થન">Reliable Support</h3>
-                <p data-en="24/7 on-ground assistance in Mecca and Madina for all our pilgrims." data-gu="અમારા તમામ યાત્રીઓ માટે મક્કા અને મદીનામાં 24/7 ઓન-ગ્રાઉન્ડ સહાય.">24/7 on-ground assistance in Mecca and Madina for all our pilgrims.</p>
+                <p style="color: var(--stone-light);" data-en="24/7 on-ground assistance in Mecca and Madina for all our pilgrims." data-gu="અમારા તમામ યાત્રીઓ માટે મક્કા અને મદીનામાં 24/7 ઓન-ગ્રાઉન્ડ સહાય.">24/7 on-ground assistance in Mecca and Madina for all our pilgrims.</p>
             </div>
         </div>
     </section>
 
-    <section class="section-padding reveal" id="packages" style="background: var(--accent); color: white;">
-        <h2 class="section-title" data-en="Our Exclusive Packages" data-gu="અમારા વિશિષ્ટ પેકેજો">Our Exclusive Packages</h2>
+    <!-- NEW UMMRAH PACKAGES SECTION - Replacing the old packages -->
+    <section class="section-padding reveal" id="packages" style="background: #f5f0e8;">
+        <div class="section-subtitle" data-en="umrah" data-gu="ઉમરાહ">umrah</div>
+        <h2 class="section-title" data-en="Sacred Journeys - Peaceful Stay" data-gu="પવિત્ર યાત્રા - શાંતિપૂર્ણ રોકાણ">Sacred Journeys - Peaceful Stay</h2>
+        <p style="text-align: center; color: var(--stone-light); margin-bottom: 2rem;" data-en="Peace · Barakah" data-gu="શાંતિ · બરકત">Peace · Barakah</p>
+        
         <div class="grid-container">
+            <!-- Economy Package -->
             <div class="card">
+                <div class="price-range">75,000-80,000</div>
                 <h3 data-en="Economy" data-gu="અર્થતંત્ર">Economy</h3>
-                <span class="price">$1,200</span>
-                <ul>
-                    <li><i class="fas fa-calendar"></i> <span data-en="15 Days Duration" data-gu="15 દિવસ">15 Days Duration</span></li>
-                    <li><i class="fas fa-hotel"></i> <span data-en="3 Star Hotels" data-gu="3 સ્ટાર હોટેલ">3 Star Hotels</span></li>
-                    <li><i class="fas fa-bus"></i> <span data-en="Transport Included" data-gu="પરિવહન શામેલ">Transport Included</span></li>
-                    <li><i class="fas fa-map-marked-alt"></i> <span data-en="Local Ziyarah" data-gu="સ્થાનિક ઝિયારત">Local Ziyarah</span></li>
-                </ul>
-                <a href="#" class="btn-3d" data-en="Book Now" data-gu="બુક કરો">Book Now</a>
+                <div class="package-tagline" data-en="Essential comfort near Bilal Masjid" data-gu="બિલાલ મસ્જિદ નજીક આવશ્યક આરામ">Essential comfort near Bilal Masjid</div>
+                <div class="distance-info">
+                    <span><i class="fas fa-map-marker-alt"></i> Makkah 1500m</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Madina 1000m</span>
+                </div>
+                <div class="package-badge" data-en="Bus" data-gu="બસ">Bus</div>
+                <div class="features-grid">
+                    <div class="feature-item"><i class="fas fa-ticket-alt"></i> <span data-en="Ticket" data-gu="ટિકિટ">Ticket</span></div>
+                    <div class="feature-item"><i class="fas fa-passport"></i> <span data-en="Visa" data-gu="વિઝા">Visa</span></div>
+                    <div class="feature-item"><i class="fas fa-utensils"></i> <span data-en="Meals" data-gu="ભોજન">Meals</span></div>
+                    <div class="feature-item"><i class="fas fa-user-tie"></i> <span data-en="Guide" data-gu="માર્ગદર્શક">Guide</span></div>
+                </div>
+                <div class="guide-info">Baghouch</div>
+                <a href="#" class="btn-3d" data-en="Book Economy" data-gu="બુક અર્થતંત્ર">Book Economy</a>
             </div>
-            <div class="card" style="border: 2px solid var(--secondary);">
-                <h3 data-en="Semi-Deluxe" data-gu="સેમી-ડિલક્સ">Semi-Deluxe</h3>
-                <span class="price">$2,500</span>
-                <ul>
-                    <li><i class="fas fa-calendar"></i> <span data-en="21 Days Duration" data-gu="21 દિવસ">21 Days Duration</span></li>
-                    <li><i class="fas fa-hotel"></i> <span data-en="4 Star Hotels" data-gu="4 સ્ટાર હોટેલ">4 Star Hotels</span></li>
-                    <li><i class="fas fa-bus"></i> <span data-en="Luxury Transport" data-gu="લક્ઝરી પરિવહન">Luxury Transport</span></li>
-                    <li><i class="fas fa-map-marked-alt"></i> <span data-en="Extended Ziyarah" data-gu="વિસ્તૃત ઝિયારત">Extended Ziyarah</span></li>
-                </ul>
-                <a href="#" class="btn-3d" data-en="Book Now" data-gu="બુક કરો">Book Now</a>
+
+            <!-- Business Package -->
+            <div class="card" style="border: 2px solid var(--primary-sage); transform: scale(1.02);">
+                <div class="price-range">80,000-85,000</div>
+                <h3 data-en="Business" data-gu="બિઝનેસ">Business</h3>
+                <div class="package-tagline" data-en="Full amenities, seamless stay" data-gu="સંપૂર્ણ સુવિધાઓ, સીમલેસ સ્ટે">Full amenities, seamless stay</div>
+                <div class="distance-info">
+                    <span><i class="fas fa-map-marker-alt"></i> Makkah 1500m</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Madina 1000m</span>
+                </div>
+                <div class="package-badge" data-en="Private Bus" data-gu="ખાનગી બસ">Private Bus</div>
+                <div class="features-grid">
+                    <div class="feature-item"><i class="fas fa-ticket-alt"></i> <span data-en="Ticket" data-gu="ટિકિટ">Ticket</span></div>
+                    <div class="feature-item"><i class="fas fa-passport"></i> <span data-en="Visa" data-gu="વિઝા">Visa</span></div>
+                    <div class="feature-item"><i class="fas fa-utensils"></i> <span data-en="Premium Meals" data-gu="પ્રીમિયમ ભોજન">Premium Meals</span></div>
+                    <div class="feature-item"><i class="fas fa-user-tie"></i> <span data-en="Guide" data-gu="માર્ગદર્શક">Guide</span></div>
+                </div>
+                <div class="guide-info">Baghouch</div>
+                <a href="#" class="btn-3d" data-en="Book Business" data-gu="બુક બિઝનેસ">Book Business</a>
             </div>
+
+            <!-- Premium Package -->
             <div class="card">
-                <h3 data-en="Deluxe" data-gu="ડિલક્સ">Deluxe</h3>
-                <span class="price">$4,500</span>
-                <ul>
-                    <li><i class="fas fa-calendar"></i> <span data-en="28 Days Duration" data-gu="28 દિવસ">28 Days Duration</span></li>
-                    <li><i class="fas fa-hotel"></i> <span data-en="5 Star (Front Row)" data-gu="5 સ્ટાર આગળની હરોળ">5 Star (Front Row)</span></li>
-                    <li><i class="fas fa-car"></i> <span data-en="Private VIP Transport" data-gu="ખાનગી VIP પરિવહન">Private VIP Transport</span></li>
-                    <li><i class="fas fa-map-marked-alt"></i> <span data-en="Full Guided Tour" data-gu="સંપૂર્ણ માર્ગદર્શિત પ્રવાસ">Full Guided Tour</span></li>
-                </ul>
-                <a href="#" class="btn-3d" data-en="Book Now" data-gu="બુક કરો">Book Now</a>
+                <div class="price-range">85,000-90,000</div>
+                <h3 data-en="Premium" data-gu="પ્રીમિયમ">Premium</h3>
+                <div class="package-tagline" data-en="VIP Ziyara & 5-Star Luxury" data-gu="વીઆઇપી ઝિયારત અને 5-સ્ટાર લક્ઝરી">VIP Ziyara & 5-Star Luxury</div>
+                <div class="distance-info">
+                    <span><i class="fas fa-map-marker-alt"></i> Makkah 1500m</span>
+                    <span><i class="fas fa-map-marker-alt"></i> Madina 1000m</span>
+                </div>
+                <div class="package-badge" data-en="Business Class" data-gu="બિઝનેસ ક્લાસ">Business Class</div>
+                <div class="features-grid">
+                    <div class="feature-item"><i class="fas fa-ticket-alt"></i> <span data-en="Ticket" data-gu="ટિકિટ">Ticket</span></div>
+                    <div class="feature-item"><i class="fas fa-passport"></i> <span data-en="Visa" data-gu="વિઝા">Visa</span></div>
+                    <div class="feature-item"><i class="fas fa-utensils"></i> <span data-en="Premium Meals" data-gu="પ્રીમિયમ ભોજન">Premium Meals</span></div>
+                    <div class="feature-item"><i class="fas fa-user-tie"></i> <span data-en="Guide" data-gu="માર્ગદર્શક">Guide</span></div>
+                </div>
+                <div class="guide-info">Baghouch</div>
+                <a href="#" class="btn-3d" data-en="Book Premium" data-gu="બુક પ્રીમિયમ">Book Premium</a>
+            </div>
+        </div>
+
+        <!-- Bottom CTA Section -->
+        <div class="cta-section">
+            <p data-en="timeless spiritual journeys · begin your sacred path" data-gu="અમર આધ્યાત્મિક યાત્રાઓ · તમારો પવિત્ર માર્ગ શરૂ કરો">timeless spiritual journeys · begin your sacred path</p>
+            <p style="font-size: 0.9rem; margin-bottom: 2rem;" data-en="every package includes spiritual guide & 24/7 support" data-gu="દરેક પેકેજમાં આધ્યાત્મિક માર્ગદર્શક અને 24/7 સમર્થન શામેલ છે">every package includes spiritual guide & 24/7 support</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn-outline" data-en="custom request" data-gu="કસ્ટમ વિનંતી">custom request</a>
+                <a href="#" class="btn-solid" data-en="call advisor" data-gu="સલાહકારને કૉલ કરો">call advisor</a>
             </div>
         </div>
     </section>
@@ -395,45 +676,45 @@
     </div>
 
     <section class="section-padding reveal" id="faq">
-    <h2 class="section-title" data-en="Frequently Asked Questions" data-gu="વારંવાર પૂછાતા પ્રશ્નો">Frequently Asked Questions</h2>
-    <div style="max-width: 800px; margin: 0 auto;">
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFAQ(this)">
-                <span data-en="What documents are required for Umrah?" data-gu="ઉમરાહ માટે કયા દસ્તાવેજો જરૂરી છે?">What documents are required for Umrah?</span>
-                <i class="fas fa-plus"></i>
+        <h2 class="section-title" data-en="Frequently Asked Questions" data-gu="વારંવાર પૂછાતા પ્રશ્નો">Frequently Asked Questions</h2>
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span data-en="What documents are required for Umrah?" data-gu="ઉમરાહ માટે કયા દસ્તાવેજો જરૂરી છે?">What documents are required for Umrah?</span>
+                    <i class="fas fa-plus" style="color: var(--primary-sage);"></i>
+                </div>
+                <div class="faq-answer">
+                    <p data-en="You will need a valid passport (6 months), vaccination certificates, and passport-sized photos." 
+                       data-gu="તમારે માન્ય પાસપોર્ટ (6 મહિના), રસીકરણ પ્રમાણપત્રો અને પાસપોર્ટ સાઇઝના ફોટાની જરૂર પડશે.">
+                       You will need a valid passport (6 months), vaccination certificates, and passport-sized photos.
+                    </p>
+                </div>
             </div>
-            <div class="faq-answer">
-                <p data-en="You will need a valid passport (6 months), vaccination certificates, and passport-sized photos." 
-                   data-gu="તમારે માન્ય પાસપોર્ટ (6 મહિના), રસીકરણ પ્રમાણપત્રો અને પાસપોર્ટ સાઇઝના ફોટાની જરૂર પડશે.">
-                   You will need a valid passport (6 months), vaccination certificates, and passport-sized photos.
-                </p>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <span data-en="Is laundry service included in the packages?" data-gu="શું પેકેજોમાં લોન્ડ્રી સેવા શામેલ છે?">Is laundry service included in the packages?</span>
+                    <i class="fas fa-plus" style="color: var(--primary-sage);"></i>
+                </div>
+                <div class="faq-answer">
+                    <p data-en="Yes, our Deluxe and Semi-Deluxe packages include complimentary laundry services." 
+                       data-gu="હા, અમારા ડિલક્સ અને સેમી-ડિલક્સ પેકેજોમાં મફત લોન્ડ્રી સેવાઓનો સમાવેશ થાય છે.">
+                       Yes, our Deluxe and Semi-Deluxe packages include complimentary laundry services.
+                    </p>
+                </div>
             </div>
         </div>
-        <div class="faq-item">
-            <div class="faq-question" onclick="toggleFAQ(this)">
-                <span data-en="Is laundry service included in the packages?" data-gu="શું પેકેજોમાં લોન્ડ્રી સેવા શામેલ છે?">Is laundry service included in the packages?</span>
-                <i class="fas fa-plus"></i>
-            </div>
-            <div class="faq-answer">
-                <p data-en="Yes, our Deluxe and Semi-Deluxe packages include complimentary laundry services." 
-                   data-gu="હા, અમારા ડિલક્સ અને સેમી-ડિલક્સ પેકેજોમાં મફત લોન્ડ્રી સેવાઓનો સમાવેશ થાય છે.">
-                   Yes, our Deluxe and Semi-Deluxe packages include complimentary laundry services.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
 
     <section class="section-padding reveal" id="contact">
         <h2 class="section-title" data-en="Contact Us" data-gu="સંપર્ક કરો">Contact Us</h2>
         <div class="grid-container">
-            <div>
-                <h3 data-en="Get in Touch" data-gu="સંપર્કમાં રહો">Get in Touch</h3>
-                <p><i class="fas fa-phone"></i> +966 50 XXX XXXX</p>
-                <p><i class="fas fa-envelope"></i> info@alnoor-travel.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> <span data-en="King Fahd Rd, Mecca, Saudi Arabia" data-gu="કિંગ ફહદ રોડ, મક્કા">King Fahd Rd, Mecca, Saudi Arabia</span></p>
+            <div class="card" style="text-align: left;">
+                <h3 style="color: var(--stone-dark);" data-en="Get in Touch" data-gu="સંપર્કમાં રહો">Get in Touch</h3>
+                <p><i class="fas fa-phone" style="color: var(--primary-sage);"></i> +966 50 XXX XXXX</p>
+                <p><i class="fas fa-envelope" style="color: var(--primary-sage);"></i> info@alnoor-travel.com</p>
+                <p><i class="fas fa-map-marker-alt" style="color: var(--primary-sage);"></i> <span data-en="King Fahd Rd, Mecca, Saudi Arabia" data-gu="કિંગ ફહદ રોડ, મક્કા">King Fahd Rd, Mecca, Saudi Arabia</span></p>
             </div>
-            <form class="card" style="background: #f4f4f4; text-align: left;">
+            <form class="card" style="background: var(--pure-white); text-align: left;">
                 <input type="text" placeholder="Name" data-en="Name" data-gu="નામ">
                 <input type="email" placeholder="Email" data-en="Email" data-gu="ઈમેલ">
                 <textarea placeholder="Message" data-en="Message" data-gu="સંદેશ"></textarea>
@@ -442,7 +723,7 @@
         </div>
     </section>
 
-    <footer style="background: var(--primary); color: white;">
+    <footer>
         <p data-en='"The pilgrims performing Hajj and Umrah are a delegation to Allah."' data-gu='"હજ અને ઉમરાહ કરનાર યાત્રીઓ અલ્લાહના પ્રતિનિધિ છે."'>"The pilgrims performing Hajj and Umrah are a delegation to Allah."</p>
         <div style="margin: 15px 0;">
             <a href="https://www.facebook.com/"><i class="fab fa-facebook fa-2x"></i></a>
@@ -455,14 +736,12 @@
     <button class="scroll-top" onclick="window.scrollTo(0,0)"><i class="fas fa-arrow-up"></i></button>
 
     <script>
-        // navbar scroll
         window.addEventListener('scroll', () => {
             document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
         });
 
         function toggleMenu() { document.querySelector('.nav-links').classList.toggle('active'); }
 
-        // reveal
         function reveal() {
             document.querySelectorAll(".reveal").forEach(el => {
                 if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add("active");
@@ -470,7 +749,6 @@
         }
         window.addEventListener("scroll", reveal); reveal();
 
-        // theme toggle
         const themeBtn = document.getElementById('theme-btn');
         themeBtn.addEventListener('click', () => {
             if(document.body.getAttribute('data-theme') === 'dark') {
@@ -482,7 +760,6 @@
             }
         });
 
-        // typing effect (extreme safe)
         const text = "AL-NOOR TOURS AND TRAVELS";
         const typingElement = document.getElementById('typing-logo');
         let index = 0, isDeleting = false;
@@ -494,19 +771,22 @@
         }
         window.addEventListener('load', typeEffect);
 
-        // language
         let currentLang = 'en';
         const langToggle = document.getElementById('langToggle');
         function updateLanguage(lang) {
-            document.querySelectorAll('[data-en][data-gu]').forEach(el => { el.textContent = el.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); });
+            document.querySelectorAll('[data-en][data-gu]').forEach(el => { 
+                if(!el.classList.contains('btn-3d') && !el.classList.contains('btn-outline') && !el.classList.contains('btn-solid')) 
+                    el.textContent = el.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); 
+            });
             document.querySelectorAll('input[data-en][data-gu], textarea[data-en][data-gu]').forEach(el => { el.placeholder = el.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); });
-            document.querySelectorAll('.btn-3d[data-en][data-gu]').forEach(btn => { btn.textContent = btn.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); });
+            document.querySelectorAll('.btn-3d[data-en][data-gu], .btn-outline[data-en][data-gu], .btn-solid[data-en][data-gu]').forEach(btn => { 
+                btn.textContent = btn.getAttribute(lang === 'gu' ? 'data-gu' : 'data-en'); 
+            });
             langToggle.textContent = lang === 'en' ? 'ગુજરાતી' : 'English';
         }
         langToggle.addEventListener('click', () => { currentLang = currentLang === 'en' ? 'gu' : 'en'; updateLanguage(currentLang); });
         updateLanguage('en');
 
-        // gallery data
         const galleryImages = [
             { url: 'https://images.unsplash.com/photo-1591604129939-f1efa4d9f7fa?q=80&w=2070', caption: 'Masjid al-Haram - Makkah', captionGu: 'મસ્જિદ અલ-હરમ - મક્કા' },
             { url: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?q=80&w=2070', caption: 'Masjid an-Nabawi - Madinah', captionGu: 'મસ્જિદ અન-નબવી - મદીના' },
@@ -538,317 +818,21 @@
 
         window.addEventListener('load', loadGallery);
 
-        // FAQ Toggle Function
-function toggleFAQ(element) {
-    const item = element.parentElement;
-    item.classList.toggle('active');
-}
+        function toggleFAQ(element) {
+            const item = element.parentElement;
+            item.classList.toggle('active');
+        }
 
-// Parallax Scroll Effect
-window.addEventListener('scroll', () => {
-    const scrollValue = window.scrollY;
-    const parallaxBg = document.getElementById('parallax-bg');
-    
-    // Only animate if the hero is visible (performance check)
-    if (scrollValue < window.innerHeight) {
-        // Move the background down slightly as user scrolls down
-        // Adjust 0.3 to change the intensity (higher = faster)
-        parallaxBg.style.transform = `translateY(${scrollValue * 0.3}px)`;
-    }
-});
+        window.addEventListener('scroll', () => {
+            const scrollValue = window.scrollY;
+            const parallaxBg = document.getElementById('parallax-bg');
+            if (scrollValue < window.innerHeight) {
+                parallaxBg.style.transform = `translateY(${scrollValue * 0.3}px)`;
+            }
+        });
+
+        // AOS initialization (optional)
+        if(typeof AOS !== 'undefined') AOS.init({duration:800});
     </script>
-=======
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Al‑Noor · golden minimalist packages</title>
-  
-  <!-- Tailwind (lightweight) -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Additional golden minimalist custom styles -->
-  <style>
-    /* Golden minimalist design system */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #faf7f2;
-      color: #2e2a24;
-    }
-    .gold-gradient {
-      background: linear-gradient(135deg, #e3ebf8 0%, #f0f8ff 100%);
-    }
-    .gold-border {
-      border: 1px solid rgba(71, 150, 196, 0.2);
-    }
-    .gold-text {
-      color: #4a5db4;
-    }
-    .gold-bg-light {
-      background-color: rgba(71, 104, 196, 0.05);
-    }
-    .gold-shadow {
-      box-shadow: 0 10px 30px -15px rgba(74, 102, 180, 0.3);
-    }
-    .package-card {
-      transition: all 0.3s ease;
-      background: white;
-      border-radius: 24px;
-      overflow: hidden;
-    }
-    .package-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 25px 40px -20px rgba(180, 140, 74, 0.4);
-    }
-    .minimalist-img {
-      height: 220px;
-      width: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-    .package-card:hover .minimalist-img {
-      transform: scale(1.03);
-    }
-    .gold-button {
-      background: transparent;
-      border: 1px solid #477dc4;
-      color: #4a6cb4;
-      padding: 0.5rem 1.5rem;
-      border-radius: 40px;
-      font-weight: 500;
-      transition: all 0.2s;
-    }
-    .gold-button:hover {
-      background: #4779c4;
-      color: white;
-    }
-    .badge-gold {
-      background: rgba(71, 136, 196, 0.1);
-      color: #4a78b4;
-      font-size: 0.7rem;
-      padding: 0.25rem 0.8rem;
-      border-radius: 40px;
-      border: 1px solid rgba(71, 79, 196, 0.2);
-    }
-    /* Icon animations - subtle */
-    .icon-spin-slow {
-      animation: spin 6s linear infinite;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .icon-pulse-gold {
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
-    }
-    /* divider */
-    .gold-divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #c49747 20%, #c49747 80%, transparent);
-      width: 100%;
-      margin: 1rem 0;
-    }
-  </style>
-  
-  <!-- Icon Libraries (minimal, gold-friendly) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <!-- Remix Icon (clean lines) -->
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css" rel="stylesheet">
-  <!-- Google Material Symbols (outlined, minimal) -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0,1" />
-  <!-- Boxicons (simple) -->
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <!-- Lucide (clean) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.263.1/font/lucide.css">
-  
-  <!-- Animation Libraries (lightweight) -->
-  <!-- AOS (scroll animation) -->
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-  <!-- Animate.css (optional but light) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <!-- GSAP (for subtle motion) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <!-- Typed.js (for headline effect) -->
-  <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
-</head>
-<body class="gold-gradient antialiased">
-
-  <!-- main wrapper -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
-
-    <!-- ===== HEADER minimal gold ===== -->
-    <div class="text-center" data-aos="fade-down" data-aos-duration="1000">
-      <!-- subtle icon row -->
-      <div class="flex justify-center items-center gap-3 text-amber-700/40 mb-4">
-        <i class="ri-moon-clear-line text-2xl"></i>
-        <span class="material-symbols-outlined text-3xl">brightness_low</span>
-        <i class="fa-regular fa-star text-xl"></i>
-        <i class="bx bxs-star-half text-2xl"></i>
-        <i class="lucide lucide-sun text-xl"></i>
-      </div>
-      <h1 class="text-5xl md:text-6xl font-light tracking-tight text-[#2e2a24]">
-        al‑<span class="font-medium gold-text">noor</span>
-      </h1>
-      <div class="flex justify-center items-center gap-2 mt-3 text-sm uppercase tracking-[0.3em] text-stone-500">
-        <span class="w-12 h-px bg-amber-400"></span>
-        <span>sacred journeys</span>
-        <span class="w-12 h-px bg-amber-400"></span>
-      </div>
-      <!-- typed phrase -->
-      <div class="mt-6 h-8 text-lg text-stone-600">
-        <span class="typed-text"></span>
-      </div>
-    </div>
-
-    <!-- ===== PACKAGES GRID minimal gold ===== -->
-    <!-- Only the first three cards (Makkah, Madinah, Jerusalem) remain. -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mt-16">
-      
-      <!-- 1. MAKKAH - minimalist gold card -->
-      <div class="package-card gold-border gold-shadow" data-aos="fade-up" data-aos-delay="100">
-        <img src="https://images.pexels.com/photos/12721555/pexels-photo-12721555.jpeg" 
-             alt="Makkah" class="minimalist-img" loading="lazy">
-        <div class="p-6">
-          <div class="flex justify-between items-center">
-            <h2 class="text-xl font-medium text-stone-800">Umrah</h2>
-            <span class="badge-gold flex items-center gap-1"><i class="ri-time-line"></i> 14 day - 16 day</span>
-          </div>
-          <p class="text-stone-500 text-sm mt-2 leading-relaxed">5-star Zamzam view, private historic safari, VIP iftar.</p>
-          <div class="gold-divider"></div>
-          <div class="flex items-center justify-between mt-3">
-            <div class="flex items-center gap-2 text-sm text-stone-500">
-              <i class="ri-calendar-check-line gold-text"></i>
-              <span>Month</span>
-              <i class="ri-bus-line gold-text ml-2"></i>
-              <span>Private</span>
-            </div>
-            <span class="text-lg font-light gold-text">₹75,000-₹80,000</span>
-          </div>
-          <button class="gold-button w-full mt-4 text-sm flex items-center justify-center gap-2">
-            <i class="ri-plane-line"></i> book package
-          </button>
-        </div>
-      </div>
-
-      <!-- 2. MADINAH -->
-      <div class="package-card gold-border gold-shadow" data-aos="fade-up" data-aos-delay="200">
-        <img src="https://images.pexels.com/photos/30614473/pexels-photo-30614473.jpeg" 
-             alt="Madinah" class="minimalist-img" loading="lazy">
-        <div class="p-6">
-          <div class="flex justify-between items-center">
-            <h2 class="text-xl font-medium text-stone-800">Hajj</h2>
-            <span class="badge-gold flex items-center gap-1"><i class="ri-time-line"></i> 40 day</span>
-          </div>
-          <p class="text-stone-500 text-sm mt-2">Rawdah visit, 4min walk to Masjid an‑Nabawi, palm garden hotel.</p>
-          <div class="gold-divider"></div>
-          <div class="flex items-center justify-between mt-3">
-            <div class="flex items-center gap-2 text-sm text-stone-500">
-              <i class="ri-calendar-check-line gold-text"></i>
-              <span>Month</span>
-              <i class="ri-bus-line gold-text ml-2"></i>
-              <span>Private</span>
-            </div>
-            <span class="text-lg font-light gold-text">₹80,000-₹85,000</span>
-          </div>
-          <button class="gold-button w-full mt-4 text-sm flex items-center justify-center gap-2">
-            <i class="ri-plane-line"></i> book package
-          </button>
-        </div>
-      </div>
-
-      <!-- 3. JERUSALEM -->
-      <div class="package-card gold-border gold-shadow" data-aos="fade-up" data-aos-delay="300">
-        <img src="https://images.pexels.com/photos/4886619/pexels-photo-4886619.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" 
-             alt="Jerusalem Dome of the Rock" class="minimalist-img" loading="lazy">
-        <div class="p-6">
-          <div class="flex justify-between items-center">
-            <h2 class="text-xl font-medium text-stone-800">Ziyarat</h2>
-            <span class="badge-gold flex items-center gap-1"><i class="ri-time-line"></i> 10 day - 15 day</span>
-          </div>
-          <p class="text-stone-500 text-sm mt-2">Al‑Aqsa & Dome guided, old city boutique, interfaith encounters.</p>
-          <div class="gold-divider"></div>
-          <div class="flex items-center justify-between mt-3">
-            <div class="flex items-center gap-2 text-sm text-stone-500">
-              <i class="ri-calendar-check-line gold-text"></i>
-              <span>Month</span>
-              <i class="ri-bus-line gold-text ml-2"></i>
-              <span>Private</span>
-            </div>
-            <span class="text-lg font-light gold-text">₹85,000-₹90,000</span>
-          </div>
-          <button class="gold-button w-full mt-4 text-sm flex items-center justify-center gap-2">
-            <i class="ri-plane-line"></i> book package
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ===== BOTTOM CTA minimal gold ===== -->
-    <div class="mt-24 text-center" data-aos="fade-up" data-aos-duration="1200">
-      <div class="inline-block gold-border gold-bg-light rounded-full px-8 py-3 mb-6">
-        <span class="flex items-center gap-2 text-stone-600"><i class="ri-sparkling-line gold-text"></i> timeless spiritual journeys <i class="ri-sparkling-line gold-text"></i></span>
-      </div>
-      <h2 class="text-3xl md:text-4xl font-light text-stone-800">begin your <span class="gold-text font-medium">sacred path</span></h2>
-      <p class="text-stone-500 max-w-md mx-auto mt-3">every package includes spiritual guide & 24/7 support</p>
-      <div class="flex flex-wrap justify-center gap-4 mt-8">
-        <button class="gold-button px-8 py-3 text-base flex items-center gap-2"><i class="ri-calendar-check-line"></i> custom request</button>
-        <button class="border border-stone-300 text-stone-600 px-8 py-3 rounded-full text-base flex items-center gap-2 hover:border-gold-text transition"><i class="ri-phone-line"></i> call advisor</button>
-      </div>
-    </div>
-
-    <!-- ===== FOOTER minimalist ===== -->
-    <footer class="mt-20 pt-8 border-t border-amber-400/50 flex flex-col md:flex-row justify-between items-center gap-4 text-stone-400 text-sm">
-      <span class="flex items-center gap-2"><i class="fa-regular fa-copyright"></i> 2025 Al‑Noor – golden journeys</span>
-      <span class="flex items-center gap-6 text-lg">
-        <i class="ri-twitter-x-line hover:gold-text transition"></i>
-        <i class="ri-instagram-line hover:gold-text transition"></i>
-        <i class="ri-telegram-line hover:gold-text transition"></i>
-        <i class="ri-moon-line gold-text"></i>
-      </span>
-    </footer>
-  </div>
-
-  <!-- Scripts -->
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>
-    // init AOS
-    AOS.init({
-      once: true,
-      duration: 800,
-      offset: 30,
-      easing: 'ease-out'
-    });
-
-    // Typed.js minimal phrase
-    new Typed('.typed-text', {
-      strings: ['seek the light', 'sacred footsteps', 'golden journeys', 'eternal peace'],
-      typeSpeed: 80,
-      backSpeed: 40,
-      loop: true,
-      showCursor: true,
-      cursorChar: '|',
-      smartBackspace: true
-    });
-
-    // Very subtle GSAP parallax on scroll (optional)
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.utils.toArray('.package-card').forEach((card, i) => {
-      gsap.from(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse'
-        },
-        y: 20,
-        opacity: 0.5,
-        duration: 0.7
-      });
-    });
-  </script>
-  <!-- No errors, no lottie, no complex lordicon - pure minimal gold -->
->>>>>>> b1c5a18f0230c65b42b66d539dc77fb0a118d2f2
 </body>
 </html>
