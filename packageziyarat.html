@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Al‑Noor · Umrah Packages</title>
+  <title>Al‑Noor · Ziyarat Package</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -44,15 +44,13 @@
       animation: slide 1s ease infinite;
     }
     
-    /* UNIFIED BLUE THEME (based on Deluxe Semi) for all cards */
+    /* UNIFIED BLUE THEME (preserved) for the single card */
     .package-card:hover {
       box-shadow: 0 30px 60px -15px rgba(74, 108, 180, 0.4);
       border: 2px solid #4a6cb4;
     }
     
-    .package-card:hover .bg-stone-50,
-    .package-card:hover .bg-blue-50,
-    .package-card:hover .bg-amber-50\/50 {
+    .package-card:hover .bg-blue-50 {
       background: linear-gradient(135deg, #ebf3ff, #ffffff) !important;
     }
     
@@ -69,47 +67,20 @@
       color: #4a6cb4 !important;
     }
     
-    .package-card:hover .px-3.py-1.bg-white.rounded-full {
+    .package-card:hover .price-badge {
       background: #4a6cb4 !important;
       color: white !important;
+      border-color: #4a6cb4 !important;
     }
     
-    /* ECONOMY BUTTON - now blue */
-    .economy-btn {
+    /* Package button - blue theme */
+    .package-btn {
       border: 1px solid #4a6cb4;
       color: #4a6cb4;
       background: transparent;
       transition: all 0.3s;
     }
-    .economy-btn:hover {
-      background: #4a6cb4 !important;
-      color: white !important;
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px -10px rgba(74, 108, 180, 0.5);
-    }
-    
-    /* BUSINESS BUTTON - now blue */
-    .business-btn {
-      border: 1px solid #4a6cb4;
-      color: #4a6cb4;
-      background: transparent;
-      transition: all 0.3s;
-    }
-    .business-btn:hover {
-      background: #4a6cb4 !important;
-      color: white !important;
-      transform: scale(1.05);
-      box-shadow: 0 10px 20px -10px rgba(74, 108, 180, 0.5);
-    }
-    
-    /* PREMIUM BUTTON - now blue */
-    .premium-btn {
-      border: 1px solid #4a6cb4;
-      color: #4a6cb4;
-      background: transparent;
-      transition: all 0.3s;
-    }
-    .premium-btn:hover {
+    .package-btn:hover {
       background: #4a6cb4 !important;
       color: white !important;
       transform: scale(1.05);
@@ -260,6 +231,15 @@
     .image-spacing {
       margin-bottom: 2rem;
     }
+
+    /* Center single card */
+    .single-card-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
   </style>
 </head>
 
@@ -267,25 +247,25 @@
   <!-- main wrapper -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-20">
 
-    <!-- HEADER -->
+    <!-- HEADER - Changed to Ziyarat -->
     <div class="text-center" data-aos="fade-down">
       <div class="flex justify-center items-center gap-3 text-amber-700/40 mb-4">
-        <i class="ri-moon-clear-line text-2xl text-2xl"></i>
+        <i class="ri-moon-clear-line text-2xl"></i>
         <span class="material-symbols-outlined text-4xl icon-spin-slow">brightness_low</span>
         <i class="ri-star-smile-line text-2xl"></i>
       </div>
       <h1 class="text-5xl md:text-6xl font-light tracking-tight text-[#2e2a24]">
-        <span class="font-medium gold-text">umrah</span>
+        <span class="font-medium gold-text">ziyarat</span>
       </h1>
       <div class="flex justify-center items-center gap-2 mt-3 text-sm uppercase tracking-[0.3em] text-stone-500">
         <span class="w-12 h-px bg-amber-400 animate-pulse"></span>
-        <span>peaceful stay</span>
+        <span>holy visits</span>
         <span class="w-12 h-px bg-amber-400 animate-pulse"></span>
       </div>
-      <!-- LARGER IMAGE -->
+      <!-- LARGER IMAGE - Jerusalem for Ziyarat -->
       <div class="flex justify-center my-6 image-spacing">
         <img src="https://images.pexels.com/photos/4886619/pexels-photo-4886619.jpeg?auto=compress&cs=tinysrgb&w=800&h=500&fit=crop" 
-             alt="Dome of the Rock" 
+             alt="Jerusalem Dome of the Rock" 
              class="rounded-3xl w-96 h-56 object-cover shadow-xl border-2 border-white/50 hover:scale-105 transition-transform duration-500 hover:shadow-2xl">
       </div>
 
@@ -297,95 +277,43 @@
       </div>
     </div>
 
-    <!-- Packages Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 mt-2">
-      
-      <!-- ECONOMY CARD -->
-      <div class="package-card gold-border p-2" data-aos="fade-up" data-aos-delay="100">
-        <div class="bg-stone-50 rounded-[20px] p-4 mb-2 transition-all relative">
-          <div class="flex justify-between items-center">
-            <h3 class="text-lg font-medium">Economy</h3>
-            <span class="text-sm font-semibold text-blue-600 bg-white/80 px-3 py-1 rounded-full shadow-sm border border-blue-200">₹75,000 – 80,000</span>
+    <!-- SINGLE ZIYARAT PACKAGE CARD (blue theme preserved) -->
+    <div class="single-card-container mt-8">
+      <div class="package-card gold-border p-2 w-full" data-aos="fade-up">
+        <div class="bg-blue-50 rounded-[20px] p-5 mb-2 transition-all">
+          <div class="flex justify-between items-center flex-wrap gap-2">
+            <h3 class="text-2xl font-medium">Ziyarat Package</h3>
+            <span class="price-badge text-sm font-semibold text-blue-600 bg-white/90 px-4 py-1.5 rounded-full shadow-sm border border-blue-200">₹85,000 – 95,000</span>
           </div>
-          <p class="text-xs text-stone-500 mt-1">Essential comfort near Bilal Masjid</p>
+          <p class="text-sm text-stone-500 mt-2">Sacred visits to Jerusalem, Al-Aqsa & historic Islamic sites</p>
         </div>
-        <div class="px-3 pb-4">
-          <div class="inclusion-grid gap-1.5 mb-3">
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-hotel-bed-line gold-text text-xs"></i> Makkah 1500m</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-hotel-bed-line gold-text text-xs"></i> Madina 1000m</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-bus-line gold-text text-xs"></i> Bus</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-flight-takeoff-line gold-text text-xs"></i> Ticket</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-visa-line gold-text text-xs"></i> Visa</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-restaurant-line gold-text text-xs"></i> Meals</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-shirt-line gold-text text-xs"></i> Laundry</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-user-voice-line gold-text text-xs"></i> Guide</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-luggage-cart-line gold-text text-xs"></i> Bag/Pouch</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-water-flash-line gold-text text-xs"></i> 5L Zamzam</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-map-pin-line gold-text text-xs"></i> City Tour</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-star-line gold-text text-xs"></i> Extra Ziyarat</div>
+        
+        <div class="px-4 pb-5">
+          <!-- Inclusion tags - 12 items, now Ziyarat-appropriate -->
+          <div class="inclusion-grid gap-2 mb-4">
+            <div class="inclusion-tag"><i class="ri-hotel-bed-line gold-text"></i> Jerusalem Hotel</div>
+            <div class="inclusion-tag"><i class="ri-hotel-bed-line gold-text"></i> Bethlehem Stay</div>
+            <div class="inclusion-tag"><i class="ri-bus-line gold-text"></i> Private Transport</div>
+            <div class="inclusion-tag"><i class="ri-flight-takeoff-line gold-text"></i> Flight Included</div>
+            <div class="inclusion-tag"><i class="ri-visa-line gold-text"></i> Visa Assistance</div>
+            <div class="inclusion-tag"><i class="ri-restaurant-line gold-text"></i> Daily Meals</div>
+            <div class="inclusion-tag"><i class="ri-user-voice-line gold-text"></i> Local Guide</div>
+            <div class="inclusion-tag"><i class="ri-map-pin-line gold-text"></i> Al-Aqsa Visit</div>
+            <div class="inclusion-tag"><i class="ri-map-pin-line gold-text"></i> Dome of Rock</div>
+            <div class="inclusion-tag"><i class="ri-map-pin-line gold-text"></i> Ibrahimi Mosque</div>
+            <div class="inclusion-tag"><i class="ri-map-pin-line gold-text"></i> Old City Tour</div>
+            <div class="inclusion-tag"><i class="ri-star-line gold-text"></i> Interfaith Encounter</div>
           </div>
-          <button class="economy-btn w-full py-2.5 text-sm rounded-full font-medium">Book Economy</button>
-        </div>
-      </div>
-
-      <!-- BUSINESS CARD -->
-      <div class="package-card gold-border p-2 relative shadow-xl" data-aos="fade-up" data-aos-delay="200">
-        <div class="bg-blue-50 rounded-[20px] p-4 mb-2 transition-all">
-          <div class="flex justify-between items-center">
-            <h3 class="text-lg font-medium">Deluxe Semi</h3>
-            <span class="text-sm font-semibold text-blue-600 bg-white/80 px-3 py-1 rounded-full shadow-sm border border-blue-200">₹80,000 – 85,000</span>
-          </div>
-          <p class="text-xs text-stone-500 mt-1">Full amenities, seamless stay</p>
-        </div>
-        <div class="px-3 pb-4">
-          <div class="inclusion-grid gap-1.5 mb-3">
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-hotel-bed-line gold-text text-xs"></i> Makkah 900m</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-hotel-bed-line gold-text text-xs"></i> Madina 600m</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-bus-line gold-text text-xs"></i> AC Bus</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-flight-takeoff-line gold-text text-xs"></i> Ticket</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-visa-line gold-text text-xs"></i> Visa</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-restaurant-line gold-text text-xs"></i> Meals</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-shirt-line gold-text text-xs"></i> Laundry</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-user-voice-line gold-text text-xs"></i> Guide</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-luggage-cart-line gold-text text-xs"></i> Bag/Pouch</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-water-flash-line gold-text text-xs"></i> 5L Zamzam</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-map-pin-line gold-text text-xs"></i> City Tour</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-star-line gold-text text-xs"></i> Extra Ziyarat</div>
-          </div>
-          <button class="business-btn w-full py-2.5 text-sm rounded-full font-medium">Book Deluxe Semi</button>
-        </div>
-      </div>
-
-      <!-- PREMIUM CARD -->
-      <div class="package-card gold-border p-2" data-aos="fade-up" data-aos-delay="300">
-        <div class="bg-blue-50 rounded-[20px] p-4 mb-2 transition-all">
-          <div class="flex justify-between items-center">
-            <h3 class="text-lg font-medium">Deluxe</h3>
-            <span class="text-sm font-semibold text-blue-600 bg-white/80 px-3 py-1 rounded-full shadow-sm border border-blue-200">₹85,000 – 90,000</span>
-          </div>
-          <p class="text-xs text-stone-500 mt-1">VIP Ziyarat & 5-Star Luxury</p>
-        </div>
-        <div class="px-3 pb-4">
-          <div class="inclusion-grid gap-1.5 mb-3">
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-hotel-bed-line gold-text text-xs"></i> Makkah 400m</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-hotel-bed-line gold-text text-xs"></i> Madina 200m</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-bus-line gold-text text-xs"></i> Private Bus</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-flight-takeoff-line gold-text text-xs"></i> Business Class</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-visa-line gold-text text-xs"></i> Visa</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-restaurant-line gold-text text-xs"></i> Meals</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-shirt-line gold-text text-xs"></i> Laundry</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-user-voice-line gold-text text-xs"></i> Guide</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-luggage-cart-line gold-text text-xs"></i> Bag/Pouch</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-water-flash-line gold-text text-xs"></i> 5L Zamzam</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-map-pin-line gold-text text-xs"></i> City Tour</div>
-            <div class="inclusion-tag text-[0.7rem] p-1.5"><i class="ri-star-line gold-text text-xs"></i> Extra Ziyarat</div>
-          </div>
-          <button class="premium-btn w-full py-2.5 text-sm rounded-full font-medium">Book Deluxe</button>
+          
+          <!-- Book button -->
+          <button class="package-btn w-full py-3 text-base rounded-full font-medium transition-all">
+            <i class="ri-plane-line mr-2"></i> Book Ziyarat Package
+          </button>
         </div>
       </div>
     </div>
 
-    <!-- ===== BOTTOM CTA minimal gold ===== -->
+    <!-- ===== BOTTOM CTA minimal gold (preserved) ===== -->
     <div class="mt-24 text-center" data-aos="fade-up" data-aos-duration="1200">
       <div class="inline-block gold-border gold-bg-light rounded-full px-8 py-3 mb-6 hover:shadow-lg transition-all duration-300 hover:scale-105">
         <span class="flex items-center gap-2 text-stone-600"><i class="ri-sparkling-line gold-text animate-pulse"></i> timeless spiritual journeys <i class="ri-sparkling-line gold-text animate-pulse"></i></span>
@@ -411,10 +339,10 @@
     AOS.init({ duration: 800, once: true });
     new Typed('#typed', {
       strings: [
-        'Economy ₹75K–₹80K',
-        'Deluxe Semi ₹80K–₹85K',
-        'Deluxe ₹85K–₹90K',
-        'Peace · Barakah · Ease'
+        'Ziyarat ₹85K – ₹95K',
+        'Jerusalem · Al-Aqsa · Hebron',
+        'Guided holy visits',
+        'Peace · Reflection · Blessings'
       ],
       typeSpeed: 45,
       backSpeed: 25,
