@@ -1,0 +1,2654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel | AL-NOOR Traditions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    /* ═══════════════════════════════════════════════════
+       AL-NOOR EXACT THEME — mirrors index.html 1:1
+       Primary  : #064e3b (Emerald)
+       Secondary: #d4af37 (Gold)
+       Accent   : #0f172a (Midnight)
+       BG       : #ffffff / #faf7f2 cream
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --primary:      #064e3b;
+      --primary-dark: #043d2f;
+      --secondary:    #d4af37;
+      --secondary-dark:#b08d2b;
+      --accent:       #0f172a;
+      --white:        #ffffff;
+      --cream:        #faf7f2;
+      --cream-dark:   #f0ece4;
+      --glass:        rgba(255,255,255,0.7);
+      --glass-border: rgba(255,255,255,0.9);
+      --shadow:       0 8px 32px rgba(6,78,59,0.12);
+      --shadow-gold:  0 4px 20px rgba(212,175,55,0.25);
+      --transition:   all 0.4s cubic-bezier(0.175,0.885,0.32,1.275);
+
+      /* Text */
+      --text-dark:    #0f172a;
+      --text-mid:     #374151;
+      --text-muted:   #6b7280;
+      --text-light:   #9ca3af;
+      --border-color: rgba(6,78,59,0.15);
+
+      /* Status */
+      --confirmed: #065f46;
+      --pending:   #92400e;
+      --cancelled: #991b1b;
+      --rebooked:  #1e40af;
+
+      /* Layout */
+      --sidebar-w: 255px;
+      --header-h:  64px;
+      --radius:    16px;
+      --radius-sm: 10px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, .logo-text { font-family: 'Cinzel', serif; }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--cream); }
+    ::-webkit-scrollbar-thumb { background: rgba(6,78,59,0.2); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+
+    /* ════════════════════════════════════════
+       LOGIN SCREEN
+    ════════════════════════════════════════ */
+    #login-screen {
+      position: fixed; inset: 0; z-index: 9000;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
+      padding: 20px;
+      transition: opacity 0.5s ease, visibility 0.5s ease;
+    }
+    #login-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    /* Morphing gold blob — same as site hero */
+    .login-morph {
+      position: absolute;
+      width: 350px; height: 350px;
+      background: var(--secondary);
+      filter: blur(80px); opacity: 0.15;
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      animation: morphing 15s infinite alternate;
+      pointer-events: none;
+    }
+    .login-morph-2 {
+      width: 250px; height: 250px;
+      right: 10%; bottom: 10%;
+      opacity: 0.1;
+      animation: morphing 12s infinite alternate-reverse;
+    }
+    @keyframes morphing {
+      0%   { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; transform: translate(0,0) rotate(0deg); }
+      100% { border-radius: 50% 50% 20% 80% / 25% 80% 20% 75%; transform: translate(5%,10%) rotate(180deg); }
+    }
+
+    .login-card {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 420px;
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 24px;
+      padding: 44px 40px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05);
+      animation: cardIn 0.7s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    @keyframes cardIn {
+      from { opacity:0; transform: translateY(40px) scale(0.94); }
+      to   { opacity:1; transform: translateY(0) scale(1); }
+    }
+    @keyframes shake {
+      0%,100%{ transform:translateX(0) } 20%,60%{ transform:translateX(-10px) } 40%,80%{ transform:translateX(10px) }
+    }
+
+    .login-brand { text-align: center; margin-bottom: 36px; }
+    .login-brand .kaaba-icon {
+      font-size: 2.8rem; margin-bottom: 12px; display: block;
+      animation: divineFadeInUp 1s ease forwards;
+    }
+    @keyframes divineFadeInUp {
+      from { opacity:0; transform:translateY(12px); filter:blur(2px); }
+      to   { opacity:1; transform:translateY(0);   filter:blur(0); }
+    }
+    .login-brand h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: var(--secondary);
+      letter-spacing: 3px;
+      text-shadow: 0 0 20px rgba(212,175,55,0.4);
+    }
+    .login-brand p {
+      font-size: 0.7rem; color: rgba(255,255,255,0.5);
+      text-transform: uppercase; letter-spacing: 4px; margin-top: 6px;
+    }
+    .gold-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+      margin: 20px 0;
+      opacity: 0.5;
+    }
+
+    .login-group { position: relative; margin-bottom: 14px; }
+    .login-group .fi {
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: rgba(212,175,55,0.7); font-size: 0.85rem; pointer-events: none;
+    }
+    .login-input {
+      width: 100%; padding: 12px 14px 12px 40px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 10px;
+      color: #fff; font-size: 0.9rem;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .login-input::placeholder { color: rgba(255,255,255,0.35); }
+    .login-input:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(212,175,55,0.12);
+    }
+
+    #login-error {
+      background: rgba(220,38,38,0.15);
+      border: 1px solid rgba(220,38,38,0.4);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 0.8rem; color: #fca5a5;
+      margin-bottom: 12px; display: none;
+    }
+
+    /* Gold 3D button — exact match to site's .btn-3d */
+    .login-btn {
+      width: 100%; padding: 13px;
+      background: var(--secondary);
+      color: var(--accent);
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      border: none; border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 6px 0 var(--secondary-dark);
+      transition: 0.2s; margin-top: 6px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      letter-spacing: 0.5px;
+    }
+    .login-btn:hover { transform: translateY(2px); box-shadow: 0 4px 0 var(--secondary-dark); }
+    .login-btn:active { transform: translateY(6px); box-shadow: none; }
+    .login-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .login-hint {
+      margin-top: 20px; text-align: center;
+      font-size: 0.72rem; color: rgba(255,255,255,0.35);
+      line-height: 1.6;
+    }
+    .login-hint strong { color: rgba(212,175,55,0.8); }
+
+    /* ════════════════════════════════════════
+       ADMIN SHELL LAYOUT
+    ════════════════════════════════════════ */
+    #admin-app { display: none; }
+    #admin-app.visible {
+      display: grid !important;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      grid-template-rows: var(--header-h) 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── SIDEBAR ── */
+    .admin-sidebar {
+      grid-row: 1 / -1;
+      background: var(--primary);
+      display: flex; flex-direction: column;
+      position: sticky; top: 0; height: 100vh;
+      overflow: hidden;
+      box-shadow: 4px 0 20px rgba(6,78,59,0.2);
+      z-index: 100;
+      transition: width 0.3s ease;
+    }
+
+    .sidebar-brand {
+      height: var(--header-h);
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .sidebar-brand .brand-kaaba { font-size: 1.6rem; flex-shrink: 0; }
+    .sidebar-brand h2 {
+      font-family: 'Cinzel', serif;
+      color: var(--secondary); font-size: 1rem; letter-spacing: 1.5px;
+    }
+    .sidebar-brand span {
+      font-size: 0.6rem; color: rgba(255,255,255,0.4);
+      text-transform: uppercase; letter-spacing: 2.5px;
+    }
+
+    .sidebar-nav { flex: 1; overflow-y: auto; padding: 12px 0; }
+    .nav-section {
+      font-size: 0.58rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2.5px;
+      color: rgba(255,255,255,0.3);
+      padding: 14px 20px 6px;
+    }
+
+    .nav-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 20px;
+      color: rgba(255,255,255,0.65);
+      background: none; border: none;
+      width: 100%; text-align: left;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem; font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative; white-space: nowrap;
+    }
+    .nav-item::after {
+      content: '';
+      position: absolute; right: 0; top: 15%; height: 70%;
+      width: 3px; background: var(--secondary);
+      border-radius: 3px 0 0 3px;
+      transform: scaleY(0);
+      transition: transform 0.25s cubic-bezier(0.175,0.885,0.32,1.275);
+    }
+    .nav-item:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .nav-item.active {
+      color: var(--secondary);
+      background: rgba(212,175,55,0.1);
+    }
+    .nav-item.active::after { transform: scaleY(1); }
+    .nav-item .ni { width: 18px; text-align: center; font-size: 0.9rem; flex-shrink: 0; }
+    .nav-badge {
+      margin-left: auto; background: var(--secondary); color: var(--accent);
+      font-size: 0.6rem; font-weight: 800;
+      padding: 2px 7px; border-radius: 99px; flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      padding: 14px 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+    .user-chip {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .user-chip:hover { background: rgba(255,255,255,0.07); }
+    .user-av {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 800;
+      color: var(--accent); flex-shrink: 0;
+    }
+    .user-name { font-size: 0.82rem; font-weight: 600; color: #fff; white-space: nowrap; }
+    .user-role { font-size: 0.64rem; color: rgba(255,255,255,0.4); white-space: nowrap; }
+
+    /* ── TOPBAR ── */
+    .admin-topbar {
+      background: var(--white);
+      border-bottom: 1px solid var(--border-color);
+      display: flex; align-items: center; gap: 14px;
+      padding: 0 24px;
+      position: sticky; top: 0; z-index: 90;
+      box-shadow: 0 2px 8px rgba(6,78,59,0.06);
+    }
+
+    .topbar-toggle {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border-color);
+      background: none; border-radius: 8px;
+      color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; transition: all 0.2s;
+    }
+    .topbar-toggle:hover { background: var(--cream); color: var(--primary); border-color: var(--primary); }
+
+    .breadcrumb { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); flex: 1; }
+    .breadcrumb .curr { color: var(--primary); font-weight: 600; }
+    .breadcrumb .sep { opacity: 0.4; }
+
+    .top-search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--cream); border: 1px solid var(--border-color);
+      border-radius: 20px; padding: 0 14px; height: 36px; width: 220px;
+      transition: all 0.2s;
+    }
+    .top-search:focus-within { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(6,78,59,0.08); }
+    .top-search input {
+      background: none; border: none; outline: none;
+      font-family: 'Poppins', sans-serif; font-size: 0.8rem;
+      color: var(--text-dark); width: 100%;
+    }
+    .top-search input::placeholder { color: var(--text-light); }
+    .top-search i { color: var(--text-muted); font-size: 0.8rem; }
+
+    .topbar-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .icon-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border-color);
+      background: none; border-radius: 8px;
+      color: var(--text-muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.85rem; transition: all 0.2s;
+      position: relative;
+    }
+    .icon-btn:hover { background: var(--cream); color: var(--primary); border-color: var(--primary); }
+    .icon-btn.danger:hover { background: #fee2e2; color: var(--cancelled); border-color: #fca5a5; }
+    .notif-dot {
+      position: absolute; top: 6px; right: 6px;
+      width: 7px; height: 7px;
+      background: var(--secondary); border-radius: 50%;
+      border: 1.5px solid #fff;
+    }
+
+    /* ── MAIN ── */
+    .admin-main {
+      background: var(--cream);
+      overflow-y: auto;
+      min-height: calc(100vh - var(--header-h));
+    }
+
+    .page-view { display: none; padding: 28px; animation: pgIn 0.3s ease; }
+    .page-view.active { display: block; }
+    @keyframes pgIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+    .page-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 28px; gap: 16px; flex-wrap: wrap;
+    }
+    .page-header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem; color: var(--primary);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .page-header h1 i { color: var(--secondary); font-size: 1.1rem; }
+    .page-header p { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── STAT CARDS ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 16px; margin-bottom: 28px;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative; overflow: hidden;
+      transition: var(--transition);
+      box-shadow: var(--shadow);
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .stat-card:hover { transform: translateY(-5px) scale(1.01); border-color: var(--secondary); box-shadow: var(--shadow-gold); }
+    .stat-icon {
+      width: 42px; height: 42px;
+      background: linear-gradient(135deg, var(--primary), #065f46);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      color: var(--secondary); font-size: 1rem; margin-bottom: 14px;
+    }
+    .stat-value { font-size: 1.7rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 5px; }
+    .stat-label { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+    .stat-trend { display: flex; align-items: center; gap: 4px; font-size: 0.7rem; margin-top: 10px; color: var(--confirmed); }
+    .stat-trend.down { color: var(--cancelled); }
+
+    /* ── PANELS ── */
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(135deg, rgba(6,78,59,0.03), transparent);
+    }
+    .panel-header h3 { font-size: 0.9rem; font-weight: 700; color: var(--primary); }
+    .panel-body { padding: 20px; }
+
+    /* ── TABLE ── */
+    .table-wrap { overflow-x: auto; }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .data-table thead tr { background: rgba(6,78,59,0.04); border-bottom: 2px solid var(--border-color); }
+    .data-table th {
+      padding: 12px 14px; text-align: left;
+      font-size: 0.65rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--primary); white-space: nowrap; cursor: pointer;
+    }
+    .data-table td {
+      padding: 12px 14px; color: var(--text-mid);
+      border-bottom: 1px solid rgba(6,78,59,0.06);
+      white-space: nowrap;
+    }
+    .data-table tbody tr:hover { background: rgba(6,78,59,0.02); }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 99px;
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .badge-confirmed { color: var(--confirmed); background: #d1fae5; border: 1px solid #a7f3d0; }
+    .badge-pending   { color: var(--pending);   background: #fef3c7; border: 1px solid #fde68a; }
+    .badge-cancelled { color: var(--cancelled); background: #fee2e2; border: 1px solid #fecaca; }
+    .badge-rebooked  { color: var(--rebooked);  background: #dbeafe; border: 1px solid #bfdbfe; }
+    .badge-active    { color: var(--confirmed); background: #d1fae5; border: 1px solid #a7f3d0; }
+    .badge-soldout   { color: var(--cancelled); background: #fee2e2; border: 1px solid #fecaca; }
+    .badge-inactive  { color: var(--pending);   background: #fef3c7; border: 1px solid #fde68a; }
+    .badge-paid      { color: var(--confirmed); background: #d1fae5; border: 1px solid #a7f3d0; }
+    .badge-partial   { color: var(--pending);   background: #fef3c7; border: 1px solid #fde68a; }
+    .badge-refunded  { color: var(--rebooked);  background: #dbeafe; border: 1px solid #bfdbfe; }
+    .badge-super_admin,.badge-admin { color: #92400e; background: #fef3c7; border: 1px solid #fde68a; }
+    .badge-agent  { color: var(--rebooked); background: #dbeafe; border: 1px solid #bfdbfe; }
+    .badge-success { color: var(--confirmed); background: #d1fae5; border: 1px solid #a7f3d0; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 8px 18px; border-radius: 50px;
+      font-size: 0.8rem; font-weight: 700;
+      font-family: 'Poppins', sans-serif;
+      cursor: pointer; border: none;
+      transition: var(--transition); white-space: nowrap; text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--secondary); color: var(--accent);
+      box-shadow: 0 4px 0 var(--secondary-dark);
+    }
+    .btn-primary:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--secondary-dark); }
+    .btn-primary:active { transform: translateY(4px); box-shadow: none; }
+    .btn-emerald {
+      background: var(--primary); color: #fff;
+      box-shadow: 0 4px 0 var(--primary-dark);
+    }
+    .btn-emerald:hover { transform: translateY(2px); box-shadow: 0 2px 0 var(--primary-dark); }
+    .btn-ghost {
+      background: none; color: var(--text-mid);
+      border: 1px solid var(--border-color);
+      box-shadow: none; border-radius: 8px;
+    }
+    .btn-ghost:hover { background: var(--cream); color: var(--primary); border-color: var(--primary); }
+    .btn-danger {
+      background: #fee2e2; color: var(--cancelled);
+      border: 1px solid #fecaca; box-shadow: none; border-radius: 8px;
+    }
+    .btn-danger:hover { background: #fecaca; }
+    .btn-sm { padding: 5px 12px; font-size: 0.72rem; }
+    .btn-icon { padding: 6px 8px; }
+
+    /* ── FORMS ── */
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--primary); }
+    .form-control {
+      background: var(--cream);
+      border: 1px solid var(--border-color);
+      border-radius: 10px; padding: 9px 12px;
+      color: var(--text-dark); font-size: 0.875rem;
+      font-family: 'Poppins', sans-serif;
+      outline: none; width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-control:focus { border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(6,78,59,0.08); }
+    .form-control::placeholder { color: var(--text-light); }
+    select.form-control { cursor: pointer; }
+    textarea.form-control { resize: vertical; min-height: 85px; }
+
+    .toggle-switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0;
+      background: #d1d5db; border-radius: 99px; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #fff; left: 3px; top: 3px;
+      transition: transform 0.2s cubic-bezier(0.175,0.885,0.32,1.275);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--primary); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(15,23,42,0.6); backdrop-filter: blur(6px);
+      z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto;
+      transform: scale(0.94) translateY(12px);
+      transition: transform 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+      box-shadow: 0 24px 60px rgba(6,78,59,0.2);
+    }
+    .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+    .modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--border-color);
+      background: linear-gradient(135deg, rgba(6,78,59,0.04), transparent);
+    }
+    .modal-header h3 { font-family: 'Cinzel', serif; font-size: 1rem; color: var(--primary); }
+    .modal-body { padding: 24px; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; }
+
+    /* ── TABS ── */
+    .tab-bar { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 24px; gap: 4px; }
+    .tab-btn {
+      padding: 10px 18px; font-size: 0.8rem; font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+      color: var(--text-muted); background: none; border: none;
+      border-bottom: 2px solid transparent; cursor: pointer;
+      transition: all 0.2s; margin-bottom: -2px;
+    }
+    .tab-btn:hover { color: var(--primary); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--secondary); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── CHARTS ── */
+    .chart-wrap { width: 100%; height: 220px; position: relative; }
+
+    /* ── PROGRESS ── */
+    .progress-bar { height: 7px; background: var(--cream-dark); border-radius: 99px; overflow: hidden; margin-top: 6px; }
+    .progress-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--primary), var(--secondary)); transition: width 1s ease; }
+
+    /* ── GRIDS ── */
+    .grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+    @media (max-width: 900px) { .grid-2,.grid-3 { grid-template-columns: 1fr; } }
+
+    /* ── TOAST ── */
+    #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+    .toast {
+      display: flex; align-items: center; gap: 12px;
+      background: var(--white); border: 1px solid var(--border-color);
+      border-radius: 12px; padding: 12px 16px;
+      font-size: 0.82rem; color: var(--text-dark);
+      box-shadow: 0 8px 24px rgba(6,78,59,0.15);
+      animation: toastIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+      max-width: 320px;
+      border-left: 3px solid var(--secondary);
+      font-family: 'Poppins', sans-serif;
+    }
+    .toast.success { border-left-color: var(--confirmed); }
+    .toast.error   { border-left-color: var(--cancelled); }
+    .toast.info    { border-left-color: var(--rebooked); }
+    .toast i { color: var(--secondary); }
+    .toast.success i { color: var(--confirmed); }
+    .toast.error i   { color: var(--cancelled); }
+    .toast.info i    { color: var(--rebooked); }
+    @keyframes toastIn { from { opacity:0; transform:translateX(20px); } to { opacity:1; transform:translateX(0); } }
+
+    /* ── SIDEBAR COLLAPSED ── */
+    .admin-shell.sidebar-collapsed { grid-template-columns: 68px 1fr; }
+    .admin-shell.sidebar-collapsed .sidebar-brand span,
+    .admin-shell.sidebar-collapsed .sidebar-brand h2,
+    .admin-shell.sidebar-collapsed .nav-section,
+    .admin-shell.sidebar-collapsed .nav-item span,
+    .admin-shell.sidebar-collapsed .nav-badge,
+    .admin-shell.sidebar-collapsed .user-name,
+    .admin-shell.sidebar-collapsed .user-role { display: none; }
+    .admin-shell.sidebar-collapsed .nav-item { justify-content: center; padding: 12px; }
+    .admin-shell.sidebar-collapsed .user-chip { justify-content: center; }
+    .admin-shell.sidebar-collapsed .sidebar-brand { justify-content: center; padding: 0; }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 3.5rem; color: var(--text-muted); }
+    .empty-state i { font-size: 2.5rem; display: block; margin-bottom: 1rem; color: var(--primary); opacity: 0.25; }
+
+    /* ── MOBILE ── */
+    .sidebar-mask { display: none; position: fixed; inset: 0; background: rgba(15,23,42,0.5); z-index: 150; }
+    @media (max-width: 768px) {
+      #admin-app.visible { grid-template-columns: 0 1fr !important; }
+      .admin-sidebar { position: fixed; width: var(--sidebar-w); transform: translateX(-100%); transition: transform 0.3s ease; z-index: 200; height: 100vh; }
+      .admin-shell.sidebar-open .admin-sidebar { transform: translateX(0); }
+      .admin-shell.sidebar-open .sidebar-mask { display: block; }
+      .page-view { padding: 16px; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+    }
+
+    /* ── FORM ROW (toggle rows) ── */
+    .form-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--border-color); }
+    .form-row:last-child { border-bottom: none; }
+    .field-error { font-size: 0.7rem; color: var(--cancelled); margin-top: 2px; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     LOGIN SCREEN  
+═══════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-morph"></div>
+  <div class="login-morph login-morph-2"></div>
+  <div class="login-card">
+    <div class="login-brand">
+      <span class="kaaba-icon">🕌</span>
+      <h1>AL-NOOR</h1>
+      <p>Admin Portal</p>
+    </div>
+    <div class="gold-line"></div>
+    <div id="login-error"></div>
+    <div class="login-group">
+      <i class="fas fa-envelope fi"></i>
+      <input type="email" id="login-email" class="login-input" placeholder="admin@alnoor.travel" value="admin@alnoor.travel">
+    </div>
+    <div class="login-group">
+      <i class="fas fa-lock fi"></i>
+      <input type="password" id="login-password" class="login-input" placeholder="Any password" value="password">
+    </div>
+    <button class="login-btn" id="login-btn">
+      <i class="fas fa-arrow-right-to-bracket"></i>
+      Sign In to Dashboard
+    </button>
+    <div class="login-hint">
+      Demo: <strong>admin@alnoor.travel</strong> · any password<br>
+      <span style="opacity:.7">All listed user emails are valid logins</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     ADMIN SHELL
+═══════════════════════════════════════════════ -->
+<div id="admin-app" class="admin-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <span class="brand-kaaba">🕌</span>
+      <div>
+        <h2>AL-NOOR</h2>
+        <span>Admin Portal</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section">Main</div>
+      <button class="nav-item active" data-route="dashboard" onclick="Router.navigate('dashboard')">
+        <i class="fas fa-gauge-high ni"></i><span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-route="bookings" onclick="Router.navigate('bookings')">
+        <i class="fas fa-calendar-check ni"></i><span>Bookings</span>
+        <span class="nav-badge" id="pending-badge">2</span>
+      </button>
+      <div class="nav-section">Catalogue</div>
+      <button class="nav-item" data-route="packages" onclick="Router.navigate('packages')">
+        <i class="fas fa-box-open ni"></i><span>Packages</span>
+      </button>
+      <div class="nav-section">Administration</div>
+      <button class="nav-item" data-route="users" onclick="Router.navigate('users')">
+        <i class="fas fa-users-gear ni"></i><span>Users &amp; Roles</span>
+      </button>
+      <button class="nav-item" data-route="finance" onclick="Router.navigate('finance')">
+        <i class="fas fa-receipt ni"></i><span>Finance</span>
+      </button>
+      <div class="nav-section">System</div>
+      <button class="nav-item" data-route="cms" onclick="Router.navigate('cms')">
+        <i class="fas fa-sliders ni"></i><span>CMS &amp; Settings</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-chip" onclick="AppController.showUserMenu()">
+        <div class="user-av" id="topbar-avatar">SA</div>
+        <div>
+          <div class="user-name" id="sidebar-user-name">Super Admin</div>
+          <div class="user-role" id="sidebar-user-role">super_admin</div>
+        </div>
+        <i class="fas fa-ellipsis-vertical" style="margin-left:auto;color:rgba(255,255,255,0.3);font-size:.7rem"></i>
+      </div>
+    </div>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="admin-topbar">
+    <button class="topbar-toggle" id="sidebar-toggle"><i class="fas fa-bars"></i></button>
+    <div class="breadcrumb">
+      <span style="color:var(--primary);font-weight:600;font-family:'Cinzel',serif;font-size:.85rem">AL-NOOR</span>
+      <span class="sep">/</span>
+      <span class="curr" id="breadcrumb-current">Dashboard</span>
+    </div>
+    <div class="top-search">
+      <i class="fas fa-search"></i>
+      <input placeholder="Search anything…" id="global-search">
+    </div>
+    <div class="topbar-actions">
+      <button class="icon-btn" onclick="AppController.showNotifications()">
+        <i class="fas fa-bell"></i><span class="notif-dot"></span>
+      </button>
+      <button class="icon-btn" onclick="window.open('../index.html','_blank')" title="View Site">
+        <i class="fas fa-external-link-alt"></i>
+      </button>
+      <button class="icon-btn danger" onclick="AppController.logout()" title="Sign Out">
+        <i class="fas fa-right-from-bracket"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- PAGES -->
+  <main class="admin-main">
+
+    <div id="page-dashboard" class="page-view active">
+      <div class="page-header">
+        <div><h1><i class="fas fa-gauge-high"></i> Dashboard</h1><p>Overview of business metrics and recent activity</p></div>
+        <button class="btn btn-ghost btn-sm" onclick="DashboardController.init()"><i class="fas fa-rotate-right"></i> Refresh</button>
+      </div>
+      <div id="dashboard-content"></div>
+    </div>
+
+    <div id="page-bookings" class="page-view">
+      <div class="page-header"><div><h1><i class="fas fa-calendar-check"></i> Bookings</h1><p>Create, manage and track all client reservations</p></div></div>
+      <div id="bookings-content"></div>
+    </div>
+
+    <div id="page-packages" class="page-view">
+      <div class="page-header"><div><h1><i class="fas fa-box-open"></i> Packages</h1><p>Manage travel products, pricing and promotions</p></div></div>
+      <div id="packages-content"></div>
+    </div>
+
+    <div id="page-users" class="page-view">
+      <div class="page-header"><div><h1><i class="fas fa-users-gear"></i> Users &amp; Roles</h1><p>Manage staff, agents, customers and access control</p></div></div>
+      <div id="users-content"></div>
+    </div>
+
+    <div id="page-finance" class="page-view">
+      <div class="page-header"><div><h1><i class="fas fa-receipt"></i> Finance</h1><p>Transaction ledger, revenue reports and refund processing</p></div></div>
+      <div id="finance-content"></div>
+    </div>
+
+    <div id="page-cms" class="page-view">
+      <div class="page-header"><div><h1><i class="fas fa-sliders"></i> CMS &amp; Settings</h1><p>Site content, GDS config and notification channels</p></div></div>
+      <div id="cms-content"></div>
+    </div>
+
+  </main>
+</div>
+
+<div class="sidebar-mask" id="sidebar-mask" onclick="AppController.closeSidebar()"></div>
+<div id="toast-container"></div>
+
+<script>
+/**
+ * AL-NOOR ADMIN PANEL — Data Layer
+ * ============================================================
+ * Simulates a full backend DB with:
+ *   - Normalized schema design (relational concepts)
+ *   - Indexed lookups via Maps for O(1) access
+ *   - Computed/derived fields
+ *   - Role-Based Access Control (RBAC)
+ *
+ * In production: replace with REST/GraphQL calls or IndexedDB
+ * Schema mirrors: PostgreSQL normalized relational design
+ * ============================================================
+ */
+
+'use strict';
+
+// ── SCHEMA CONSTANTS ──────────────────────────────────────────
+const ROLES = Object.freeze({
+  SUPER_ADMIN: 'super_admin',
+  ADMIN:       'admin',
+  AGENT:       'agent',
+  CUSTOMER:    'customer',
+});
+
+const PERMISSIONS = Object.freeze({
+  [ROLES.SUPER_ADMIN]: ['*'], // All permissions
+  [ROLES.ADMIN]:  ['bookings.*', 'packages.*', 'users.read', 'users.update', 'finance.read', 'cms.*'],
+  [ROLES.AGENT]:  ['bookings.read', 'bookings.update', 'packages.read'],
+  [ROLES.CUSTOMER]: ['bookings.own', 'profile.own'],
+});
+
+const BOOKING_STATUS = Object.freeze({
+  CONFIRMED: 'confirmed',
+  PENDING:   'pending',
+  CANCELLED: 'cancelled',
+  REBOOKED:  'rebooked',
+});
+
+const PAYMENT_STATUS = Object.freeze({
+  PAID:     'paid',
+  PARTIAL:  'partial',
+  PENDING:  'pending',
+  REFUNDED: 'refunded',
+});
+
+// ── MOCK DATA STORE ───────────────────────────────────────────
+// Mimics normalized DB tables with foreign key relationships
+
+const DB = {
+
+  /** TABLE: users ─────────────────────────────────────────── */
+  users: [
+    { id: 'U001', name: 'Super Admin',      email: 'admin@alnoor.travel',   role: ROLES.SUPER_ADMIN, phone: '+91 98765 00001', city: 'Rajkot',     createdAt: '2024-01-01', lastLogin: '2026-03-10', active: true,  avatar: 'SA' },
+    { id: 'U002', name: 'Arjun Mehta',      email: 'arjun@alnoor.travel',   role: ROLES.ADMIN,       phone: '+91 98765 00002', city: 'Ahmedabad',  createdAt: '2024-02-15', lastLogin: '2026-03-09', active: true,  avatar: 'AM' },
+    { id: 'U003', name: 'Fatima Shaikh',    email: 'fatima@alnoor.travel',  role: ROLES.AGENT,       phone: '+91 98765 00003', city: 'Surat',      createdAt: '2024-03-01', lastLogin: '2026-03-08', active: true,  avatar: 'FS' },
+    { id: 'U004', name: 'Yusuf Patel',      email: 'yusuf@alnoor.travel',   role: ROLES.AGENT,       phone: '+91 98765 00004', city: 'Mumbai',     createdAt: '2024-04-10', lastLogin: '2026-03-07', active: true,  avatar: 'YP' },
+    { id: 'C001', name: 'Rahul Desai',      email: 'rahul@gmail.com',       role: ROLES.CUSTOMER,    phone: '+91 99001 11001', city: 'Surat',      createdAt: '2025-06-01', lastLogin: '2026-03-05', active: true,  avatar: 'RD' },
+    { id: 'C002', name: 'Mohammed Vora',    email: 'mvora@gmail.com',       role: ROLES.CUSTOMER,    phone: '+91 99001 11002', city: 'Rajkot',     createdAt: '2025-07-15', lastLogin: '2026-02-28', active: true,  avatar: 'MV' },
+    { id: 'C003', name: 'Aisha Siddiqui',  email: 'aisha@gmail.com',       role: ROLES.CUSTOMER,    phone: '+91 99001 11003', city: 'Vadodara',   createdAt: '2025-08-20', lastLogin: '2026-01-10', active: false, avatar: 'AS' },
+    { id: 'C004', name: 'Priya Joshi',     email: 'priya@gmail.com',       role: ROLES.CUSTOMER,    phone: '+91 99001 11004', city: 'Gandhinagar', createdAt: '2025-09-01', lastLogin: '2026-03-01', active: true,  avatar: 'PJ' },
+    { id: 'C005', name: 'Kabir Ansari',    email: 'kabir@gmail.com',       role: ROLES.CUSTOMER,    phone: '+91 99001 11005', city: 'Ahmedabad',  createdAt: '2025-10-05', lastLogin: '2026-02-20', active: true,  avatar: 'KA' },
+    { id: 'C006', name: 'Zainab Mirza',    email: 'zainab@gmail.com',      role: ROLES.CUSTOMER,    phone: '+91 99001 11006', city: 'Surat',      createdAt: '2025-11-12', lastLogin: '2026-03-09', active: true,  avatar: 'ZM' },
+  ],
+
+  /** TABLE: packages ──────────────────────────────────────── */
+  packages: [
+    { id: 'PKG001', name: 'Noor Umrah — Economy',    type: 'umrah', duration: '14 Days',  price: 85000,  slots: 50, booked: 38, status: 'active',   highlights: ['3-Star Hotel','Visa Included','Group Transfer'], promo: true,  promoText: 'Early Bird 10% Off', createdAt: '2025-09-01' },
+    { id: 'PKG002', name: 'Noor Umrah — Premium',    type: 'umrah', duration: '14 Days',  price: 145000, slots: 30, booked: 27, status: 'active',   highlights: ['5-Star Hotel','Visa Included','Private Transfer','Ziyarat'], promo: false, promoText: '', createdAt: '2025-09-15' },
+    { id: 'PKG003', name: 'Hajj — Standard 2026',    type: 'hajj',  duration: '40 Days',  price: 380000, slots: 40, booked: 40, status: 'soldout',  highlights: ['Maktab Arrangement','Tawaf Quota','Full Board'], promo: false, promoText: '', createdAt: '2025-10-01' },
+    { id: 'PKG004', name: 'Ziyarat — Madinah Tour',  type: 'ziyarat', duration: '7 Days', price: 55000,  slots: 60, booked: 12, status: 'active',   highlights: ['Masjid e Nabawi','Jannat ul Baqi','Expert Guide'], promo: true,  promoText: 'Ramadan Special', createdAt: '2025-11-01' },
+    { id: 'PKG005', name: 'Noor Umrah — Family',     type: 'umrah', duration: '21 Days',  price: 210000, slots: 20, booked: 8,  status: 'active',   highlights: ['Family Rooms','Kids Activities','4-Star Hotel'], promo: false, promoText: '', createdAt: '2026-01-01' },
+    { id: 'PKG006', name: 'Hajj — VIP 2026',         type: 'hajj',  duration: '40 Days',  price: 650000, slots: 15, booked: 15, status: 'soldout',  highlights: ['Luxury Hotel','Personal Guide','Airport Lounge'], promo: false, promoText: '', createdAt: '2025-10-15' },
+  ],
+
+  /** TABLE: bookings ──────────────────────────────────────── */
+  bookings: [
+    { id: 'BK001', customerId: 'C001', packageId: 'PKG001', agentId: 'U003', travellers: 2, amount: 170000, paid: 170000, status: BOOKING_STATUS.CONFIRMED, paymentStatus: PAYMENT_STATUS.PAID,    bookingDate: '2026-01-15', travelDate: '2026-03-20', notes: 'Wheelchair assistance needed', passports: ['IN123456', 'IN123457'] },
+    { id: 'BK002', customerId: 'C002', packageId: 'PKG002', agentId: 'U004', travellers: 3, amount: 435000, paid: 200000, status: BOOKING_STATUS.CONFIRMED, paymentStatus: PAYMENT_STATUS.PARTIAL,  bookingDate: '2026-01-20', travelDate: '2026-04-01', notes: '', passports: ['IN234561', 'IN234562', 'IN234563'] },
+    { id: 'BK003', customerId: 'C003', packageId: 'PKG003', agentId: 'U003', travellers: 1, amount: 380000, paid: 380000, status: BOOKING_STATUS.CANCELLED,  paymentStatus: PAYMENT_STATUS.REFUNDED, bookingDate: '2025-11-05', travelDate: '2026-06-15', notes: 'Medical emergency', passports: ['IN345671'] },
+    { id: 'BK004', customerId: 'C004', packageId: 'PKG001', agentId: 'U004', travellers: 4, amount: 340000, paid: 100000, status: BOOKING_STATUS.PENDING,    paymentStatus: PAYMENT_STATUS.PARTIAL,  bookingDate: '2026-02-01', travelDate: '2026-05-10', notes: 'Family booking', passports: [] },
+    { id: 'BK005', customerId: 'C005', packageId: 'PKG004', agentId: 'U003', travellers: 2, amount: 110000, paid: 110000, status: BOOKING_STATUS.CONFIRMED, paymentStatus: PAYMENT_STATUS.PAID,    bookingDate: '2026-02-10', travelDate: '2026-03-25', notes: '', passports: ['IN456781', 'IN456782'] },
+    { id: 'BK006', customerId: 'C006', packageId: 'PKG002', agentId: 'U004', travellers: 1, amount: 145000, paid: 72500,  status: BOOKING_STATUS.REBOOKED,   paymentStatus: PAYMENT_STATUS.PARTIAL,  bookingDate: '2026-02-15', travelDate: '2026-06-01', notes: 'Rescheduled from April', passports: ['IN567891'] },
+    { id: 'BK007', customerId: 'C001', packageId: 'PKG005', agentId: 'U003', travellers: 5, amount: 315000, paid: 315000, status: BOOKING_STATUS.CONFIRMED, paymentStatus: PAYMENT_STATUS.PAID,    bookingDate: '2026-02-20', travelDate: '2026-07-15', notes: 'Family of 5 incl. 2 kids', passports: [] },
+    { id: 'BK008', customerId: 'C002', packageId: 'PKG001', agentId: null,   travellers: 2, amount: 170000, paid: 0,      status: BOOKING_STATUS.PENDING,    paymentStatus: PAYMENT_STATUS.PENDING,  bookingDate: '2026-03-05', travelDate: '2026-08-01', notes: 'Direct inquiry via WhatsApp', passports: [] },
+  ],
+
+  /** TABLE: transactions ──────────────────────────────────── */
+  transactions: [
+    { id: 'TXN001', bookingId: 'BK001', amount: 170000, type: 'payment',  method: 'UPI',          gateway: 'Razorpay', gatewayRef: 'pay_ABCD1234', status: 'success', createdAt: '2026-01-15T10:30:00' },
+    { id: 'TXN002', bookingId: 'BK002', amount: 200000, type: 'payment',  method: 'Bank Transfer', gateway: 'Manual',   gatewayRef: 'HDFC20260120', status: 'success', createdAt: '2026-01-20T14:15:00' },
+    { id: 'TXN003', bookingId: 'BK003', amount: 380000, type: 'payment',  method: 'UPI',          gateway: 'Razorpay', gatewayRef: 'pay_EFGH5678', status: 'success', createdAt: '2025-11-05T09:00:00' },
+    { id: 'TXN004', bookingId: 'BK003', amount: 380000, type: 'refund',   method: 'UPI',          gateway: 'Razorpay', gatewayRef: 'rfnd_IJKL9012', status: 'success', createdAt: '2026-01-10T11:00:00' },
+    { id: 'TXN005', bookingId: 'BK004', amount: 100000, type: 'payment',  method: 'Credit Card',  gateway: 'Razorpay', gatewayRef: 'pay_MNOP3456', status: 'success', createdAt: '2026-02-01T16:45:00' },
+    { id: 'TXN006', bookingId: 'BK005', amount: 110000, type: 'payment',  method: 'UPI',          gateway: 'Razorpay', gatewayRef: 'pay_QRST7890', status: 'success', createdAt: '2026-02-10T08:20:00' },
+    { id: 'TXN007', bookingId: 'BK006', amount: 72500,  type: 'payment',  method: 'NEFT',         gateway: 'Manual',   gatewayRef: 'SBI20260215',  status: 'success', createdAt: '2026-02-15T13:30:00' },
+    { id: 'TXN008', bookingId: 'BK007', amount: 315000, type: 'payment',  method: 'UPI',          gateway: 'Razorpay', gatewayRef: 'pay_UVWX1234', status: 'success', createdAt: '2026-02-20T17:00:00' },
+  ],
+
+  /** TABLE: cms_content ───────────────────────────────────── */
+  cmsContent: [
+    { key: 'hero_title',      value: 'Your Sacred Journey Awaits',   section: 'hero',    updatedAt: '2026-01-10' },
+    { key: 'hero_subtitle',   value: 'Trusted Hajj & Umrah since 2010', section: 'hero', updatedAt: '2026-01-10' },
+    { key: 'about_body',      value: 'At AL-NOOR, we believe a pilgrimage is a spiritual awakening...', section: 'about', updatedAt: '2026-02-01' },
+    { key: 'contact_phone',   value: '+91 987 654 3210',             section: 'contact', updatedAt: '2026-01-05' },
+    { key: 'contact_email',   value: 'info@alnoor.travel',           section: 'contact', updatedAt: '2026-01-05' },
+    { key: 'whatsapp_number', value: '+966500000000',                section: 'contact', updatedAt: '2026-01-05' },
+    { key: 'promo_banner',    value: 'Ramadan Special Packages Now Available!', section: 'banner', updatedAt: '2026-03-01' },
+    { key: 'promo_active',    value: 'true',                        section: 'banner',  updatedAt: '2026-03-01' },
+  ],
+
+  /** TABLE: system_config ─────────────────────────────────── */
+  systemConfig: {
+    gds: {
+      provider: 'Amadeus',
+      apiKey: 'AMB_KEY_****',
+      endpoints: { flights: 'https://api.amadeus.com/v1/shopping/flight-offers', hotels: 'https://api.amadeus.com/v1/shopping/hotel-offers' },
+      enabled: true,
+    },
+    payment: {
+      gateway: 'Razorpay',
+      keyId: 'rzp_live_****',
+      currency: 'INR',
+      enabled: true,
+    },
+    notifications: {
+      whatsappEnabled: true,
+      emailEnabled: true,
+      smsEnabled: false,
+    },
+  },
+};
+
+// ── INDEXED LOOKUP MAPS (O(1) access) ─────────────────────────
+const UserMap     = new Map(DB.users.map(u => [u.id, u]));
+const PackageMap  = new Map(DB.packages.map(p => [p.id, p]));
+const BookingMap  = new Map(DB.bookings.map(b => [b.id, b]));
+
+// ── AUTH SERVICE ──────────────────────────────────────────────
+const AuthService = {
+  currentUser: null,
+
+  /** Simulate JWT login */
+  login(email, password) {
+    const user = DB.users.find(u => u.email === email);
+    if (!user || !user.active) return { ok: false, error: 'Invalid credentials' };
+    // In prod: bcrypt.compare(password, user.passwordHash)
+    AuthService.currentUser = user;
+    sessionStorage.setItem('alnoor_admin_user', JSON.stringify(user));
+    return { ok: true, user };
+  },
+
+  logout() {
+    AuthService.currentUser = null;
+    sessionStorage.removeItem('alnoor_admin_user');
+  },
+
+  restore() {
+    const saved = sessionStorage.getItem('alnoor_admin_user');
+    if (saved) AuthService.currentUser = JSON.parse(saved);
+    return AuthService.currentUser;
+  },
+
+  /** RBAC permission check */
+  can(action) {
+    const user = AuthService.currentUser;
+    if (!user) return false;
+    const perms = PERMISSIONS[user.role] ?? [];
+    if (perms.includes('*')) return true;
+    const [resource, op] = action.split('.');
+    return perms.some(p => p === action || p === `${resource}.*`);
+  },
+};
+
+// ── DATA SERVICES ─────────────────────────────────────────────
+
+/** Enriches a booking with related user/package data */
+const enrichBooking = (booking) => ({
+  ...booking,
+  customer: UserMap.get(booking.customerId),
+  package:  PackageMap.get(booking.packageId),
+  agent:    booking.agentId ? UserMap.get(booking.agentId) : null,
+  balance:  booking.amount - booking.paid,
+});
+
+const BookingService = {
+  getAll: () => DB.bookings.map(enrichBooking),
+
+  getById: (id) => {
+    const b = BookingMap.get(id);
+    return b ? enrichBooking(b) : null;
+  },
+
+  create(data) {
+    const id = `BK${String(DB.bookings.length + 1).padStart(3, '0')}`;
+    const booking = { id, ...data, bookingDate: new Date().toISOString().split('T')[0] };
+    DB.bookings.push(booking);
+    BookingMap.set(id, booking);
+    // Update package slot count
+    const pkg = PackageMap.get(data.packageId);
+    if (pkg) pkg.booked += data.travellers;
+    return enrichBooking(booking);
+  },
+
+  updateStatus(id, status) {
+    const booking = BookingMap.get(id);
+    if (!booking) throw new Error(`Booking ${id} not found`);
+    booking.status = status;
+    return enrichBooking(booking);
+  },
+
+  update(id, updates) {
+    const idx = DB.bookings.findIndex(b => b.id === id);
+    if (idx === -1) throw new Error(`Booking ${id} not found`);
+    Object.assign(DB.bookings[idx], updates);
+    BookingMap.set(id, DB.bookings[idx]);
+    return enrichBooking(DB.bookings[idx]);
+  },
+
+  delete(id) {
+    const idx = DB.bookings.findIndex(b => b.id === id);
+    if (idx === -1) return false;
+    DB.bookings.splice(idx, 1);
+    BookingMap.delete(id);
+    return true;
+  },
+
+  getStats() {
+    const all = DB.bookings;
+    return {
+      total:     all.length,
+      confirmed: all.filter(b => b.status === BOOKING_STATUS.CONFIRMED).length,
+      pending:   all.filter(b => b.status === BOOKING_STATUS.PENDING).length,
+      cancelled: all.filter(b => b.status === BOOKING_STATUS.CANCELLED).length,
+      revenue:   all.filter(b => b.paymentStatus !== PAYMENT_STATUS.REFUNDED).reduce((s, b) => s + b.paid, 0),
+    };
+  },
+};
+
+const PackageService = {
+  getAll: () => [...DB.packages],
+  getById: (id) => PackageMap.get(id) ?? null,
+
+  create(data) {
+    const id = `PKG${String(DB.packages.length + 1).padStart(3, '0')}`;
+    const pkg = { id, booked: 0, createdAt: new Date().toISOString().split('T')[0], ...data };
+    DB.packages.push(pkg);
+    PackageMap.set(id, pkg);
+    return pkg;
+  },
+
+  update(id, updates) {
+    const pkg = PackageMap.get(id);
+    if (!pkg) throw new Error(`Package ${id} not found`);
+    Object.assign(pkg, updates);
+    return pkg;
+  },
+
+  delete(id) {
+    const idx = DB.packages.findIndex(p => p.id === id);
+    if (idx === -1) return false;
+    DB.packages.splice(idx, 1);
+    PackageMap.delete(id);
+    return true;
+  },
+
+  getAvailabilityPct: (pkg) => Math.round(((pkg.slots - pkg.booked) / pkg.slots) * 100),
+};
+
+const UserService = {
+  getAll: () => [...DB.users],
+  getById: (id) => UserMap.get(id) ?? null,
+  getCustomers: () => DB.users.filter(u => u.role === ROLES.CUSTOMER),
+  getStaff:     () => DB.users.filter(u => u.role !== ROLES.CUSTOMER),
+
+  create(data) {
+    const id = `U${String(DB.users.length + 1).padStart(3, '0')}`;
+    const user = { id, createdAt: new Date().toISOString().split('T')[0], lastLogin: null, ...data };
+    DB.users.push(user);
+    UserMap.set(id, user);
+    return user;
+  },
+
+  update(id, updates) {
+    const user = UserMap.get(id);
+    if (!user) throw new Error(`User ${id} not found`);
+    Object.assign(user, updates);
+    return user;
+  },
+
+  toggleActive(id) {
+    const user = UserMap.get(id);
+    if (!user) return null;
+    user.active = !user.active;
+    return user;
+  },
+};
+
+const FinanceService = {
+  getTransactions: () => DB.transactions.map(t => ({
+    ...t,
+    booking: enrichBooking(BookingMap.get(t.bookingId)),
+  })),
+
+  getSummary() {
+    const txns = DB.transactions;
+    const payments = txns.filter(t => t.type === 'payment' && t.status === 'success');
+    const refunds  = txns.filter(t => t.type === 'refund'  && t.status === 'success');
+    return {
+      totalRevenue:  payments.reduce((s, t) => s + t.amount, 0),
+      totalRefunds:  refunds.reduce((s, t) => s + t.amount, 0),
+      netRevenue:    payments.reduce((s, t) => s + t.amount, 0) - refunds.reduce((s, t) => s + t.amount, 0),
+      txnCount:      payments.length,
+    };
+  },
+
+  /** Monthly revenue aggregation for chart */
+  getMonthlyRevenue() {
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const current = new Date().getFullYear();
+    const agg = Array(12).fill(0);
+    DB.transactions
+      .filter(t => t.type === 'payment' && t.status === 'success')
+      .forEach(t => {
+        const d = new Date(t.createdAt);
+        if (d.getFullYear() === current) agg[d.getMonth()] += t.amount;
+      });
+    return months.map((m, i) => ({ month: m, revenue: agg[i] }));
+  },
+
+  processRefund(bookingId, amount) {
+    const booking = BookingMap.get(bookingId);
+    if (!booking) throw new Error('Booking not found');
+    const id = `TXN${String(DB.transactions.length + 1).padStart(3, '0')}`;
+    const refund = {
+      id, bookingId, amount, type: 'refund',
+      method: 'Reversal', gateway: 'Razorpay',
+      gatewayRef: `rfnd_${Date.now()}`, status: 'success',
+      createdAt: new Date().toISOString(),
+    };
+    DB.transactions.push(refund);
+    booking.paymentStatus = PAYMENT_STATUS.REFUNDED;
+    return refund;
+  },
+};
+
+const CMSService = {
+  getAll: () => [...DB.cmsContent],
+  get: (key) => DB.cmsContent.find(c => c.key === key)?.value ?? '',
+  update(key, value) {
+    const item = DB.cmsContent.find(c => c.key === key);
+    if (item) {
+      item.value = value;
+      item.updatedAt = new Date().toISOString().split('T')[0];
+    } else {
+      DB.cmsContent.push({ key, value, section: 'custom', updatedAt: new Date().toISOString().split('T')[0] });
+    }
+  },
+};
+
+const AnalyticsService = {
+  getDashboardMetrics() {
+    const bStats = BookingService.getStats();
+    const fStats = FinanceService.getSummary();
+    const pkgs = PackageService.getAll();
+    const activePackages = pkgs.filter(p => p.status === 'active').length;
+
+    return {
+      ...bStats,
+      ...fStats,
+      activePackages,
+      totalCustomers: UserService.getCustomers().length,
+      topPackages: pkgs
+        .sort((a, b) => b.booked - a.booked)
+        .slice(0, 3)
+        .map(p => ({ name: p.name, booked: p.booked, slots: p.slots })),
+    };
+  },
+
+  getBookingTrend() {
+    // Simulate 6-month trend
+    return [
+      { month: 'Oct', bookings: 4 },
+      { month: 'Nov', bookings: 7 },
+      { month: 'Dec', bookings: 11 },
+      { month: 'Jan', bookings: 9 },
+      { month: 'Feb', bookings: 13 },
+      { month: 'Mar', bookings: 8 },
+    ];
+  },
+};
+
+// ── VALIDATION HELPERS ─────────────────────────────────────────
+const Validator = {
+  sanitize: (str) => String(str).replace(/[<>"'&]/g, c => ({ '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":"&#39;", '&':'&amp;' }[c])),
+  isEmail:  (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
+  isPhone:  (v) => /^\+?[\d\s\-()]{8,15}$/.test(v),
+  required: (v) => v !== null && v !== undefined && String(v).trim() !== '',
+
+  booking(data) {
+    const errors = {};
+    if (!Validator.required(data.customerId)) errors.customerId = 'Customer is required';
+    if (!Validator.required(data.packageId))  errors.packageId  = 'Package is required';
+    if (!data.travellers || data.travellers < 1) errors.travellers = 'Min 1 traveller';
+    if (!data.travelDate) errors.travelDate = 'Travel date required';
+    return { valid: Object.keys(errors).length === 0, errors };
+  },
+
+  package(data) {
+    const errors = {};
+    if (!Validator.required(data.name))  errors.name  = 'Name required';
+    if (!data.price || data.price < 1)   errors.price = 'Valid price required';
+    if (!data.slots || data.slots < 1)   errors.slots = 'Min 1 slot required';
+    return { valid: Object.keys(errors).length === 0, errors };
+  },
+
+  user(data) {
+    const errors = {};
+    if (!Validator.required(data.name))      errors.name  = 'Name required';
+    if (!Validator.isEmail(data.email ?? '')) errors.email = 'Valid email required';
+    if (!data.role)                           errors.role  = 'Role required';
+    return { valid: Object.keys(errors).length === 0, errors };
+  },
+};
+
+// ── UTILITY FUNCTIONS ──────────────────────────────────────────
+const Utils = {
+  formatINR: (n) => new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n),
+  formatDate: (d) => d ? new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : '—',
+  formatDateTime: (d) => d ? new Date(d).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' }) : '—',
+  truncate: (s, n = 30) => s?.length > n ? s.slice(0, n) + '…' : (s ?? ''),
+  debounce(fn, ms) {
+    let t;
+    return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+  },
+  generateId: (prefix) => `${prefix}${Date.now().toString(36).toUpperCase()}`,
+};
+
+// Expose to global scope (simulating ES module exports for single-file use)
+window.AdminCore = {
+  ROLES, PERMISSIONS, BOOKING_STATUS, PAYMENT_STATUS,
+  AuthService, BookingService, PackageService,
+  UserService, FinanceService, CMSService, AnalyticsService,
+  Validator, Utils, DB,
+};
+
+</script>
+<script>
+// Override UI component colors for light theme
+/**
+ * AL-NOOR ADMIN — UI Components
+ * ============================================================
+ * Reusable, DRY component factory functions.
+ * Each component returns an HTMLElement or a render string.
+ * ============================================================
+ */
+
+'use strict';
+
+const UI = {
+
+  // ── TOAST NOTIFICATIONS ──────────────────────────────────
+  toast(message, type = 'default', duration = 3500) {
+    const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle', default: 'fa-bell' };
+    const container = document.getElementById('toast-container');
+    const el = document.createElement('div');
+    el.className = `toast ${type}`;
+    el.innerHTML = `<i class="fas ${icons[type] ?? icons.default}"></i><span>${message}</span>`;
+    container.appendChild(el);
+    setTimeout(() => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateX(20px)';
+      el.style.transition = 'all 0.3s ease';
+      setTimeout(() => el.remove(), 300);
+    }, duration);
+  },
+
+  // ── MODAL ─────────────────────────────────────────────────
+  modal({ title, content, footer = null, size = 'default' }) {
+    const overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    const maxW = size === 'lg' ? '760px' : size === 'sm' ? '380px' : '560px';
+    overlay.innerHTML = `
+      <div class="modal" style="max-width:${maxW}">
+        <div class="modal-header">
+          <h3>${title}</h3>
+          <button class="btn btn-ghost btn-sm btn-icon modal-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body">${content}</div>
+        ${footer ? `<div class="modal-footer">${footer}</div>` : ''}
+      </div>`;
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('open'));
+    overlay.querySelector('.modal-close-btn').onclick = () => UI.closeModal(overlay);
+    overlay.onclick = (e) => { if (e.target === overlay) UI.closeModal(overlay); };
+    return overlay;
+  },
+
+  closeModal(overlay) {
+    overlay.classList.remove('open');
+    setTimeout(() => overlay.remove(), 300);
+  },
+
+  // ── CONFIRM DIALOG ────────────────────────────────────────
+  async confirm(message, title = 'Confirm Action') {
+    return new Promise(resolve => {
+      const overlay = UI.modal({
+        title,
+        content: `<p style="color:var(--text-secondary);line-height:1.6">${message}</p>`,
+        footer: `
+          <button class="btn btn-ghost" id="modal-cancel-btn">Cancel</button>
+          <button class="btn btn-danger" id="modal-confirm-btn"><i class="fas fa-check"></i> Confirm</button>`,
+      });
+      overlay.querySelector('#modal-cancel-btn').onclick  = () => { UI.closeModal(overlay); resolve(false); };
+      overlay.querySelector('#modal-confirm-btn').onclick = () => { UI.closeModal(overlay); resolve(true); };
+    });
+  },
+
+  // ── DATA TABLE ────────────────────────────────────────────
+  /**
+   * @param {string[]} columns - { key, label, render? }
+   * @param {object[]} data
+   * @param {object} opts - { sortable, actions }
+   */
+  renderTable(columns, data, opts = {}) {
+    if (!data.length) {
+      return `<div style="text-align:center;padding:3rem;color:var(--text-muted)">
+        <i class="fas fa-inbox" style="font-size:2rem;display:block;margin-bottom:1rem;opacity:.4"></i>
+        No records found
+      </div>`;
+    }
+    const thead = `<thead><tr>${columns.map(c =>
+      `<th data-key="${c.key}">${c.label} ${opts.sortable ? '<i class="fas fa-sort" style="opacity:.3;font-size:.6rem"></i>' : ''}</th>`
+    ).join('')}${opts.actions ? '<th>Actions</th>' : ''}</tr></thead>`;
+
+    const tbody = `<tbody>${data.map(row => `
+      <tr data-id="${row.id ?? ''}">
+        ${columns.map(c => `<td>${c.render ? c.render(row[c.key], row) : (row[c.key] ?? '—')}</td>`).join('')}
+        ${opts.actions ? `<td><div style="display:flex;gap:6px">${opts.actions(row)}</div></td>` : ''}
+      </tr>`).join('')}</tbody>`;
+
+    return `<div class="data-table-wrap"><table class="data-table">${thead}${tbody}</table></div>`;
+  },
+
+  // ── STATUS BADGE ──────────────────────────────────────────
+  badge(status) {
+    const map = {
+      confirmed: 'badge-confirmed', pending: 'badge-pending',
+      cancelled: 'badge-cancelled', rebooked: 'badge-rebooked',
+      paid: 'badge-confirmed', partial: 'badge-pending',
+      refunded: 'badge-cancelled',
+      active: 'badge-confirmed', soldout: 'badge-cancelled', inactive: 'badge-pending',
+      super_admin: 'badge-admin', admin: 'badge-admin', agent: 'badge-agent',
+    };
+    return `<span class="badge ${map[status] ?? ''}">${status}</span>`;
+  },
+
+  // ── SIMPLE BAR CHART (Canvas-based, no dependencies) ──────
+  drawBarChart(canvasId, labels, data, color = '#d4af37') {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.offsetWidth; const H = canvas.offsetHeight;
+    canvas.width = W; canvas.height = H;
+
+    const PAD = { top: 20, right: 20, bottom: 40, left: 60 };
+    const cW = W - PAD.left - PAD.right;
+    const cH = H - PAD.top - PAD.bottom;
+
+    ctx.clearRect(0, 0, W, H);
+
+    const max = Math.max(...data) * 1.15 || 1;
+    const barW = (cW / labels.length) * 0.6;
+    const gap  = (cW / labels.length) * 0.4;
+
+    // Grid lines
+    const gridLines = 4;
+    ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+    ctx.fillStyle   = 'rgba(139,148,158,0.6)';
+    ctx.font        = '10px Inter, Poppins, sans-serif';
+    ctx.textAlign   = 'right';
+    for (let i = 0; i <= gridLines; i++) {
+      const y = PAD.top + cH - (i / gridLines) * cH;
+      ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + cW, y); ctx.stroke();
+      const val = Math.round((max / gridLines) * i);
+      ctx.fillText(val >= 100000 ? `₹${(val/100000).toFixed(1)}L` : val, PAD.left - 8, y + 4);
+    }
+
+    // Bars
+    labels.forEach((label, i) => {
+      const x    = PAD.left + i * (barW + gap) + gap / 2;
+      const barH = (data[i] / max) * cH;
+      const y    = PAD.top + cH - barH;
+
+      // Bar gradient
+      const grad = ctx.createLinearGradient(0, y, 0, y + barH);
+      grad.addColorStop(0, color);
+      grad.addColorStop(1, color + '40');
+      ctx.fillStyle   = grad;
+      ctx.beginPath();
+      ctx.roundRect?.(x, y, barW, barH, [4, 4, 0, 0]) ?? ctx.rect(x, y, barW, barH);
+      ctx.fill();
+
+      // Label
+      ctx.fillStyle   = 'rgba(139,148,158,0.8)';
+      ctx.textAlign   = 'center';
+      ctx.font        = '10px Inter, Poppins, sans-serif';
+      ctx.fillText(label, x + barW / 2, PAD.top + cH + 18);
+    });
+  },
+
+  // ── LINE CHART ────────────────────────────────────────────
+  drawLineChart(canvasId, labels, data, color = '#3fb950') {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.offsetWidth; const H = canvas.offsetHeight;
+    canvas.width = W; canvas.height = H;
+
+    const PAD = { top: 20, right: 20, bottom: 36, left: 40 };
+    const cW = W - PAD.left - PAD.right;
+    const cH = H - PAD.top - PAD.bottom;
+
+    ctx.clearRect(0, 0, W, H);
+    const max = Math.max(...data) * 1.2 || 1;
+    const pts = labels.map((_, i) => ({
+      x: PAD.left + (i / (labels.length - 1)) * cW,
+      y: PAD.top + cH - (data[i] / max) * cH,
+    }));
+
+    // Area fill
+    const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + cH);
+    grad.addColorStop(0, color + '30'); grad.addColorStop(1, color + '00');
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, PAD.top + cH);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.lineTo(pts[pts.length - 1].x, PAD.top + cH);
+    ctx.closePath();
+    ctx.fillStyle = grad; ctx.fill();
+
+    // Line
+    ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y);
+    pts.forEach(p => ctx.lineTo(p.x, p.y));
+    ctx.strokeStyle = color; ctx.lineWidth = 2; ctx.stroke();
+
+    // Dots + Labels
+    pts.forEach((p, i) => {
+      ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+      ctx.fillStyle = color; ctx.fill();
+      ctx.strokeStyle = 'var(--bg-card)'; ctx.lineWidth = 2; ctx.stroke();
+
+      ctx.fillStyle = 'rgba(139,148,158,0.8)';
+      ctx.font = '10px Inter, Poppins, sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(labels[i], p.x, PAD.top + cH + 16);
+    });
+  },
+
+  // ── DONUT CHART ───────────────────────────────────────────
+  drawDonutChart(canvasId, segments) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.offsetWidth; const H = canvas.offsetHeight;
+    canvas.width = W; canvas.height = H;
+
+    const cx = W / 2, cy = H / 2;
+    const R = Math.min(cx, cy) - 16;
+    const total = segments.reduce((s, g) => s + g.value, 0);
+    let angle = -Math.PI / 2;
+
+    segments.forEach(seg => {
+      const slice = (seg.value / total) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, angle, angle + slice);
+      ctx.arc(cx, cy, R * 0.55, angle + slice, angle, true);
+      ctx.closePath();
+      ctx.fillStyle = seg.color; ctx.fill();
+      angle += slice;
+    });
+
+    // Center text
+    ctx.textAlign = 'center';
+    ctx.font = `bold 20px Inter, Poppins, sans-serif`;
+    ctx.fillStyle = '#e6edf3';
+    ctx.fillText(total, cx, cy + 4);
+    ctx.font = '10px Inter, Poppins, sans-serif';
+    ctx.fillStyle = 'rgba(139,148,158,0.8)';
+    ctx.fillText('Total', cx, cy + 18);
+  },
+
+  // ── SEARCH FILTER ─────────────────────────────────────────
+  setupTableSearch(inputId, tableParentId, columns) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    input.addEventListener('input', Utils.debounce(() => {
+      const q = input.value.toLowerCase();
+      document.querySelectorAll(`#${tableParentId} tbody tr`).forEach(row => {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(q) ? '' : 'none';
+      });
+    }, 200));
+  },
+
+  // ── FORM HELPERS ──────────────────────────────────────────
+  showFieldError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+    field.style.borderColor = 'var(--status-cancelled)';
+    const existing = field.nextElementSibling;
+    if (existing?.classList.contains('field-error')) existing.remove();
+    const err = document.createElement('span');
+    err.className = 'field-error';
+    err.style.cssText = 'font-size:.7rem;color:var(--status-cancelled);margin-top:3px';
+    err.textContent = message;
+    field.insertAdjacentElement('afterend', err);
+  },
+
+  clearFieldErrors(formEl) {
+    formEl.querySelectorAll('.field-error').forEach(e => e.remove());
+    formEl.querySelectorAll('.form-control').forEach(f => f.style.borderColor = '');
+  },
+
+  serializeForm(formEl) {
+    const data = {};
+    formEl.querySelectorAll('[name]').forEach(el => {
+      data[el.name] = el.type === 'checkbox' ? el.checked : el.value;
+    });
+    return data;
+  },
+
+  // ── PAGINATION ────────────────────────────────────────────
+  paginate(data, page = 1, perPage = 10) {
+    const total = Math.ceil(data.length / perPage);
+    const items = data.slice((page - 1) * perPage, page * perPage);
+    return { items, page, total, perPage, hasNext: page < total, hasPrev: page > 1 };
+  },
+
+  renderPager(containerId, { page, total, total: totalPages }, onPage) {
+    const el = document.getElementById(containerId);
+    if (!el || totalPages <= 1) { if (el) el.innerHTML = ''; return; }
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;padding:14px 0;justify-content:flex-end">
+        <button class="btn btn-ghost btn-sm" ${page === 1 ? 'disabled' : ''} onclick="(${onPage})(${page - 1})">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span style="font-size:.8rem;color:var(--text-muted)">Page ${page} of ${totalPages}</span>
+        <button class="btn btn-ghost btn-sm" ${page === totalPages ? 'disabled' : ''} onclick="(${onPage})(${page + 1})">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>`;
+  },
+};
+
+window.UI = UI;
+
+</script>
+<script>
+/**
+ * AL-NOOR ADMIN — Page Controllers
+ * ============================================================
+ * Each controller manages one page section.
+ * Pattern: init() → render() → bind event listeners
+ * All controllers are DRY, composing shared UI & Services.
+ * ============================================================
+ */
+
+'use strict';
+
+// ─────────────────────────────────────────────────────────────
+// CONTROLLER 1: DASHBOARD / ANALYTICS
+// ─────────────────────────────────────────────────────────────
+const DashboardController = {
+  init() {
+    this.render();
+    this.initCharts();
+  },
+
+  render() {
+    const { Utils } = window.AdminCore;
+    const metrics = window.AdminCore.AnalyticsService.getDashboardMetrics();
+    const { totalRevenue, netRevenue, totalRefunds, confirmed, pending, cancelled, totalCustomers, activePackages, topPackages } = metrics;
+
+    const statCards = [
+      { label: 'Net Revenue',       value: Utils.formatINR(netRevenue),  icon: 'fa-indian-rupee-sign', accent: '#d4af37', trend: '+18%', dir: 'up' },
+      { label: 'Confirmed Bookings',value: confirmed,                     icon: 'fa-calendar-check',    accent: '#3fb950', trend: '+12%', dir: 'up' },
+      { label: 'Pending Review',    value: pending,                       icon: 'fa-clock',             accent: '#d29922', trend: '2 new', dir: '' },
+      { label: 'Total Customers',   value: totalCustomers,                icon: 'fa-users',             accent: '#58a6ff', trend: '+3 this week', dir: 'up' },
+      { label: 'Active Packages',   value: activePackages,                icon: 'fa-box-open',          accent: '#a78bfa', trend: 'stable', dir: '' },
+      { label: 'Total Refunds',     value: Utils.formatINR(totalRefunds), icon: 'fa-rotate-left',       accent: '#f85149', trend: '-5% MoM', dir: 'up' },
+    ].map(s => `
+      <div class="stat-card" style="--stat-accent:${s.accent}">
+        <div class="stat-icon"><i class="fas ${s.icon}"></i></div>
+        <div class="stat-value">${s.value}</div>
+        <div class="stat-label">${s.label}</div>
+        <div class="stat-trend ${s.dir}">
+          ${s.dir === 'up' ? '<i class="fas fa-arrow-trend-up"></i>' : s.dir === 'down' ? '<i class="fas fa-arrow-trend-down"></i>' : '<i class="fas fa-minus"></i>'}
+          ${s.trend}
+        </div>
+      </div>`).join('');
+
+    const topPkgHtml = topPackages.map(p => {
+      const pct = Math.round((p.booked / p.slots) * 100);
+      return `
+        <div style="margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:5px">
+            <span style="color:var(--text-primary)">${Utils.truncate(p.name, 28)}</span>
+            <span style="color:var(--text-muted)">${p.booked}/${p.slots}</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        </div>`;
+    }).join('');
+
+    // Recent bookings (last 4)
+    const recentBookings = window.AdminCore.BookingService.getAll().slice(-4).reverse();
+    const recentHtml = recentBookings.map(b => `
+      <tr>
+        <td><strong style="color:var(--text-primary)">${b.id}</strong></td>
+        <td>${b.customer?.name ?? '—'}</td>
+        <td>${Utils.truncate(b.package?.name ?? '—', 22)}</td>
+        <td>${UI.badge(b.status)}</td>
+        <td style="color:var(--secondary)">${Utils.formatINR(b.amount)}</td>
+      </tr>`).join('');
+
+    document.getElementById('dashboard-content').innerHTML = `
+      <div class="stats-grid">${statCards}</div>
+      <div class="grid-2" style="margin-bottom:20px">
+        <div class="panel">
+          <div class="panel-header"><h3><i class="fas fa-chart-bar" style="color:var(--secondary);margin-right:8px"></i>Revenue (2026)</h3></div>
+          <div class="panel-body"><div class="chart-wrap"><canvas id="chart-revenue"></canvas></div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h3><i class="fas fa-chart-line" style="color:var(--status-confirmed);margin-right:8px"></i>Booking Trend</h3></div>
+          <div class="panel-body"><div class="chart-wrap"><canvas id="chart-trend"></canvas></div></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="panel">
+          <div class="panel-header"><h3>Recent Bookings</h3><a href="#" onclick="Router.navigate('bookings')" style="font-size:.75rem;color:var(--secondary)">View All</a></div>
+          <div class="panel-body" style="padding:0">
+            <table class="data-table">
+              <thead><tr><th>ID</th><th>Customer</th><th>Package</th><th>Status</th><th>Amount</th></tr></thead>
+              <tbody>${recentHtml}</tbody>
+            </table>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><h3>Package Occupancy</h3></div>
+          <div class="panel-body">${topPkgHtml}
+            <div style="margin-top:20px;text-align:center">
+              <div class="chart-wrap" style="height:160px"><canvas id="chart-donut"></canvas></div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  },
+
+  initCharts() {
+    const { AnalyticsService, FinanceService } = window.AdminCore;
+
+    // Revenue bar chart
+    const monthly = FinanceService.getMonthlyRevenue();
+    const revLabels = monthly.map(m => m.month);
+    const revData   = monthly.map(m => m.revenue);
+    setTimeout(() => {
+      window.UI.drawBarChart('chart-revenue', revLabels, revData);
+      const trend = AnalyticsService.getBookingTrend();
+      window.UI.drawLineChart('chart-trend', trend.map(t => t.month), trend.map(t => t.bookings));
+      window.UI.drawDonutChart('chart-donut', [
+        { value: window.AdminCore.BookingService.getStats().confirmed, color: '#3fb950' },
+        { value: window.AdminCore.BookingService.getStats().pending,   color: '#d29922' },
+        { value: window.AdminCore.BookingService.getStats().cancelled, color: '#f85149' },
+      ]);
+    }, 50);
+  },
+};
+
+// ─────────────────────────────────────────────────────────────
+// CONTROLLER 2: BOOKINGS
+// ─────────────────────────────────────────────────────────────
+const BookingsController = {
+  currentPage: 1,
+  filterStatus: 'all',
+  searchQuery: '',
+
+  init() { this.render(); this.bindEvents(); },
+
+  getFiltered() {
+    let data = window.AdminCore.BookingService.getAll();
+    if (this.filterStatus !== 'all') data = data.filter(b => b.status === this.filterStatus);
+    if (this.searchQuery) {
+      const q = this.searchQuery.toLowerCase();
+      data = data.filter(b =>
+        b.id.toLowerCase().includes(q) ||
+        b.customer?.name?.toLowerCase().includes(q) ||
+        b.package?.name?.toLowerCase().includes(q)
+      );
+    }
+    return data;
+  },
+
+  render() {
+    const { Utils } = window.AdminCore;
+    const { UI } = window;
+    const filtered  = this.getFiltered();
+    const paginated = UI.paginate(filtered, this.currentPage, 8);
+
+    const cols = [
+      { key: 'id',      label: 'Booking ID', render: v => `<strong style="color:var(--text-primary)">${v}</strong>` },
+      { key: 'customer', label: 'Customer',  render: (v, r) => v ? `<div>${v.name}</div><div style="font-size:.7rem;color:var(--text-muted)">${v.phone}</div>` : '—' },
+      { key: 'package',  label: 'Package',   render: (v) => `<div>${Utils.truncate(v?.name ?? '—', 26)}</div><div style="font-size:.7rem;color:var(--text-muted)">${v?.type ?? ''}</div>` },
+      { key: 'travellers', label: 'Pax' },
+      { key: 'travelDate', label: 'Travel',  render: v => Utils.formatDate(v) },
+      { key: 'amount',  label: 'Amount',     render: v => `<span style="color:var(--secondary)">${Utils.formatINR(v)}</span>` },
+      { key: 'status',  label: 'Status',     render: v => UI.badge(v) },
+      { key: 'paymentStatus', label: 'Payment', render: v => UI.badge(v) },
+    ];
+
+    const statusBtns = ['all','confirmed','pending','cancelled','rebooked'].map(s => `
+      <button class="btn btn-sm ${this.filterStatus === s ? 'btn-primary' : 'btn-ghost'}" data-filter="${s}">${s === 'all' ? 'All' : s.charAt(0).toUpperCase() + s.slice(1)}</button>`
+    ).join('');
+
+    document.getElementById('bookings-content').innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <div class="topbar-search" style="flex:1;min-width:200px;max-width:300px">
+          <i class="fas fa-search"></i>
+          <input id="booking-search" placeholder="Search by ID, name, package…">
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">${statusBtns}</div>
+        <button class="btn btn-primary" id="add-booking-btn" style="margin-left:auto">
+          <i class="fas fa-plus"></i> New Booking
+        </button>
+      </div>
+      <div class="panel">
+        ${UI.renderTable(cols, paginated.items, {
+          sortable: true,
+          actions: (row) => `
+            <button class="btn btn-ghost btn-sm btn-icon" title="View" onclick="BookingsController.viewBooking('${row.id}')"><i class="fas fa-eye"></i></button>
+            <button class="btn btn-ghost btn-sm btn-icon" title="Edit" onclick="BookingsController.editBooking('${row.id}')"><i class="fas fa-pen"></i></button>
+            <button class="btn btn-danger btn-sm btn-icon" title="Cancel" onclick="BookingsController.cancelBooking('${row.id}')"><i class="fas fa-ban"></i></button>`,
+        })}
+        <div id="booking-pager"></div>
+      </div>`;
+
+    UI.renderPager('booking-pager', { page: this.currentPage, total: paginated.total }, `(p) => { BookingsController.currentPage = p; BookingsController.render(); }`);
+    this.bindEvents();
+  },
+
+  bindEvents() {
+    document.getElementById('booking-search')?.addEventListener('input', window.AdminCore.Utils.debounce(e => {
+      this.searchQuery = e.target.value; this.currentPage = 1; this.render();
+    }, 250));
+
+    document.querySelectorAll('[data-filter]').forEach(btn => btn.addEventListener('click', () => {
+      this.filterStatus = btn.dataset.filter; this.currentPage = 1; this.render();
+    }));
+
+    document.getElementById('add-booking-btn')?.addEventListener('click', () => this.openBookingForm());
+  },
+
+  openBookingForm(existingId = null) {
+    const booking   = existingId ? window.AdminCore.BookingService.getById(existingId) : null;
+    const customers = window.AdminCore.UserService.getCustomers();
+    const packages  = window.AdminCore.PackageService.getAll();
+    const agents    = window.AdminCore.UserService.getStaff().filter(u => u.role !== 'super_admin');
+
+    const customerOpts = customers.map(c => `<option value="${c.id}" ${booking?.customerId === c.id ? 'selected' : ''}>${c.name} — ${c.phone}</option>`).join('');
+    const packageOpts  = packages.map(p => `<option value="${p.id}" ${booking?.packageId === p.id ? 'selected' : ''}>${p.name} (${window.AdminCore.Utils.formatINR(p.price)})</option>`).join('');
+    const agentOpts    = `<option value="">— No Agent —</option>` + agents.map(a => `<option value="${a.id}" ${booking?.agentId === a.id ? 'selected' : ''}>${a.name}</option>`).join('');
+
+    const content = `
+      <form id="booking-form" class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Customer *</label>
+          <select class="form-control" name="customerId" id="f-customerId" required><option value="">Select customer…</option>${customerOpts}</select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Package *</label>
+          <select class="form-control" name="packageId" id="f-packageId" required><option value="">Select package…</option>${packageOpts}</select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Assigned Agent</label>
+          <select class="form-control" name="agentId" id="f-agentId">${agentOpts}</select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">No. of Travellers *</label>
+          <input type="number" class="form-control" name="travellers" id="f-travellers" min="1" max="20" value="${booking?.travellers ?? 1}" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Travel Date *</label>
+          <input type="date" class="form-control" name="travelDate" id="f-travelDate" value="${booking?.travelDate ?? ''}" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount (₹) *</label>
+          <input type="number" class="form-control" name="amount" id="f-amount" value="${booking?.amount ?? ''}" min="0" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount Paid (₹)</label>
+          <input type="number" class="form-control" name="paid" id="f-paid" value="${booking?.paid ?? 0}" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status</label>
+          <select class="form-control" name="status" id="f-status">
+            ${['confirmed','pending','cancelled','rebooked'].map(s => `<option value="${s}" ${(booking?.status ?? 'pending') === s ? 'selected':''}>${s}</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Notes</label>
+          <textarea class="form-control" name="notes" id="f-notes">${booking?.notes ?? ''}</textarea>
+        </div>
+      </form>`;
+
+    const overlay = UI.modal({
+      title: existingId ? `Edit Booking — ${existingId}` : 'Create New Booking',
+      content,
+      size: 'lg',
+      footer: `
+        <button class="btn btn-ghost" onclick="UI.closeModal(this.closest('.modal-overlay'))">Cancel</button>
+        <button class="btn btn-primary" id="save-booking-btn">${existingId ? 'Update' : 'Create'} Booking</button>`,
+    });
+
+    overlay.querySelector('#save-booking-btn').addEventListener('click', () => {
+      const form = overlay.querySelector('#booking-form');
+      UI.clearFieldErrors(form);
+      const data = UI.serializeForm(form);
+      data.travellers = +data.travellers;
+      data.amount     = +data.amount;
+      data.paid       = +data.paid;
+
+      const { valid, errors } = window.AdminCore.Validator.booking(data);
+      if (!valid) {
+        Object.entries(errors).forEach(([k, v]) => UI.showFieldError(`f-${k}`, v));
+        return;
+      }
+
+      if (existingId) window.AdminCore.BookingService.update(existingId, data);
+      else window.AdminCore.BookingService.create(data);
+
+      UI.closeModal(overlay);
+      this.render();
+      UI.toast(existingId ? 'Booking updated successfully' : 'New booking created', 'success');
+    });
+  },
+
+  viewBooking(id) {
+    const b = window.AdminCore.BookingService.getById(id);
+    const { Utils } = window.AdminCore;
+    UI.modal({
+      title: `Booking Details — ${id}`,
+      size: 'lg',
+      content: `
+        <div class="form-grid" style="gap:12px">
+          ${[
+            ['Customer', b.customer?.name + ' · ' + b.customer?.phone],
+            ['Package', b.package?.name],
+            ['Type', b.package?.type?.toUpperCase()],
+            ['Travellers', b.travellers],
+            ['Travel Date', Utils.formatDate(b.travelDate)],
+            ['Booking Date', Utils.formatDate(b.bookingDate)],
+            ['Amount', Utils.formatINR(b.amount)],
+            ['Amount Paid', Utils.formatINR(b.paid)],
+            ['Balance Due', Utils.formatINR(b.balance)],
+            ['Status', UI.badge(b.status)],
+            ['Payment', UI.badge(b.paymentStatus)],
+            ['Agent', b.agent?.name ?? 'Direct'],
+            ['Notes', b.notes || '—'],
+          ].map(([k, v]) => `
+            <div class="form-group">
+              <div class="form-label">${k}</div>
+              <div style="color:var(--text-primary);font-size:.9rem;padding:8px 0">${v}</div>
+            </div>`).join('')}
+        </div>`,
+    });
+  },
+
+  editBooking(id) { this.openBookingForm(id); },
+
+  async cancelBooking(id) {
+    const ok = await UI.confirm(`Are you sure you want to cancel booking <strong>${id}</strong>? This action can be undone by editing the booking.`);
+    if (!ok) return;
+    window.AdminCore.BookingService.updateStatus(id, 'cancelled');
+    this.render();
+    UI.toast(`Booking ${id} cancelled`, 'error');
+  },
+};
+
+// ─────────────────────────────────────────────────────────────
+// CONTROLLER 3: PACKAGES
+// ─────────────────────────────────────────────────────────────
+const PackagesController = {
+  init() { this.render(); },
+
+  render() {
+    const { PackageService, Utils } = window.AdminCore;
+    const pkgs = PackageService.getAll();
+    const cards = pkgs.map(p => {
+      const avail = PackageService.getAvailabilityPct(p);
+      const availColor = avail > 50 ? 'var(--status-confirmed)' : avail > 20 ? 'var(--status-pending)' : 'var(--status-cancelled)';
+      return `
+        <div class="panel" style="transition:transform .2s;cursor:default" onmouseenter="this.style.transform='translateY(-4px)'" onmouseleave="this.style.transform=''">
+          <div class="panel-header">
+            <div>
+              <span style="font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-bottom:4px;display:block">${p.type}</span>
+              <h3>${p.name}</h3>
+            </div>
+            ${UI.badge(p.status)}
+          </div>
+          <div class="panel-body">
+            <div style="font-size:1.6rem;font-weight:700;color:var(--secondary);margin-bottom:4px">${Utils.formatINR(p.price)}</div>
+            <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:14px"><i class="fas fa-clock" style="margin-right:4px"></i>${p.duration}</div>
+            ${p.promo ? `<div style="background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.25);border-radius:6px;padding:7px 10px;font-size:.75rem;color:var(--secondary);margin-bottom:14px"><i class="fas fa-tag" style="margin-right:6px"></i>${p.promoText}</div>` : ''}
+            <div style="margin-bottom:14px">
+              ${p.highlights.map(h => `<div style="font-size:.78rem;color:var(--text-secondary);padding:3px 0"><i class="fas fa-check" style="color:var(--status-confirmed);margin-right:6px;font-size:.6rem"></i>${h}</div>`).join('')}
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+              <span style="font-size:.75rem;color:var(--text-muted)">Availability</span>
+              <span style="font-size:.75rem;color:${availColor}">${p.slots - p.booked} / ${p.slots} slots free</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" style="width:${100 - avail}%;background:${availColor}"></div></div>
+            <div style="display:flex;gap:8px;margin-top:16px">
+              <button class="btn btn-ghost btn-sm" style="flex:1" onclick="PackagesController.editPackage('${p.id}')"><i class="fas fa-pen"></i> Edit</button>
+              <button class="btn btn-danger btn-sm btn-icon" onclick="PackagesController.deletePackage('${p.id}')"><i class="fas fa-trash"></i></button>
+              <button class="btn btn-ghost btn-sm btn-icon" onclick="PackagesController.togglePromo('${p.id}')" title="Toggle Promo"><i class="fas fa-tag"></i></button>
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('packages-content').innerHTML = `
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn btn-primary" onclick="PackagesController.editPackage()"><i class="fas fa-plus"></i> New Package</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px">${cards}</div>`;
+  },
+
+  editPackage(id = null) {
+    const pkg = id ? window.AdminCore.PackageService.getById(id) : null;
+    const content = `
+      <form id="pkg-form" class="form-grid">
+        <div class="form-group full"><label class="form-label">Package Name *</label>
+          <input class="form-control" name="name" id="pf-name" value="${pkg?.name ?? ''}" required placeholder="e.g. Noor Umrah — Premium"></div>
+        <div class="form-group"><label class="form-label">Type *</label>
+          <select class="form-control" name="type" id="pf-type">
+            ${['umrah','hajj','ziyarat'].map(t => `<option ${(pkg?.type ?? 'umrah') === t ? 'selected' : ''}>${t}</option>`).join('')}
+          </select></div>
+        <div class="form-group"><label class="form-label">Duration</label>
+          <input class="form-control" name="duration" id="pf-duration" value="${pkg?.duration ?? ''}" placeholder="14 Days"></div>
+        <div class="form-group"><label class="form-label">Price (₹) *</label>
+          <input type="number" class="form-control" name="price" id="pf-price" value="${pkg?.price ?? ''}" min="1000"></div>
+        <div class="form-group"><label class="form-label">Total Slots *</label>
+          <input type="number" class="form-control" name="slots" id="pf-slots" value="${pkg?.slots ?? ''}" min="1"></div>
+        <div class="form-group"><label class="form-label">Status</label>
+          <select class="form-control" name="status">
+            ${['active','inactive','soldout'].map(s => `<option ${(pkg?.status ?? 'active') === s ? 'selected':''}>${s}</option>`).join('')}
+          </select></div>
+        <div class="form-group full"><label class="form-label">Highlights (comma-separated)</label>
+          <textarea class="form-control" name="highlightsRaw">${pkg?.highlights?.join(', ') ?? ''}</textarea></div>
+        <div class="form-group full">
+          <div class="form-row">
+            <label class="toggle-switch"><input type="checkbox" name="promo" ${pkg?.promo ? 'checked':''}><span class="toggle-slider"></span></label>
+            <div><div style="font-size:.85rem;font-weight:600">Promotional Banner</div><div style="font-size:.75rem;color:var(--text-muted)">Show promo label on package card</div></div>
+          </div>
+        </div>
+        <div class="form-group full"><label class="form-label">Promo Text</label>
+          <input class="form-control" name="promoText" value="${pkg?.promoText ?? ''}" placeholder="e.g. Early Bird 10% Off"></div>
+      </form>`;
+
+    const overlay = UI.modal({
+      title: id ? `Edit Package — ${id}` : 'Create New Package',
+      content, size: 'lg',
+      footer: `
+        <button class="btn btn-ghost" onclick="UI.closeModal(this.closest('.modal-overlay'))">Cancel</button>
+        <button class="btn btn-primary" id="save-pkg-btn">${id ? 'Update' : 'Create'}</button>`,
+    });
+
+    overlay.querySelector('#save-pkg-btn').addEventListener('click', () => {
+      const form = overlay.querySelector('#pkg-form');
+      UI.clearFieldErrors(form);
+      const data = UI.serializeForm(form);
+      data.price  = +data.price;
+      data.slots  = +data.slots;
+      data.highlights = data.highlightsRaw.split(',').map(h => h.trim()).filter(Boolean);
+      delete data.highlightsRaw;
+
+      const { valid, errors } = window.AdminCore.Validator.package(data);
+      if (!valid) { Object.entries(errors).forEach(([k,v]) => UI.showFieldError(`pf-${k}`, v)); return; }
+
+      if (id) window.AdminCore.PackageService.update(id, data);
+      else window.AdminCore.PackageService.create(data);
+      UI.closeModal(overlay);
+      this.render();
+      UI.toast(id ? 'Package updated' : 'Package created', 'success');
+    });
+  },
+
+  async deletePackage(id) {
+    const ok = await UI.confirm(`Delete package <strong>${id}</strong>? All associated bookings will remain but lose the package reference.`);
+    if (!ok) return;
+    window.AdminCore.PackageService.delete(id);
+    this.render();
+    UI.toast('Package deleted', 'error');
+  },
+
+  togglePromo(id) {
+    const pkg = window.AdminCore.PackageService.getById(id);
+    window.AdminCore.PackageService.update(id, { promo: !pkg.promo });
+    this.render();
+    UI.toast(`Promo ${!pkg.promo ? 'enabled' : 'disabled'} for ${pkg.name}`, 'info');
+  },
+};
+
+// ─────────────────────────────────────────────────────────────
+// CONTROLLER 4: USERS & ROLES
+// ─────────────────────────────────────────────────────────────
+const UsersController = {
+  currentTab: 'staff',
+
+  init() { this.render(); },
+
+  render() {
+    const { UserService, ROLES, Utils } = window.AdminCore;
+    const staff     = UserService.getStaff();
+    const customers = UserService.getCustomers();
+
+    const staffCols = [
+      { key: 'avatar',    label: '', render: (v, r) => `<div class="user-avatar" style="width:32px;height:32px;font-size:.65rem">${r.avatar}</div>` },
+      { key: 'name',      label: 'Name', render: (v, r) => `<div style="color:var(--text-primary);font-weight:600">${v}</div><div style="font-size:.7rem;color:var(--text-muted)">${r.email}</div>` },
+      { key: 'role',      label: 'Role', render: v => UI.badge(v) },
+      { key: 'city',      label: 'City' },
+      { key: 'lastLogin', label: 'Last Login', render: v => Utils.formatDate(v) },
+      { key: 'active',    label: 'Status', render: v => `<span style="color:${v?'var(--status-confirmed)':'var(--status-cancelled)'}">${v?'Active':'Inactive'}</span>` },
+    ];
+
+    const custCols = [
+      { key: 'avatar',    label: '', render: (v, r) => `<div class="user-avatar" style="width:32px;height:32px;font-size:.65rem">${r.avatar}</div>` },
+      { key: 'name',      label: 'Name', render: (v, r) => `<div style="color:var(--text-primary);font-weight:600">${v}</div><div style="font-size:.7rem;color:var(--text-muted)">${r.email}</div>` },
+      { key: 'phone',     label: 'Phone' },
+      { key: 'city',      label: 'City' },
+      { key: 'createdAt', label: 'Joined', render: v => Utils.formatDate(v) },
+      { key: 'active',    label: 'Status', render: v => `<span style="color:${v?'var(--status-confirmed)':'var(--status-cancelled)'}">${v?'Active':'Inactive'}</span>` },
+    ];
+
+    const actionBtns = (row) => `
+      <button class="btn btn-ghost btn-sm btn-icon" onclick="UsersController.editUser('${row.id}')"><i class="fas fa-pen"></i></button>
+      <button class="btn btn-ghost btn-sm btn-icon" onclick="UsersController.toggleUser('${row.id}')" title="Toggle Active"><i class="fas fa-power-off"></i></button>`;
+
+    document.getElementById('users-content').innerHTML = `
+      <div style="display:flex;justify-content:flex-end;margin-bottom:16px">
+        <button class="btn btn-primary" onclick="UsersController.editUser()"><i class="fas fa-plus"></i> Add User</button>
+      </div>
+      <div class="tab-bar">
+        <button class="tab-btn ${this.currentTab === 'staff' ? 'active' : ''}" onclick="UsersController.switchTab('staff')">Staff & Agents (${staff.length})</button>
+        <button class="tab-btn ${this.currentTab === 'customers' ? 'active' : ''}" onclick="UsersController.switchTab('customers')">Customers (${customers.length})</button>
+        <button class="tab-btn ${this.currentTab === 'roles' ? 'active' : ''}" onclick="UsersController.switchTab('roles')">Role Permissions</button>
+      </div>
+      <div id="tab-staff" class="tab-panel ${this.currentTab === 'staff' ? 'active' : ''}">
+        <div class="panel">${UI.renderTable(staffCols, staff, { actions: actionBtns })}</div>
+      </div>
+      <div id="tab-customers" class="tab-panel ${this.currentTab === 'customers' ? 'active' : ''}">
+        <div class="panel">${UI.renderTable(custCols, customers, { actions: actionBtns })}</div>
+      </div>
+      <div id="tab-roles" class="tab-panel ${this.currentTab === 'roles' ? 'active' : ''}">
+        ${this.renderRolesMatrix()}
+      </div>`;
+  },
+
+  switchTab(tab) { this.currentTab = tab; this.render(); },
+
+  renderRolesMatrix() {
+    const { ROLES, PERMISSIONS } = window.AdminCore;
+    const features = ['bookings.*','packages.*','users.read','users.update','finance.read','cms.*'];
+    const roles = [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.AGENT, ROLES.CUSTOMER];
+
+    const can = (role, feat) => {
+      const p = PERMISSIONS[role];
+      return p.includes('*') || p.includes(feat) || p.includes(feat.split('.')[0] + '.*');
+    };
+
+    const header = roles.map(r => `<th style="text-align:center">${UI.badge(r)}</th>`).join('');
+    const rows = features.map(f => `
+      <tr>
+        <td style="font-family:monospace;font-size:.78rem;color:var(--text-secondary)">${f}</td>
+        ${roles.map(r => `<td style="text-align:center">${can(r,f) ? '<i class="fas fa-check" style="color:var(--status-confirmed)"></i>' : '<i class="fas fa-times" style="color:var(--text-muted);opacity:.4"></i>'}</td>`).join('')}
+      </tr>`).join('');
+
+    return `<div class="panel"><div class="panel-header"><h3>Role — Feature Permission Matrix</h3></div>
+      <div class="panel-body">
+        <table class="data-table"><thead><tr><th>Feature / Permission</th>${header}</tr></thead><tbody>${rows}</tbody></table>
+      </div></div>`;
+  },
+
+  editUser(id = null) {
+    const user = id ? window.AdminCore.UserService.getById(id) : null;
+    const { ROLES } = window.AdminCore;
+    const roleOpts = Object.values(ROLES).map(r => `<option value="${r}" ${(user?.role ?? '') === r ? 'selected' : ''}>${r}</option>`).join('');
+
+    const content = `
+      <form id="user-form" class="form-grid">
+        <div class="form-group full"><label class="form-label">Full Name *</label>
+          <input class="form-control" name="name" id="uf-name" value="${user?.name ?? ''}" required></div>
+        <div class="form-group"><label class="form-label">Email *</label>
+          <input type="email" class="form-control" name="email" id="uf-email" value="${user?.email ?? ''}" required></div>
+        <div class="form-group"><label class="form-label">Phone</label>
+          <input class="form-control" name="phone" value="${user?.phone ?? ''}"></div>
+        <div class="form-group"><label class="form-label">City</label>
+          <input class="form-control" name="city" value="${user?.city ?? ''}"></div>
+        <div class="form-group"><label class="form-label">Role *</label>
+          <select class="form-control" name="role" id="uf-role">${roleOpts}</select></div>
+        <div class="form-group full">
+          <div class="form-row">
+            <label class="toggle-switch"><input type="checkbox" name="active" ${(user?.active ?? true) ? 'checked' : ''}><span class="toggle-slider"></span></label>
+            <div><div style="font-size:.85rem;font-weight:600">Account Active</div></div>
+          </div>
+        </div>
+      </form>`;
+
+    const overlay = UI.modal({
+      title: id ? `Edit User — ${id}` : 'Add New User', content,
+      footer: `
+        <button class="btn btn-ghost" onclick="UI.closeModal(this.closest('.modal-overlay'))">Cancel</button>
+        <button class="btn btn-primary" id="save-user-btn">${id ? 'Update' : 'Create'}</button>`,
+    });
+
+    overlay.querySelector('#save-user-btn').addEventListener('click', () => {
+      const form = overlay.querySelector('#user-form');
+      UI.clearFieldErrors(form);
+      const data = UI.serializeForm(form);
+      const { valid, errors } = window.AdminCore.Validator.user(data);
+      if (!valid) { Object.entries(errors).forEach(([k,v]) => UI.showFieldError(`uf-${k}`, v)); return; }
+
+      if (id) window.AdminCore.UserService.update(id, data);
+      else window.AdminCore.UserService.create(data);
+      UI.closeModal(overlay);
+      this.render();
+      UI.toast(id ? 'User updated' : 'User created', 'success');
+    });
+  },
+
+  toggleUser(id) {
+    const user = window.AdminCore.UserService.toggleActive(id);
+    this.render();
+    UI.toast(`${user.name} is now ${user.active ? 'active' : 'inactive'}`, user.active ? 'success' : 'info');
+  },
+};
+
+// ─────────────────────────────────────────────────────────────
+// CONTROLLER 5: FINANCE
+// ─────────────────────────────────────────────────────────────
+const FinanceController = {
+  init() { this.render(); },
+
+  render() {
+    const { FinanceService, Utils } = window.AdminCore;
+    const txns = FinanceService.getTransactions();
+    const summary = FinanceService.getSummary();
+
+    const summaryCards = [
+      { label: 'Total Revenue',  value: Utils.formatINR(summary.totalRevenue), icon: 'fa-arrow-trend-up',  color: '#3fb950' },
+      { label: 'Total Refunds',  value: Utils.formatINR(summary.totalRefunds), icon: 'fa-rotate-left',     color: '#f85149' },
+      { label: 'Net Revenue',    value: Utils.formatINR(summary.netRevenue),   icon: 'fa-indian-rupee-sign',color: '#d4af37' },
+      { label: 'Transactions',   value: summary.txnCount,                       icon: 'fa-receipt',         color: '#58a6ff' },
+    ].map(c => `
+      <div class="stat-card" style="--stat-accent:${c.color}">
+        <div class="stat-icon"><i class="fas ${c.icon}"></i></div>
+        <div class="stat-value">${c.value}</div>
+        <div class="stat-label">${c.label}</div>
+      </div>`).join('');
+
+    const txnCols = [
+      { key: 'id',         label: 'TXN ID', render: v => `<code style="font-size:.78rem;color:var(--text-primary)">${v}</code>` },
+      { key: 'bookingId',  label: 'Booking' },
+      { key: 'type',       label: 'Type', render: v => `<span style="color:${v==='refund'?'var(--status-cancelled)':'var(--status-confirmed)'}">${v.toUpperCase()}</span>` },
+      { key: 'amount',     label: 'Amount', render: v => Utils.formatINR(v) },
+      { key: 'method',     label: 'Method' },
+      { key: 'gateway',    label: 'Gateway' },
+      { key: 'gatewayRef', label: 'Reference', render: v => `<code style="font-size:.7rem;color:var(--text-muted)">${v}</code>` },
+      { key: 'status',     label: 'Status', render: v => UI.badge(v === 'success' ? 'confirmed' : 'cancelled') },
+      { key: 'createdAt',  label: 'Date/Time', render: v => Utils.formatDateTime(v) },
+    ];
+
+    document.getElementById('finance-content').innerHTML = `
+      <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:20px">${summaryCards}</div>
+      <div class="panel" style="margin-bottom:20px">
+        <div class="panel-header"><h3><i class="fas fa-chart-area" style="color:var(--secondary);margin-right:8px"></i>Monthly Revenue (2026)</h3></div>
+        <div class="panel-body"><div class="chart-wrap"><canvas id="chart-finance-revenue"></canvas></div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <h3>Transaction Ledger</h3>
+          <button class="btn btn-ghost btn-sm" onclick="FinanceController.exportCSV()"><i class="fas fa-download"></i> Export CSV</button>
+        </div>
+        <div id="finance-txns">${UI.renderTable(txnCols, txns, {
+          actions: (row) => row.type === 'payment' && row.status === 'success'
+            ? `<button class="btn btn-danger btn-sm" onclick="FinanceController.processRefund('${row.bookingId}', ${row.amount})"><i class="fas fa-rotate-left"></i> Refund</button>`
+            : '',
+        })}</div>
+      </div>`;
+
+    // Draw chart
+    setTimeout(() => {
+      const monthly = window.AdminCore.FinanceService.getMonthlyRevenue();
+      window.UI.drawBarChart('chart-finance-revenue', monthly.map(m => m.month), monthly.map(m => m.revenue));
+    }, 50);
+  },
+
+  async processRefund(bookingId, amount) {
+    const ok = await UI.confirm(`Process full refund of <strong>${window.AdminCore.Utils.formatINR(amount)}</strong> for booking <strong>${bookingId}</strong>?<br><br>This will trigger a reversal via the payment gateway.`);
+    if (!ok) return;
+    window.AdminCore.FinanceService.processRefund(bookingId, amount);
+    this.render();
+    UI.toast('Refund processed successfully', 'success');
+  },
+
+  exportCSV() {
+    const txns = window.AdminCore.FinanceService.getTransactions();
+    const rows = [
+      ['TXN ID','Booking ID','Type','Amount','Method','Gateway','Reference','Status','Date'],
+      ...txns.map(t => [t.id, t.bookingId, t.type, t.amount, t.method, t.gateway, t.gatewayRef, t.status, t.createdAt]),
+    ];
+    const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a'); a.href = url; a.download = 'alnoor_transactions.csv'; a.click();
+    UI.toast('CSV exported', 'success');
+  },
+};
+
+// ─────────────────────────────────────────────────────────────
+// CONTROLLER 6: CMS / SETTINGS
+// ─────────────────────────────────────────────────────────────
+const CMSController = {
+  currentTab: 'content',
+
+  init() { this.render(); },
+
+  render() {
+    document.getElementById('cms-content').innerHTML = `
+      <div class="tab-bar">
+        <button class="tab-btn ${this.currentTab === 'content' ? 'active' : ''}" onclick="CMSController.switchTab('content')"><i class="fas fa-pen-to-square"></i> Site Content</button>
+        <button class="tab-btn ${this.currentTab === 'gds' ? 'active' : ''}" onclick="CMSController.switchTab('gds')"><i class="fas fa-plug"></i> GDS / Integrations</button>
+        <button class="tab-btn ${this.currentTab === 'notif' ? 'active' : ''}" onclick="CMSController.switchTab('notif')"><i class="fas fa-bell"></i> Notifications</button>
+      </div>
+      <div id="tab-content" class="tab-panel ${this.currentTab === 'content' ? 'active' : ''}">${this.renderContentCMS()}</div>
+      <div id="tab-gds"     class="tab-panel ${this.currentTab === 'gds' ? 'active' : ''}">${this.renderGDS()}</div>
+      <div id="tab-notif"   class="tab-panel ${this.currentTab === 'notif' ? 'active' : ''}">${this.renderNotifications()}</div>`;
+  },
+
+  switchTab(tab) { this.currentTab = tab; this.render(); },
+
+  renderContentCMS() {
+    const { CMSService } = window.AdminCore;
+    const items = CMSService.getAll();
+    const sections = [...new Set(items.map(i => i.section))];
+
+    return sections.map(sec => `
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panel-header"><h3 style="text-transform:capitalize"><i class="fas fa-layer-group" style="margin-right:8px;color:var(--secondary)"></i>${sec}</h3></div>
+        <div class="panel-body">
+          ${items.filter(i => i.section === sec).map(item => `
+            <div class="form-group" style="margin-bottom:12px">
+              <label class="form-label">${item.key} <span style="color:var(--text-muted);font-weight:400;text-transform:none">— updated ${item.updatedAt}</span></label>
+              <div style="display:flex;gap:8px">
+                <input class="form-control" id="cms-${item.key}" value="${window.AdminCore.Validator.sanitize(item.value)}" style="flex:1">
+                <button class="btn btn-ghost btn-sm" onclick="CMSController.saveContent('${item.key}')"><i class="fas fa-save"></i></button>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`).join('');
+  },
+
+  saveContent(key) {
+    const input = document.getElementById(`cms-${key}`);
+    if (!input) return;
+    window.AdminCore.CMSService.update(key, input.value);
+    UI.toast(`"${key}" updated`, 'success');
+  },
+
+  renderGDS() {
+    const { systemConfig } = window.AdminCore.DB;
+    return `
+      <div class="panel">
+        <div class="panel-header"><h3>GDS Configuration — ${systemConfig.gds.provider}</h3></div>
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Provider</label>
+              <input class="form-control" value="${systemConfig.gds.provider}"></div>
+            <div class="form-group"><label class="form-label">API Key</label>
+              <input class="form-control" type="password" value="${systemConfig.gds.apiKey}"></div>
+            <div class="form-group full"><label class="form-label">Flights Endpoint</label>
+              <input class="form-control" value="${systemConfig.gds.endpoints.flights}"></div>
+            <div class="form-group full"><label class="form-label">Hotels Endpoint</label>
+              <input class="form-control" value="${systemConfig.gds.endpoints.hotels}"></div>
+          </div>
+          <div class="form-row" style="margin-top:16px">
+            <label class="toggle-switch"><input type="checkbox" ${systemConfig.gds.enabled ? 'checked' : ''}><span class="toggle-slider"></span></label>
+            <div><div style="font-size:.85rem;font-weight:600">GDS Integration Enabled</div></div>
+          </div>
+          <div class="form-row">
+            <div style="flex:1"><div class="form-label">Payment Gateway</div></div>
+            <span class="badge badge-confirmed">${systemConfig.payment.gateway} — Live</span>
+          </div>
+          <button class="btn btn-primary" style="margin-top:16px" onclick="UI.toast('GDS settings saved','success')"><i class="fas fa-save"></i> Save Configuration</button>
+        </div>
+      </div>`;
+  },
+
+  renderNotifications() {
+    const { systemConfig } = window.AdminCore.DB;
+    return `
+      <div class="panel">
+        <div class="panel-header"><h3>Notification Channels</h3></div>
+        <div class="panel-body">
+          ${[
+            ['whatsappEnabled', 'fa-whatsapp', 'WhatsApp Notifications', 'Send booking confirmations & reminders via WhatsApp'],
+            ['emailEnabled',    'fa-envelope',  'Email Notifications',    'Automated email receipts and itinerary dispatch'],
+            ['smsEnabled',      'fa-sms',       'SMS Notifications',      'Short booking alerts via SMS gateway'],
+          ].map(([key, icon, title, desc]) => `
+            <div class="form-row">
+              <label class="toggle-switch"><input type="checkbox" ${systemConfig.notifications[key] ? 'checked' : ''} onchange="CMSController.toggleNotif('${key}', this.checked)"><span class="toggle-slider"></span></label>
+              <div style="display:flex;gap:10px;align-items:center;flex:1">
+                <i class="fab ${icon}" style="font-size:1.3rem;color:var(--secondary);width:24px;text-align:center"></i>
+                <div><div style="font-size:.9rem;font-weight:600">${title}</div><div style="font-size:.75rem;color:var(--text-muted)">${desc}</div></div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  },
+
+  toggleNotif(key, val) {
+    window.AdminCore.DB.systemConfig.notifications[key] = val;
+    UI.toast(`Notifications updated`, 'info');
+  },
+};
+
+// ── ROUTER ────────────────────────────────────────────────────
+const Router = {
+  routes: {
+    dashboard: { title: 'Dashboard',  subtitle: 'Overview & Analytics',         controller: DashboardController, contentId: 'dashboard-content' },
+    bookings:  { title: 'Bookings',   subtitle: 'Manage all client reservations', controller: BookingsController,  contentId: 'bookings-content' },
+    packages:  { title: 'Packages',   subtitle: 'Travel product catalogue',       controller: PackagesController,  contentId: 'packages-content' },
+    users:     { title: 'Users',      subtitle: 'Customers, agents & roles',      controller: UsersController,     contentId: 'users-content' },
+    finance:   { title: 'Finance',    subtitle: 'Transactions & revenue',         controller: FinanceController,   contentId: 'finance-content' },
+    cms:       { title: 'CMS & Settings', subtitle: 'Site content & integrations', controller: CMSController,     contentId: 'cms-content' },
+  },
+
+  current: 'dashboard',
+
+  navigate(route) {
+    if (!this.routes[route]) return;
+    this.current = route;
+
+    // Update views
+    document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active'));
+    document.getElementById(`page-${route}`)?.classList.add('active');
+
+    // Update nav
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelector(`[data-route="${route}"]`)?.classList.add('active');
+
+    // Update breadcrumb
+    const r = this.routes[route];
+    document.getElementById('breadcrumb-current').textContent = r.title;
+
+    // Init controller
+    r.controller.init();
+  },
+};
+
+window.DashboardController = DashboardController;
+window.BookingsController  = BookingsController;
+window.PackagesController  = PackagesController;
+window.UsersController     = UsersController;
+window.FinanceController   = FinanceController;
+window.CMSController       = CMSController;
+window.Router              = Router;
+
+</script>
+<script>
+'use strict';
+
+// Patch chart colors for light theme
+const _origBar  = window.UI.drawBarChart.bind(window.UI);
+const _origLine = window.UI.drawLineChart.bind(window.UI);
+const _origDnut = window.UI.drawDonutChart.bind(window.UI);
+
+window.UI.drawBarChart  = (id, labels, data, color = '#064e3b') => _origBar(id, labels, data, color);
+window.UI.drawLineChart = (id, labels, data, color = '#d4af37') => _origLine(id, labels, data, color);
+window.UI.drawDonutChart = (id, segs) => {
+  // Override colors for light theme
+  segs = segs.map((s, i) => ({
+    ...s,
+    color: ['#064e3b','#d4af37','#991b1b'][i] || s.color
+  }));
+  _origDnut(id, segs);
+};
+
+// Patch chart grid/text color for light bg
+const origBar2 = window.UI.drawBarChart.bind(window.UI);
+window.UI.drawBarChart = function(canvasId, labels, data, color) {
+  color = color || '#064e3b';
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth; const H = canvas.offsetHeight;
+  canvas.width = W; canvas.height = H;
+  const PAD = { top:20, right:20, bottom:40, left:65 };
+  const cW = W - PAD.left - PAD.right;
+  const cH = H - PAD.top - PAD.bottom;
+  ctx.clearRect(0,0,W,H);
+  const max = Math.max(...data) * 1.15 || 1;
+  const barW = (cW / labels.length) * 0.55;
+  const gap  = (cW / labels.length) * 0.45;
+  for (let i = 0; i <= 4; i++) {
+    const y = PAD.top + cH - (i/4)*cH;
+    ctx.strokeStyle = 'rgba(6,78,59,0.08)';
+    ctx.beginPath(); ctx.moveTo(PAD.left,y); ctx.lineTo(PAD.left+cW,y); ctx.stroke();
+    const val = Math.round((max/4)*i);
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '10px Poppins,sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(val>=100000?`₹${(val/100000).toFixed(1)}L`:val, PAD.left-6, y+4);
+  }
+  labels.forEach((label, i) => {
+    const x    = PAD.left + i*(barW+gap) + gap/2;
+    const barH = (data[i]/max)*cH;
+    const y    = PAD.top + cH - barH;
+    const grad = ctx.createLinearGradient(0,y,0,y+barH);
+    grad.addColorStop(0, color);
+    grad.addColorStop(1, color+'55');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x,y,barW,barH,[4,4,0,0]);
+    else ctx.rect(x,y,barW,barH);
+    ctx.fill();
+    ctx.fillStyle = '#6b7280';
+    ctx.textAlign = 'center';
+    ctx.font = '10px Poppins,sans-serif';
+    ctx.fillText(label, x+barW/2, PAD.top+cH+18);
+  });
+};
+
+window.UI.drawLineChart = function(canvasId, labels, data, color) {
+  color = color || '#d4af37';
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth; const H = canvas.offsetHeight;
+  canvas.width = W; canvas.height = H;
+  const PAD = {top:20,right:20,bottom:36,left:40};
+  const cW = W-PAD.left-PAD.right;
+  const cH = H-PAD.top-PAD.bottom;
+  ctx.clearRect(0,0,W,H);
+  const max = Math.max(...data)*1.2||1;
+  const pts = labels.map((_,i)=>({
+    x: PAD.left+(i/(labels.length-1))*cW,
+    y: PAD.top+cH-(data[i]/max)*cH
+  }));
+  const grad = ctx.createLinearGradient(0,PAD.top,0,PAD.top+cH);
+  grad.addColorStop(0,color+'35'); grad.addColorStop(1,color+'00');
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x,PAD.top+cH);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.lineTo(pts[pts.length-1].x,PAD.top+cH);
+  ctx.closePath();
+  ctx.fillStyle=grad; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+  pts.forEach(p=>ctx.lineTo(p.x,p.y));
+  ctx.strokeStyle=color; ctx.lineWidth=2.5; ctx.stroke();
+  pts.forEach((p,i)=>{
+    ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2);
+    ctx.fillStyle=color; ctx.fill();
+    ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#6b7280'; ctx.font='10px Poppins,sans-serif'; ctx.textAlign='center';
+    ctx.fillText(labels[i],p.x,PAD.top+cH+16);
+  });
+};
+
+window.UI.drawDonutChart = function(canvasId, segments) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth; const H = canvas.offsetHeight;
+  canvas.width = W; canvas.height = H;
+  const cx=W/2, cy=H/2;
+  const R = Math.min(cx,cy)-14;
+  const total = segments.reduce((s,g)=>s+g.value,0);
+  let angle = -Math.PI/2;
+  const colors = ['#064e3b','#d4af37','#991b1b','#1e40af'];
+  segments.forEach((seg,idx)=>{
+    const slice=(seg.value/total)*Math.PI*2;
+    ctx.beginPath();
+    ctx.arc(cx,cy,R,angle,angle+slice);
+    ctx.arc(cx,cy,R*0.55,angle+slice,angle,true);
+    ctx.closePath();
+    ctx.fillStyle=seg.color||colors[idx%colors.length]; ctx.fill();
+    angle+=slice;
+  });
+  ctx.textAlign='center';
+  ctx.font='bold 18px Poppins,sans-serif';
+  ctx.fillStyle='#0f172a';
+  ctx.fillText(total,cx,cy+4);
+  ctx.font='10px Poppins,sans-serif';
+  ctx.fillStyle='#6b7280';
+  ctx.fillText('Total',cx,cy+18);
+};
+
+const AppController = {
+  init() {
+    let user = null;
+    try {
+      const s = localStorage.getItem('alnoor_admin_user');
+      if (s) { user = JSON.parse(s); window.AdminCore.AuthService.currentUser = user; }
+    } catch(e) {}
+    if (user) { this.enterApp(user); } else { this.bindLogin(); }
+    this.bindGlobal();
+  },
+
+  bindLogin() {
+    const btn = document.getElementById('login-btn');
+    const emailEl = document.getElementById('login-email');
+    const errEl = document.getElementById('login-error');
+
+    const attempt = () => {
+      errEl.style.display = 'none';
+      const emailVal = emailEl.value.trim().toLowerCase();
+      const user = window.AdminCore.DB.users.find(u => u.email.toLowerCase() === emailVal);
+      if (!user || !user.active) {
+        errEl.textContent = 'No active account found with that email.';
+        errEl.style.display = 'block';
+        const card = document.querySelector('.login-card');
+        card.style.animation='none'; void card.offsetWidth;
+        card.style.animation='shake 0.4s ease';
+        return;
+      }
+      window.AdminCore.AuthService.currentUser = user;
+      try { localStorage.setItem('alnoor_admin_user', JSON.stringify(user)); } catch(e) {}
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in…';
+      btn.disabled = true;
+      setTimeout(() => this.enterApp(user), 700);
+    };
+
+    btn.addEventListener('click', attempt);
+    [emailEl, document.getElementById('login-password')].forEach(el =>
+      el.addEventListener('keydown', e => { if (e.key==='Enter') attempt(); })
+    );
+  },
+
+  enterApp(user) {
+    document.getElementById('sidebar-user-name').textContent = user.name;
+    document.getElementById('sidebar-user-role').textContent = user.role;
+    document.getElementById('topbar-avatar').textContent = user.avatar || user.name.slice(0,2).toUpperCase();
+    document.getElementById('pending-badge').textContent = window.AdminCore.BookingService.getStats().pending;
+
+    document.getElementById('login-screen').classList.add('hidden');
+    const app = document.getElementById('admin-app');
+    app.style.display = 'grid';
+    app.classList.add('visible');
+
+    Router.navigate('dashboard');
+    window.UI.toast('Welcome back, ' + user.name.split(' ')[0] + '!', 'success');
+  },
+
+  logout() {
+    try { localStorage.removeItem('alnoor_admin_user'); } catch(e) {}
+    window.AdminCore.AuthService.currentUser = null;
+    const app = document.getElementById('admin-app');
+    app.style.display = 'none'; app.classList.remove('visible');
+    const ls = document.getElementById('login-screen');
+    ls.classList.remove('hidden');
+    const btn = document.getElementById('login-btn');
+    btn.innerHTML = '<i class="fas fa-arrow-right-to-bracket"></i> Sign In to Dashboard';
+    btn.disabled = false;
+  },
+
+  bindGlobal() {
+    document.getElementById('sidebar-toggle').addEventListener('click', () => {
+      const shell = document.querySelector('.admin-shell');
+      if (window.innerWidth <= 768) {
+        shell.classList.toggle('sidebar-open');
+        document.getElementById('sidebar-mask').classList.toggle('visible', shell.classList.contains('sidebar-open'));
+      } else {
+        shell.classList.toggle('sidebar-collapsed');
+      }
+    });
+    const gs = document.getElementById('global-search');
+    gs.addEventListener('keydown', e => {
+      if (e.key !== 'Enter' || !gs.value.trim()) return;
+      const q = gs.value.toLowerCase();
+      if (['book','reserv'].some(k=>q.includes(k)))       Router.navigate('bookings');
+      else if (['pack','hajj','umrah'].some(k=>q.includes(k))) Router.navigate('packages');
+      else if (['user','cust','agent'].some(k=>q.includes(k))) Router.navigate('users');
+      else if (['pay','refund','financ'].some(k=>q.includes(k))) Router.navigate('finance');
+      else if (['cms','content','setting'].some(k=>q.includes(k))) Router.navigate('cms');
+      gs.value = '';
+      window.UI.toast('Navigated to best match', 'info');
+    });
+  },
+
+  closeSidebar() {
+    document.querySelector('.admin-shell').classList.remove('sidebar-open');
+    document.getElementById('sidebar-mask').classList.remove('visible');
+  },
+
+  showUserMenu() {
+    const user = window.AdminCore.AuthService.currentUser;
+    if (!user) return;
+    window.UI.modal({
+      title: 'My Account',
+      content: `
+        <div style="text-align:center;padding:16px 0 24px">
+          <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;margin:0 auto 14px;color:white">${user.avatar}</div>
+          <div style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--primary)">${user.name}</div>
+          <div style="font-size:.8rem;color:var(--text-muted);margin-top:3px">${user.email}</div>
+          <div style="margin-top:10px">${window.UI.badge(user.role)}</div>
+        </div>
+        <div style="border-top:1px solid var(--border-color);padding-top:14px;font-size:.82rem">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-color)"><span style="color:var(--text-muted)">City</span><span style="color:var(--text-dark);font-weight:500">${user.city}</span></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0"><span style="color:var(--text-muted)">Member Since</span><span style="color:var(--text-dark);font-weight:500">${window.AdminCore.Utils.formatDate(user.createdAt)}</span></div>
+        </div>`,
+      footer: `<button class="btn btn-ghost btn-sm" onclick="UI.closeModal(this.closest('.modal-overlay'))">Close</button><button class="btn btn-danger btn-sm" onclick="AppController.logout()"><i class="fas fa-right-from-bracket"></i> Sign Out</button>`,
+      size: 'sm',
+    });
+  },
+
+  showNotifications() {
+    const notifs = [
+      { icon:'fa-calendar-plus', color:'var(--confirmed)', text:'BK008 — New WhatsApp inquiry needs agent assignment', time:'2h ago' },
+      { icon:'fa-clock',         color:'var(--pending)',   text:'BK004 — Balance ₹2,40,000 overdue by 3 days', time:'1d ago' },
+      { icon:'fa-box',           color:'var(--secondary)', text:'PKG003 & PKG006 sold out — add new Hajj packages', time:'2d ago' },
+    ];
+    window.UI.modal({
+      title: 'Notifications',
+      content: notifs.map(n => `
+        <div style="display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border-color)">
+          <div style="width:38px;height:38px;flex-shrink:0;border-radius:50%;background:var(--cream);display:flex;align-items:center;justify-content:center">
+            <i class="fas ${n.icon}" style="color:${n.color}"></i>
+          </div>
+          <div>
+            <div style="font-size:.82rem;color:var(--text-dark);line-height:1.5">${n.text}</div>
+            <div style="font-size:.7rem;color:var(--text-muted);margin-top:3px">${n.time}</div>
+          </div>
+        </div>`).join(''),
+    });
+  },
+};
+
+AppController.init();
+</script>
+</body>
+</html>
